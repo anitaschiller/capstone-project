@@ -10,6 +10,7 @@ export default function Form() {
   };
 
   const [member, setMember] = useState(initialMember);
+  console.log(member);
 
   function handleChange(event) {
     const field = event.target;
@@ -67,9 +68,11 @@ export default function Form() {
 const FormStyled = styled.form`
   display: grid;
   grid-template-columns: 55% auto;
+  grid-gap: 1rem;
 
   button {
     width: 100%;
+    background: var(--primary);
   }
 
   div {
@@ -78,14 +81,18 @@ const FormStyled = styled.form`
   }
 
   input {
+    margin: 0.5rem 0;
     width: 100%;
   }
 
   select {
+    height: 2rem;
+    margin: 0.5rem 0;
     width: 100%;
   }
 
   textarea {
+    margin: 0.5rem 0;
     width: 100%;
   }
 `;
