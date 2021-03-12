@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-export default function Form() {
+export default function Form({ submitFunction }) {
   const initialMember = {
     firstName: '',
     lastName: '',
@@ -16,6 +16,12 @@ export default function Form() {
     const field = event.target;
     const value = field.value;
     setMember({ ...member, [field.name]: value });
+  }
+
+  function clickHandler(event) {
+    event.preventDefault();
+    submitFunction(member);
+    setMember(initialMember);
   }
 
   return (
@@ -59,7 +65,7 @@ export default function Form() {
         <p>Group: {member.group}</p>
       </div>
       <div>
-        <button>Send</button>
+        <button onClick={clickHandler}>Send</button>
       </div>
     </FormStyled>
   );
