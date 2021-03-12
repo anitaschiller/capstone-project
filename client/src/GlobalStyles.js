@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-export default CreateGlobalStyle`
+export default createGlobalStyle`
 
 :root {
   --primary: #07D6A0;
@@ -14,6 +14,10 @@ export default CreateGlobalStyle`
 
 body {
   margin: 0;
+}
+
+main {
+  margin: 1rem;
 }
 
 `;
