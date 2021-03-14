@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { isValidMember } from '../lib/validateFunctions';
 
@@ -32,10 +32,17 @@ export default function Form({ submitFunction }) {
       submitFunction(member);
       setMember(initialMember);
       setWasSuccessful(true);
+      setIsError(false);
     } else {
       setIsError(true);
     }
   }
+
+  /*   useEffect(() => {
+    if (member !== initialMember) {
+      setWasSuccessful(false);
+    }
+  }, [member]); */
 
   //JSX
   return (
@@ -83,10 +90,10 @@ export default function Form({ submitFunction }) {
           <option>Neue Fische</option>
         </select>
       </div>
-      <div>
-        {wasSuccessful && <Success>Member successfully added!</Success>}
-      </div>
-      <div>{isError && <Error>Please fill in all required fields!</Error>}</div>
+
+      {wasSuccessful && <Success>Member successfully added!</Success>}
+
+      {isError && <Error>Please fill in all required fields!</Error>}
       <div>
         <button onClick={clickHandler}>SEND</button>
       </div>
@@ -139,10 +146,10 @@ const FormStyled = styled.form`
     width: 100%;
   }
 
-  /* span {
-    margin: 3rem;
-    padding: 0.5rem;
-  } */
+  span {
+    grid-column: 1 / 3;
+    justify-self: center;
+  }
 
   textarea {
     border: #a8a8a8 solid 1px;
