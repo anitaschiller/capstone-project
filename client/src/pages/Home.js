@@ -1,10 +1,10 @@
 import ListMember from '../components/ListMember';
 
-export default function Home({ members, setMembers }) {
+export default function Home({ orderedMembers }) {
   return (
     <>
       <h2>Home</h2>
-      {members.map((member) => (
+      {orderedMembers.map((member) => (
         <ListMember member={member} />
       ))}
     </>
