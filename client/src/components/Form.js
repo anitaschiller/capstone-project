@@ -88,15 +88,7 @@ export default function Form({ submitFunction }) {
       </div>
       <div>{isError && <Error>Please fill in all required fields!</Error>}</div>
       <div>
-        <h2>Member:</h2>
-        <p>
-          Name: {member.firstName} {member.lastName}
-        </p>
-        <p>Description: {member.description}</p>
-        <p>Group: {member.group}</p>
-      </div>
-      <div>
-        <button onClick={clickHandler}>Send</button>
+        <button onClick={clickHandler}>SEND</button>
       </div>
     </FormStyled>
   );
@@ -115,8 +107,11 @@ const FormStyled = styled.form`
   grid-gap: 1rem;
 
   button {
-    width: 100%;
+    font-size: 14px;
+    color: white;
     background: var(--primary);
+    padding: 0.3rem;
+    width: 100%;
   }
 
   div {
@@ -125,24 +120,39 @@ const FormStyled = styled.form`
   }
 
   input {
+    border: #a8a8a8 solid 1px;
+    border-radius: 5px;
+    height: 1.5rem;
     margin: 0.5rem 0;
     width: 100%;
+  }
+
+  label {
+    color: var(--font);
   }
 
   select {
-    height: 2rem;
+    border: #a8a8a8 solid 1px;
+    border-radius: 5px;
+    height: 1.5rem;
     margin: 0.5rem 0;
     width: 100%;
   }
 
+  /* span {
+    margin: 3rem;
+    padding: 0.5rem;
+  } */
+
   textarea {
+    border: #a8a8a8 solid 1px;
+    border-radius: 5px;
     margin: 0.5rem 0;
     width: 100%;
   }
 `;
 
 const Success = styled.span`
-  grid-column: 1 / 3;
   border: 1px solid black;
   padding: 0.5rem;
 `;

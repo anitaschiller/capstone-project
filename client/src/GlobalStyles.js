@@ -6,6 +6,7 @@ export default createGlobalStyle`
   --primary: #07D6A0;
   --secondary: #354AA8;
   --background: #F2F0F0;
+  --font: #4d4c4c;
 }
 
 * {
@@ -14,10 +15,11 @@ export default createGlobalStyle`
 
 body {
   margin: 0;
+  font: 15px Helvetica, sans-serif;
 }
 
 main {
-  margin: 1rem;
+  background: var(--background);
+  padding: 1rem;
 }
-
 `;
