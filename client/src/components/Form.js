@@ -95,7 +95,7 @@ export default function Form({ submitFunction }) {
 
       {isError && <Error>Please fill in all required fields!</Error>}
       <div>
-        <button onClick={clickHandler}>SEND</button>
+        <button onClick={clickHandler}>SAVE</button>
       </div>
     </FormStyled>
   );
