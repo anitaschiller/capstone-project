@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { v4 as uuid4 } from 'uuid';
 
 import Add from './pages/Add';
+import Header from './components/Header';
 import Home from './pages/Home';
 import Navigation from './components/Navigation';
 import { loadFromLocal, saveToLocal } from './lib/localStorage';
@@ -32,9 +33,7 @@ function App() {
 
   return (
     <div>
-      <header>
-        <h1>reMEMBER</h1>
-      </header>
+      <Header />
       <main>
         <Switch>
           <Route exact path="/">
