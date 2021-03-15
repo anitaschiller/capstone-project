@@ -1,11 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
 
-export default CreateGlobalStyle`
+export default createGlobalStyle`
 
 :root {
   --primary: #07D6A0;
   --secondary: #354AA8;
   --background: #F2F0F0;
+  --font: #4d4c4c;
 }
 
 * {
@@ -14,6 +15,11 @@ export default CreateGlobalStyle`
 
 body {
   margin: 0;
+  font: 0.9rem Helvetica, sans-serif;
 }
 
+main {
+  background: var(--background);
+  padding: 1rem;
+}
 `;
