@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Add from './pages/Add';
 import Home from './pages/Home';
+import { loadFromLocal, saveToLocal } from './lib/localStorage';
 
 function App() {
-  //Variables
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState(loadFromLocal('memberList') || []);
   console.log(members);
   const orderedMembers = members.slice().sort(compareFirstName);
   console.log('ordered Members', orderedMembers);
 
-  //Functions
+  useEffect(() => {
+    saveToLocal('members', orderedMembers);
+  }, [orderedMembers]);
 
   function addMember(member) {
     setMembers([...members, member]);
