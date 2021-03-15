@@ -29,7 +29,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div>
       <main>
         <h1>reMEMBER</h1>
         <Home orderedMembers={orderedMembers} />

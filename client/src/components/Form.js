@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { isValidMember } from '../lib/validateFunctions';
 
 export default function Form({ submitFunction }) {
-  //Variables
   const initialMember = {
     firstName: '',
     lastName: '',
@@ -14,19 +13,16 @@ export default function Form({ submitFunction }) {
   };
 
   const [member, setMember] = useState(initialMember);
-  console.log(member);
-
   const [isError, setIsError] = useState(false);
   const [wasSuccessful, setWasSuccessful] = useState(false);
 
-  //Functions
   function handleChange(event) {
     const field = event.target;
     const value = field.value;
     setMember({ ...member, [field.name]: value });
   }
 
-  function clickHandler(event) {
+  function submitHandler(event) {
     event.preventDefault();
     if (isValidMember(member)) {
       submitFunction(member);
@@ -38,13 +34,6 @@ export default function Form({ submitFunction }) {
     }
   }
 
-  /*   useEffect(() => {
-    if (member !== initialMember) {
-      setWasSuccessful(false);
-    }
-  }, [member]); */
-
-  //JSX
   return (
     <FormStyled>
       <div>
@@ -95,7 +84,7 @@ export default function Form({ submitFunction }) {
 
       {isError && <Error>Please fill in all required fields!</Error>}
       <div>
-        <button onClick={clickHandler}>SAVE</button>
+        <button onClick={submitHandler}>SAVE</button>
       </div>
     </FormStyled>
   );

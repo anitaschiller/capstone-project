@@ -15,7 +15,7 @@ export default createGlobalStyle`
 
 body {
   margin: 0;
-  font: 15px Helvetica, sans-serif;
+  font: 0.9rem Helvetica, sans-serif;
 }
 
 main {
