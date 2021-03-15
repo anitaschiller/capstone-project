@@ -90,7 +90,6 @@ export default function Form({ submitFunction }) {
   );
 }
 
-//Styled-components
 const Error = styled.span`
   border: 1px solid red;
   color: red;
@@ -153,7 +152,6 @@ const Success = styled.span`
   padding: 0.5rem;
 `;
 
-//Prop-Types
 Form.propTypes = {
   submitFunction: PropTypes.func,
 };
