@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import { v4 as uuid4 } from 'uuid';
 
 import Add from './pages/Add';
 import Home from './pages/Home';
+import Navigation from './components/Navigation';
 import { loadFromLocal, saveToLocal } from './lib/localStorage';
 
 function App() {
@@ -30,11 +32,20 @@ function App() {
 
   return (
     <div>
-      <main>
+      <header>
         <h1>reMEMBER</h1>
-        <Home orderedMembers={orderedMembers} />
-        <Add submitFunction={addMember} />
+      </header>
+      <main>
+        <Switch>
+          <Route exact path="/">
+            <Home orderedMembers={orderedMembers} />
+          </Route>
+          <Route path="/add">
+            <Add submitFunction={addMember} />
+          </Route>
+        </Switch>
       </main>
+      <Navigation />
     </div>
   );
 }
