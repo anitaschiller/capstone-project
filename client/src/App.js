@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
+import { v4 as uuid4 } from 'uuid';
 
 import Add from './pages/Add';
 import Home from './pages/Home';
 import { loadFromLocal, saveToLocal } from './lib/localStorage';
 
 function App() {
-  const [members, setMembers] = useState(loadFromLocal('memberList') || []);
+  const [members, setMembers] = useState(loadFromLocal('memberList') ?? []);
   console.log(members);
   const orderedMembers = members.slice().sort(compareFirstName);
   console.log('ordered Members', orderedMembers);
@@ -15,7 +16,8 @@ function App() {
   }, [orderedMembers]);
 
   function addMember(member) {
-    setMembers([...members, member]);
+    const newMember = { ...member, id: uuid4() };
+    setMembers([...members, newMember]);
   }
 
   function compareFirstName(a, b) {
