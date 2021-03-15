@@ -5,14 +5,13 @@ import Add from './pages/Add';
 
 function App() {
   const [members, setMembers] = useState([]);
-  console.log(members);
 
   function addMember(member) {
     setMembers([...members, { member }]);
   }
 
   return (
-    <div className="App">
+    <div>
       <main>
         <h1>reMEMBER</h1>
         <Add submitFunction={addMember} />
