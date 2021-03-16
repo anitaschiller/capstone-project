@@ -1,5 +1,5 @@
 ```js
-<ListMember
+<Member
   member={{
     firstName: 'Max',
     lastName: 'Mustermann',

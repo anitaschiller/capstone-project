@@ -1,11 +1,11 @@
-import ListMember from '../components/ListMember';
+import Member from '../components/Member';
 
 export default function Home({ orderedMembers }) {
   return (
     <>
       <h2>Home</h2>
       {orderedMembers.map((member) => (
-        <ListMember key={member.id} member={member} />
+        <Member key={member.id} member={member} />
       ))}
     </>
   );

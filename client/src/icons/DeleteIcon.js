@@ -6,7 +6,7 @@ const Svg = styled(Icon)`
   height: 22px;
 `;
 
-export const Trashbin = ({ className }) => (
+export const DeleteIcon = ({ className }) => (
   <Svg viewBox="0 0 15.583 22" className={className}>
     <path
       fill="currentColor"
