@@ -1,13 +1,32 @@
+import { NavLink, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { EditIcon } from '../icons/EditIcon';
 import { DeleteIcon } from '../icons/DeleteIcon';
 
-export default function Member({ member }) {
+export default function Member({ member, sendFullName }) {
+  const firstName = `${member.firstName}`;
+  const firstNameLowerCase = firstName.toLowerCase();
+  const lastName = `${member.lastName}`;
+  const lastNameLowerCase = lastName.toLowerCase();
+  const fullName = `${firstNameLowerCase}${lastNameLowerCase}`;
+
+  let { url } = useRouteMatch();
+
+  function saveFullName() {
+    sendFullName(fullName);
+  }
+
   return (
-    <MemberStyled>
-      {member.firstName} {member.lastName} <EditIconStyled />{' '}
-      <DeleteIconStyled />
-    </MemberStyled>
+    <>
+      <MemberStyled>
+        {member.firstName} {member.lastName}
+        <NavLink to={url + `${fullName}`}>
+          <EditIconStyled onClick={saveFullName} />
+        </NavLink>
+        <DeleteIconStyled />
+      </MemberStyled>
+    </>
   );
 }
 
