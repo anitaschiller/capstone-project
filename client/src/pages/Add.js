@@ -3,7 +3,7 @@ import Form from '../components/Form';
 export default function Add({ submitFunction }) {
   return (
     <>
-      <h1>Add</h1>
+      <h2>Add</h2>
       <Form submitFunction={submitFunction} />
     </>
   );

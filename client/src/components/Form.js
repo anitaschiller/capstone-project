@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import styled from 'styled-components/macro';
+import { useState } from 'react';
 
 import { isValidMember } from '../lib/validateFunctions';
 
@@ -90,7 +90,6 @@ export default function Form({ submitFunction }) {
   );
 }
 
-//Styled-components
 const Error = styled.span`
   border: 1px solid red;
   color: red;
@@ -153,7 +152,6 @@ const Success = styled.span`
   padding: 0.5rem;
 `;
 
-//Prop-Types
 Form.propTypes = {
   submitFunction: PropTypes.func,
 };
