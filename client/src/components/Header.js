@@ -19,5 +19,5 @@ const StyledHeader = styled.header`
 const Logo = styled.img`
   height: auto;
   padding: 1rem;
-  width: 10rem;
+  width: 12rem;
 `;
