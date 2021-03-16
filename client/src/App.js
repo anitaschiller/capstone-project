@@ -29,13 +29,11 @@ function App() {
   }
 
   return (
-    <div>
-      <main>
-        <h1>reMEMBER</h1>
-        <Home orderedMembers={orderedMembers} />
-        <Add submitFunction={addMember} />
-      </main>
-    </div>
+    <main>
+      <h1>reMEMBER</h1>
+      <Home orderedMembers={orderedMembers} />
+      <Add submitFunction={addMember} />
+    </main>
   );
 }
 

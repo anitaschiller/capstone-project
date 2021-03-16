@@ -6,7 +6,7 @@ const Svg = styled(Icon)`
   height: 22px;
 `;
 
-export const Pen = ({ className }) => (
+export const EditIcon = ({ className }) => (
   <Svg viewbox="0 0 19 22" className={className}>
     <path
       fill="currentColor"
