@@ -1,10 +1,10 @@
-import { NavLink, useRouteMatch } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { EditIcon } from '../icons/EditIcon';
 import { DeleteIcon } from '../icons/DeleteIcon';
 
-export default function Member({ member, sendFullName }) {
+export default function Member({ member }) {
   const firstName = `${member.firstName}`;
   const firstNameLowerCase = firstName.toLowerCase();
   const lastName = `${member.lastName}`;
@@ -13,17 +13,20 @@ export default function Member({ member, sendFullName }) {
 
   let { url } = useRouteMatch();
 
-  function saveFullName() {
-    sendFullName(fullName);
-  }
-
   return (
     <>
       <MemberStyled>
         {member.firstName} {member.lastName}
-        <NavLink to={url + `${fullName}`}>
-          <EditIconStyled onClick={saveFullName} />
-        </NavLink>
+        {
+          <Link
+            to={{
+              pathname: url + `${fullName}`,
+              state: { member },
+            }}
+          >
+            <EditIconStyled />
+          </Link>
+        }
         <DeleteIconStyled />
       </MemberStyled>
     </>

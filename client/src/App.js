@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { v4 as uuid4 } from 'uuid';
 
 import Add from './pages/Add';
@@ -13,7 +13,10 @@ function App() {
   const [members, setMembers] = useState(loadFromLocal('members') ?? []);
   const orderedMembers = members.slice().sort(compareFirstName);
 
-  const [fullName, setFullName] = useState('');
+  const location = useLocation();
+  const member = location?.state?.member ?? null;
+
+  console.log('member', member);
 
   useEffect(() => {
     saveToLocal('members', orderedMembers);
@@ -34,23 +37,19 @@ function App() {
     }
   }
 
-  function sendFullName(fullName) {
-    setFullName(fullName);
-  }
-
   return (
     <div>
       <Header />
       <main>
         <Switch>
           <Route exact path="/">
-            <Home orderedMembers={orderedMembers} sendFullName={sendFullName} />
+            <Home orderedMembers={orderedMembers} />
           </Route>
           <Route path="/add">
             <Add submitFunction={addMember} />
           </Route>
-          <Route path={`/${fullName}`}>
-            <Details />
+          <Route>
+            <Details member={member} />
           </Route>
         </Switch>
       </main>

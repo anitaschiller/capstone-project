@@ -1,6 +1,6 @@
 import Member from '../components/Member';
 
-export default function Home({ orderedMembers, sendFullName }) {
+export default function Home({ orderedMembers }) {
   return (
     <>
       <h2>Home</h2>
@@ -9,7 +9,6 @@ export default function Home({ orderedMembers, sendFullName }) {
           key={member.id}
           member={member}
           orderedMembers={orderedMembers}
-          sendFullname={sendFullName}
         />
       ))}
     </>
