@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
 import { v4 as uuid4 } from 'uuid';
 
@@ -32,7 +33,7 @@ function App() {
   }
 
   return (
-    <div>
+    <Wrapper>
       <Header />
       <main>
         <Switch>
@@ -45,8 +46,13 @@ function App() {
         </Switch>
       </main>
       <Navigation />
-    </div>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  height: 100vh;
+  position: relative;
+`;
 
 export default App;
