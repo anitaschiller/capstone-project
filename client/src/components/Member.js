@@ -5,7 +5,7 @@ import { DeleteIcon } from '../icons/DeleteIcon';
 export default function Member({ member }) {
   return (
     <MemberStyled>
-      {member.firstName} {member.lastName} <EditIconStyled />{' '}
+      {member.firstName} {member.lastName} <EditIconStyled />
       <DeleteIconStyled />
     </MemberStyled>
   );
