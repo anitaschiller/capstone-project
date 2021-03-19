@@ -21,7 +21,7 @@ body {
 
 main {
   background: var(--background);
-  padding: 1rem;
+  padding: 6rem 1rem 1rem 1rem;
   height: 100vh;
 }
 `;
