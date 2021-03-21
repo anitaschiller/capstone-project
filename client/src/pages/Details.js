@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
 import { isValidEntry } from '../lib/validateFunctions';
 
+import EntryCard from '../components/EntryCard';
+import { UnfoldIcon } from '../icons/UnfoldIcon';
+
 export default function Details({ member, updateMember, members }) {
   console.log('member', member); //"alter" Wert nach dem Generieren
 
@@ -16,6 +19,8 @@ export default function Details({ member, updateMember, members }) {
   console.log('entry', entry);
   const [entries, setEntries] = useState([]);
   const [isError, setIsError] = useState(false);
+  const [isUnfolded, setIsUnfolded] = useState(false);
+  console.log('isUnfolded', isUnfolded);
 
   const newMember = members.filter((newMember) => newMember.id === member.id); //das aktualisierte Members Array wird gefiltert und das aktuelle Member herausgesucht; diese Daten werden unten verwendet, um die Entry Karten zu generieren
   console.log('newMember', newMember);
@@ -43,6 +48,10 @@ export default function Details({ member, updateMember, members }) {
     }
   }
 
+  function unfoldForm() {
+    setIsUnfolded(!isUnfolded);
+  }
+
   return (
     <>
       <DetailsHeader>
@@ -53,38 +62,50 @@ export default function Details({ member, updateMember, members }) {
         <p>{member.description}</p>
       </DetailsHeader>
       <FormStyled>
-        <h3>New Entry</h3>
-        <label htmlFor="date">Date</label>
-        <input
-          type="text"
-          name="date"
-          value={entry.date}
-          onChange={changeHandler}
-        />
-        <label htmlFor="title">Title</label>
-        <input
-          type="text"
-          name="title"
-          value={entry.title}
-          onChange={changeHandler}
-        />
-        <label htmlFor="remember">Remember</label>
-        <input
-          type="text"
-          name="remember"
-          value={entry.remember}
-          onChange={changeHandler}
-        />
-        <button onClick={submitHandler}>SAVE</button>
+        <h3 onClick={unfoldForm}>
+          New Entry {isUnfolded ? <FoldIconStyled /> : <UnfoldIconStyled />}
+        </h3>
+        {isUnfolded && (
+          <>
+            <label htmlFor="date">Date</label>
+            <input
+              type="text"
+              name="date"
+              value={entry.date}
+              onChange={changeHandler}
+            />
+            <label htmlFor="title">Title</label>
+            <input
+              type="text"
+              name="title"
+              value={entry.title}
+              onChange={changeHandler}
+            />
+            <label htmlFor="remember">Remember</label>
+            <input
+              type="text"
+              name="remember"
+              value={entry.remember}
+              onChange={changeHandler}
+            />
+            <button onClick={submitHandler}>SAVE</button>
+          </>
+        )}
         {isError && (
           <Error>Please check if all fields were filled correctly!</Error>
         )}
       </FormStyled>
-      {newMember[0].entries &&
-        newMember[0].entries.map((entry) => <div>{entry.title}</div>)}
+      <CardContainer>
+        {newMember[0].entries &&
+          newMember[0].entries.map((entry) => <EntryCard entry={entry} />)}
+      </CardContainer>
     </>
   );
 }
+
+const CardContainer = styled.section`
+  margin: 1rem 0;
+`;
 
 const DetailsHeader = styled.div`
   border-bottom: var(--font) solid 1px;
@@ -113,12 +134,13 @@ const FormStyled = styled.form`
   border-bottom: var(--font) solid 1px;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0.5rem 0 1.5rem 0;
+  padding: 0.5rem 0;
 
   button {
     font-size: 14px;
     color: white;
     background: var(--primary);
+    margin: 0.5rem 0;
     padding: 0.3rem;
     width: 100%;
   }
@@ -140,4 +162,14 @@ const FormStyled = styled.form`
     color: var(--font);
     font-size: small;
   }
+`;
+
+const UnfoldIconStyled = styled(UnfoldIcon)`
+  color: var(--primary);
+  transform: scale(0.8);
+`;
+
+const FoldIconStyled = styled(UnfoldIcon)`
+  color: var(--primary);
+  transform: scale(0.8) rotate(180deg);
 `;
