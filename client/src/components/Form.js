@@ -75,9 +75,9 @@ export default function Form({ submitFunction }) {
           onChange={handleChange}
         >
           <option>Please select...</option>
-          <option>School</option>
-          <option>Work</option>
           <option>Neue Fische</option>
+          <option>ABC congress</option>
+          <option>Partner company A</option>
         </select>
       </div>
 
