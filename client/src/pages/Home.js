@@ -5,11 +5,7 @@ export default function Home({ orderedMembers }) {
     <>
       <h2>Home</h2>
       {orderedMembers.map((member) => (
-        <Member
-          key={member.id}
-          member={member}
-          orderedMembers={orderedMembers}
-        />
+        <Member key={member.id} member={member} />
       ))}
     </>
   );

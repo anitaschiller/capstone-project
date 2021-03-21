@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
-<<<<<<< HEAD
 import { Route, Switch, useLocation } from 'react-router-dom';
-=======
 import styled from 'styled-components';
-import { Route, Switch } from 'react-router-dom';
->>>>>>> main
 import { v4 as uuid4 } from 'uuid';
 
 import Add from './pages/Add';
@@ -16,16 +12,17 @@ import { loadFromLocal, saveToLocal } from './lib/localStorage';
 
 function App() {
   const [members, setMembers] = useState(loadFromLocal('members') ?? []);
+  console.log('members', members);
+
   const orderedMembers = members.slice().sort(compareFirstName);
-
-  const location = useLocation();
-  const member = location?.state?.member ?? null;
-
-  console.log('member', member);
+  console.log('orderedMembers', orderedMembers);
 
   useEffect(() => {
     saveToLocal('members', orderedMembers);
   }, [orderedMembers]);
+
+  const location = useLocation();
+  const member = location?.state?.member ?? null;
 
   function addMember(member) {
     const newMember = { ...member, id: uuid4() };
@@ -42,6 +39,13 @@ function App() {
     }
   }
 
+  function updateMember(updatedMember) {
+    const upToDateMembers = members.filter(
+      (member) => member.id !== updatedMember.id
+    );
+    setMembers([...upToDateMembers, updatedMember]);
+  }
+
   return (
     <Wrapper>
       <Header />
@@ -54,7 +58,11 @@ function App() {
             <Add submitFunction={addMember} />
           </Route>
           <Route>
-            <Details member={member} />
+            <Details
+              member={member}
+              updateMember={updateMember}
+              members={members}
+            />
           </Route>
         </Switch>
       </main>
