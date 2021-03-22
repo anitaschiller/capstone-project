@@ -7,7 +7,7 @@ import EntryCard from '../components/EntryCard';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
 export default function Details({ member, updateMember, members }) {
-  console.log('member', member); //"alter" Wert nach dem Generieren
+  console.log('member', member);
 
   const initialEntry = {
     date: '',
@@ -16,15 +16,12 @@ export default function Details({ member, updateMember, members }) {
   };
 
   const [entry, setEntry] = useState(initialEntry);
-  console.log('entry', entry);
-  const [entries, setEntries] = useState([]);
+  const [entries, setEntries] = useState(member.entries ?? []);
+  console.log('entriesState', entries);
   const [isError, setIsError] = useState(false);
   const [isUnfolded, setIsUnfolded] = useState(false);
-  console.log('isUnfolded', isUnfolded);
 
-  const newMember = members.filter((newMember) => newMember.id === member.id); //das aktualisierte Members Array wird gefiltert und das aktuelle Member herausgesucht; diese Daten werden unten verwendet, um die Entry Karten zu generieren
-  console.log('newMember', newMember);
-  console.log('entries', newMember[0].entries);
+  const newMember = members.filter((newMember) => newMember.id === member.id);
 
   function changeHandler(event) {
     const field = event.target;
@@ -36,13 +33,14 @@ export default function Details({ member, updateMember, members }) {
     event.preventDefault();
 
     if (isValidEntry(entry)) {
-      const newEntry = { ...entry, id: uuid4() }; //create id to each entry
-      setEntries([...entries, newEntry]); //push entry in entries Array
-      setEntry(initialEntry); //reset entry
+      const newEntry = { ...entry, id: uuid4() };
+      const memberEntries = [...entries, newEntry];
+      setEntries(memberEntries);
+      setEntry(initialEntry);
 
-      const updatedMember = { ...member, entries: entries }; //add entries to member
+      const updatedMember = { ...member, entries: memberEntries };
       console.log('updatedMember', updatedMember);
-      updateMember(updatedMember); //schickt den updatedMember an die App js, dort wird dieser member im members Array ausgetauscht --> weiter geht es mit newMember
+      updateMember(updatedMember);
     } else {
       setIsError(true);
     }
@@ -97,14 +95,16 @@ export default function Details({ member, updateMember, members }) {
       </FormStyled>
       <CardContainer>
         {newMember[0].entries &&
-          newMember[0].entries.map((entry) => <EntryCard entry={entry} />)}
+          newMember[0].entries.map((entry) => (
+            <EntryCard entry={entry} key={newMember.id} />
+          ))}
       </CardContainer>
     </>
   );
 }
 
 const CardContainer = styled.section`
-  margin: 1rem 0;
+  margin: 1rem 0 3rem 0;
 `;
 
 const DetailsHeader = styled.div`

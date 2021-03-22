@@ -15,13 +15,13 @@ export default createGlobalStyle`
 }
 
 body {
+  background: var(--background);
   font: 0.9rem Helvetica, sans-serif;
   margin: 0;
 }
 
 main {
-  background: var(--background);
   padding: 6rem 1rem 1rem 1rem;
-  height: 100vh;
+  height: 100%;
 }
 `;
