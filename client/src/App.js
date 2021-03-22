@@ -12,10 +12,7 @@ import { loadFromLocal, saveToLocal } from './lib/localStorage';
 
 function App() {
   const [members, setMembers] = useState(loadFromLocal('members') ?? []);
-  console.log('members', members);
-
   const orderedMembers = members.slice().sort(compareFirstName);
-  console.log('orderedMembers', orderedMembers);
 
   useEffect(() => {
     saveToLocal('members', orderedMembers);

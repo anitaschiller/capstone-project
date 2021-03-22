@@ -7,8 +7,6 @@ import EntryCard from '../components/EntryCard';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
 export default function Details({ member, updateMember, members }) {
-  console.log('member', member);
-
   const initialEntry = {
     date: '',
     title: '',
@@ -17,7 +15,6 @@ export default function Details({ member, updateMember, members }) {
 
   const [entry, setEntry] = useState(initialEntry);
   const [entries, setEntries] = useState(member.entries ?? []);
-  console.log('entriesState', entries);
   const [isError, setIsError] = useState(false);
   const [isUnfolded, setIsUnfolded] = useState(false);
 
