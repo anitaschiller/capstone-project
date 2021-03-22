@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { EditIcon } from '../icons/EditIcon';
 import { DeleteIcon } from '../icons/DeleteIcon';
 
-export default function Member({ member }) {
+export default function Member({ member, onDeleteMember }) {
   const firstName = `${member.firstName}`;
   const firstNameLowerCase = firstName.toLowerCase();
   const lastName = `${member.lastName}`;
@@ -27,7 +27,9 @@ export default function Member({ member }) {
             <EditIconStyled />
           </Link>
         }
-        <DeleteIconStyled />
+        <span onClick={onDeleteMember}>
+          <DeleteIconStyled />
+        </span>
       </MemberStyled>
     </>
   );

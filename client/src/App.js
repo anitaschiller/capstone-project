@@ -43,13 +43,23 @@ function App() {
     setMembers([...upToDateMembers, updatedMember]);
   }
 
+  function deleteMember(idToDelete) {
+    const remainingMembers = members.filter(
+      (member) => member.id !== idToDelete
+    );
+    setMembers(remainingMembers);
+  }
+
   return (
     <Wrapper>
       <Header />
       <main>
         <Switch>
           <Route exact path="/">
-            <Home orderedMembers={orderedMembers} />
+            <Home
+              orderedMembers={orderedMembers}
+              onDeleteMember={deleteMember}
+            />
           </Route>
           <Route path="/add">
             <Add submitFunction={addMember} />
