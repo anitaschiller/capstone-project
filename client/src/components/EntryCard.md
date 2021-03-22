@@ -1,4 +1,4 @@
-```js
+<!-- ```js
 <EntryCard
   entry={{
     date: '12.04.2021',
@@ -6,4 +6,4 @@
     remember: 'Likes to go skiing',
   }}
 />
-```
+``` -->
