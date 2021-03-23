@@ -6,26 +6,20 @@ import { isValidEntry } from '../lib/validateFunctions';
 import EntryCard from '../components/EntryCard';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
-export default function Details({
-  member,
-  updateMember,
-  members,
-  /* onDeleteEntry, */
-}) {
-  console.log('member', member);
-
+export default function Details({ member, updateMember, members }) {
   const initialEntry = {
     date: '',
     title: '',
     remember: '',
   };
 
-  //Das muss weg! member sollte sich besser aktualisieren.
+  //Takes current state of the member out of the members Array.
   const newMember = members.find((newMember) => newMember.id === member.id);
   console.log('newMember', newMember);
 
   const [entry, setEntry] = useState(initialEntry);
   const [entries, setEntries] = useState(newMember.entries ?? []);
+  console.log(entries);
   const [isError, setIsError] = useState(false);
   const [isUnfolded, setIsUnfolded] = useState(false);
 
@@ -45,7 +39,6 @@ export default function Details({
       setEntry(initialEntry);
 
       const updatedMember = { ...member, entries: memberEntries };
-      console.log('updatedMember', updatedMember);
       updateMember(updatedMember);
     } else {
       setIsError(true);
@@ -56,21 +49,25 @@ export default function Details({
     setIsUnfolded(!isUnfolded);
   }
 
-  /*   function deleteEntry(idToDelete) {
-    const remainingEntries = newMember[0].entries.map(
+  function deleteEntry(idToDelete) {
+    console.log('deleteEntry');
+    const remainingEntries = newMember.entries.filter(
       (entry) => entry.id !== idToDelete
     );
-    setEntries(remainingEntries);
-  } */
+    console.log('remainingEntries', remainingEntries);
+    const updatedMember = { ...newMember, entries: remainingEntries };
+    console.log('updatedMember', updatedMember);
+    updateMember(updatedMember);
+  }
 
   return (
     <>
       <DetailsHeader>
         <DetailsHeadline>
-          {member.firstName} {member.lastName}
+          {newMember.firstName} {newMember.lastName}
         </DetailsHeadline>
-        <DetailsGroup>{member.group}</DetailsGroup>
-        <p>{member.description}</p>
+        <DetailsGroup>{newMember.group}</DetailsGroup>
+        <p>{newMember.description}</p>
       </DetailsHeader>
       <FormStyled>
         <h3 onClick={unfoldForm}>
@@ -111,7 +108,7 @@ export default function Details({
           newMember.entries.map((entry) => (
             <EntryCard
               entry={entry}
-              /* onDeleteEntry={() => deleteEntry(entry.id)} */
+              onDeleteEntry={deleteEntry}
               key={entry.id}
             />
           ))}

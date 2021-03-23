@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
-export default function EntryCard({ entry /* , onDeleteEntry */ }) {
+export default function EntryCard({ entry, onDeleteEntry }) {
+  console.log('entryId', entry.id);
   return (
     <CardWrapper>
-      <DeleteIcon /* onClick={onDeleteEntry} */>x</DeleteIcon>
+      <DeleteIcon onClick={() => onDeleteEntry(entry.id)}>x</DeleteIcon>
       <Headline>
         {entry.date} · {entry.title}
       </Headline>
