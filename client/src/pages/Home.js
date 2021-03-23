@@ -1,10 +1,10 @@
 import Member from '../components/Member';
 
-export default function Home({ orderedMembers, onDeleteMember }) {
+export default function Home({ members, onDeleteMember }) {
   return (
     <>
       <h2>Home</h2>
-      {orderedMembers.map((member) => (
+      {members.map((member) => (
         <Member
           key={member.id}
           member={member}

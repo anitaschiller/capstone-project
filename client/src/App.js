@@ -12,11 +12,11 @@ import { loadFromLocal, saveToLocal } from './lib/localStorage';
 
 function App() {
   const [members, setMembers] = useState(loadFromLocal('members') ?? []);
-  const orderedMembers = members.slice().sort(compareFirstName);
+  //const orderedMembers = members.slice().sort(compareFirstName); //ändern!
 
   useEffect(() => {
-    saveToLocal('members', orderedMembers);
-  }, [orderedMembers]);
+    saveToLocal('members', members);
+  }, [members]);
 
   const location = useLocation();
   const member = location?.state?.member ?? null;
@@ -50,16 +50,14 @@ function App() {
     setMembers(remainingMembers);
   }
 
+  console.log('members', members);
   return (
     <Wrapper>
       <Header />
       <main>
         <Switch>
           <Route exact path="/">
-            <Home
-              orderedMembers={orderedMembers}
-              onDeleteMember={deleteMember}
-            />
+            <Home members={members} onDeleteMember={deleteMember} />
           </Route>
           <Route path="/add">
             <Add submitFunction={addMember} />

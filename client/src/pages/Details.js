@@ -6,19 +6,28 @@ import { isValidEntry } from '../lib/validateFunctions';
 import EntryCard from '../components/EntryCard';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
-export default function Details({ member, updateMember, members }) {
+export default function Details({
+  member,
+  updateMember,
+  members,
+  /* onDeleteEntry, */
+}) {
+  console.log('member', member);
+
   const initialEntry = {
     date: '',
     title: '',
     remember: '',
   };
 
+  //Das muss weg! member sollte sich besser aktualisieren.
+  const newMember = members.find((newMember) => newMember.id === member.id);
+  console.log('newMember', newMember);
+
   const [entry, setEntry] = useState(initialEntry);
-  const [entries, setEntries] = useState(member.entries ?? []);
+  const [entries, setEntries] = useState(newMember.entries ?? []);
   const [isError, setIsError] = useState(false);
   const [isUnfolded, setIsUnfolded] = useState(false);
-
-  const newMember = members.filter((newMember) => newMember.id === member.id);
 
   function changeHandler(event) {
     const field = event.target;
@@ -46,6 +55,13 @@ export default function Details({ member, updateMember, members }) {
   function unfoldForm() {
     setIsUnfolded(!isUnfolded);
   }
+
+  /*   function deleteEntry(idToDelete) {
+    const remainingEntries = newMember[0].entries.map(
+      (entry) => entry.id !== idToDelete
+    );
+    setEntries(remainingEntries);
+  } */
 
   return (
     <>
@@ -91,9 +107,13 @@ export default function Details({ member, updateMember, members }) {
         )}
       </FormStyled>
       <CardContainer>
-        {newMember[0].entries &&
-          newMember[0].entries.map((entry) => (
-            <EntryCard entry={entry} key={newMember.id} />
+        {newMember.entries &&
+          newMember.entries.map((entry) => (
+            <EntryCard
+              entry={entry}
+              /* onDeleteEntry={() => deleteEntry(entry.id)} */
+              key={entry.id}
+            />
           ))}
       </CardContainer>
     </>
