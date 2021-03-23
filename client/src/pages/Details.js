@@ -14,7 +14,9 @@ export default function Details({ member, updateMember, members }) {
   };
 
   //Takes current state of the member out of the members Array.
-  const newMember = members.find((newMember) => newMember.id === member.id);
+  const [newMember, setNewMember] = useState(
+    members.find((newMember) => newMember.id === member.id)
+  );
   console.log('newMember', newMember);
 
   const [entry, setEntry] = useState(initialEntry);
@@ -33,12 +35,15 @@ export default function Details({ member, updateMember, members }) {
     event.preventDefault();
 
     if (isValidEntry(entry)) {
+      //Add valid entry to entries array and set entry to initial state afterwards
       const newEntry = { ...entry, id: uuid4() };
       const memberEntries = [...entries, newEntry];
       setEntries(memberEntries);
       setEntry(initialEntry);
 
-      const updatedMember = { ...member, entries: memberEntries };
+      //Update the newMember with the new entries and send the updatedMember to App.js
+      const updatedMember = { ...newMember, entries: memberEntries };
+      setNewMember(updatedMember);
       updateMember(updatedMember);
     } else {
       setIsError(true);
@@ -50,13 +55,17 @@ export default function Details({ member, updateMember, members }) {
   }
 
   function deleteEntry(idToDelete) {
-    console.log('deleteEntry');
+    //Search for idToDelete and remove it in the remainingEntries Array
     const remainingEntries = newMember.entries.filter(
       (entry) => entry.id !== idToDelete
     );
+    setEntries(remainingEntries);
     console.log('remainingEntries', remainingEntries);
+
+    //Update the newMember with the reduced entries and send it to App.js
     const updatedMember = { ...newMember, entries: remainingEntries };
     console.log('updatedMember', updatedMember);
+    setNewMember(updatedMember);
     updateMember(updatedMember);
   }
 
