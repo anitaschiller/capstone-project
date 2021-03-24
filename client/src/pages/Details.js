@@ -36,7 +36,6 @@ export default function Details({ member, updateMember, members }) {
       setEntry(initialEntry);
 
       const updatedMember = { ...member, entries: memberEntries };
-      console.log('updatedMember', updatedMember);
       updateMember(updatedMember);
     } else {
       setIsError(true);

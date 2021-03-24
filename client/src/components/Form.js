@@ -13,7 +13,6 @@ export default function Form({ submitFunction }) {
   };
 
   const [member, setMember] = useState(initialMember);
-  console.log('member', member);
   const [isError, setIsError] = useState(false);
   const [wasSuccessful, setWasSuccessful] = useState(false);
 
