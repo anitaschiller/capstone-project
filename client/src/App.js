@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { v4 as uuid4 } from 'uuid';
 
 import Add from './pages/Add';

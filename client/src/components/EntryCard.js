@@ -29,7 +29,7 @@ const DeleteIcon = styled.span`
   right: 1rem;
 `;
 
-const Headline = styled.p`
+const Headline = styled.h2`
   color: var(--secondary);
   font-weight: bold;
 `;
