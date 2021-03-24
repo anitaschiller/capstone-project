@@ -1,6 +1,6 @@
 import Member from '../components/Member';
 
-export default function Home({ members, onDeleteMember }) {
+export default function Home({ members, onOpenModal }) {
   const orderedMembers = members.slice().sort(compareFirstName);
 
   function compareFirstName(a, b) {
@@ -20,7 +20,7 @@ export default function Home({ members, onDeleteMember }) {
         <Member
           key={member.id}
           member={member}
-          onDeleteMember={() => onDeleteMember(member.id)}
+          onOpenModal={() => onOpenModal(member.id)}
         />
       ))}
     </>

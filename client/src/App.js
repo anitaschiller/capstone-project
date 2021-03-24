@@ -5,6 +5,7 @@ import { v4 as uuid4 } from 'uuid';
 
 import Add from './pages/Add';
 import Details from './pages/Details';
+import DeletionModal from './components/DeletionModal';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Navigation from './components/Navigation';
@@ -12,6 +13,9 @@ import { loadFromLocal, saveToLocal } from './lib/localStorage';
 
 function App() {
   const [members, setMembers] = useState(loadFromLocal('members') ?? []);
+  const [isShown, setIsShown] = useState(false);
+  const [remainingMembers, setRemainingMembers] = useState(members);
+  console.log('remainingMebers', remainingMembers);
 
   useEffect(() => {
     saveToLocal('members', members);
@@ -32,11 +36,21 @@ function App() {
     setMembers([...upToDateMembers, updatedMember]);
   }
 
-  function deleteMember(idToDelete) {
-    const remainingMembers = members.filter(
-      (member) => member.id !== idToDelete
-    );
+  function openModal(idToDelete) {
+    console.log('deleteMember');
+    setRemainingMembers(members.filter((member) => member.id !== idToDelete));
+    setIsShown(true);
+  }
+
+  function denyDeletion() {
+    setMembers(members);
+    setIsShown(false);
+  }
+
+  function confirmDeletion() {
+    console.log('confirmDeletion');
     setMembers(remainingMembers);
+    setIsShown(false);
   }
 
   console.log('members', members);
@@ -46,7 +60,7 @@ function App() {
       <main>
         <Switch>
           <Route exact path="/">
-            <Home members={members} onDeleteMember={deleteMember} />
+            <Home members={members} onOpenModal={openModal} />
           </Route>
           <Route path="/add">
             <Add submitFunction={addMember} />
@@ -60,6 +74,12 @@ function App() {
           </Route>
         </Switch>
       </main>
+      {isShown && (
+        <DeletionModal
+          denyDeletion={denyDeletion}
+          confirmDeletion={confirmDeletion}
+        />
+      )}
       <Navigation />
     </Wrapper>
   );

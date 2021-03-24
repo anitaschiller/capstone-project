@@ -17,7 +17,7 @@ const CardWrapper = styled.div`
   background: white;
   border-radius: 5px;
   margin: 0.3rem 0;
-  padding: 1rem;
+  padding: 0.8rem;
   position: relative;
 `;
 
@@ -31,5 +31,6 @@ const DeleteIcon = styled.span`
 
 const Headline = styled.h2`
   color: var(--secondary);
+  font-size: 0.9rem;
   font-weight: bold;
 `;

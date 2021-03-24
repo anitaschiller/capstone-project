@@ -22,5 +22,7 @@ body {
 
 main {
   padding: 6rem 1rem 1rem 1rem;
+  position: relative;
+  height: 100vh;
 }
 `;
