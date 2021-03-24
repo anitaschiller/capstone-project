@@ -1,13 +1,35 @@
+import { Link, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { EditIcon } from '../icons/EditIcon';
 import { DeleteIcon } from '../icons/DeleteIcon';
 
 export default function Member({ member }) {
+  const firstName = `${member.firstName}`;
+  const firstNameLowerCase = firstName.toLowerCase();
+  const lastName = `${member.lastName}`;
+  const lastNameLowerCase = lastName.toLowerCase();
+  const fullName = `${firstNameLowerCase}${lastNameLowerCase}`;
+
+  let { url } = useRouteMatch();
+
   return (
-    <MemberStyled>
-      {member.firstName} {member.lastName} <EditIconStyled />
-      <DeleteIconStyled />
-    </MemberStyled>
+    <>
+      <MemberStyled>
+        {member.firstName} {member.lastName}
+        {
+          <Link
+            to={{
+              pathname: url + `${fullName}`,
+              state: { member },
+            }}
+          >
+            <EditIconStyled />
+          </Link>
+        }
+        <DeleteIconStyled />
+      </MemberStyled>
+    </>
   );
 }
 

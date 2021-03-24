@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
+import styled from 'styled-components/macro';
 import { v4 as uuid4 } from 'uuid';
 
 import Add from './pages/Add';
+import Details from './pages/Details';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Navigation from './components/Navigation';
@@ -16,6 +17,9 @@ function App() {
   useEffect(() => {
     saveToLocal('members', orderedMembers);
   }, [orderedMembers]);
+
+  const location = useLocation();
+  const member = location?.state?.member ?? null;
 
   function addMember(member) {
     const newMember = { ...member, id: uuid4() };
@@ -32,6 +36,13 @@ function App() {
     }
   }
 
+  function updateMember(updatedMember) {
+    const upToDateMembers = members.filter(
+      (member) => member.id !== updatedMember.id
+    );
+    setMembers([...upToDateMembers, updatedMember]);
+  }
+
   return (
     <Wrapper>
       <Header />
@@ -43,6 +54,13 @@ function App() {
           <Route path="/add">
             <Add submitFunction={addMember} />
           </Route>
+          <Route>
+            <Details
+              member={member}
+              updateMember={updateMember}
+              members={members}
+            />
+          </Route>
         </Switch>
       </main>
       <Navigation />
@@ -51,7 +69,6 @@ function App() {
 }
 
 const Wrapper = styled.div`
-  height: 100vh;
   position: relative;
 `;
 
