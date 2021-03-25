@@ -18,14 +18,11 @@ export default function Details({ member, updateMember, members }) {
   const [newMember, setNewMember] = useState(
     members.find((newMember) => newMember.id === member.id)
   );
-  console.log('newMember', newMember);
-
   const [entry, setEntry] = useState(initialEntry);
-  console.log('entry', entry);
   const [entries, setEntries] = useState(newMember.entries ?? []);
-  console.log('entries', entries);
   const [isError, setIsError] = useState(false);
   const [isUnfolded, setIsUnfolded] = useState(false);
+  const [tags, setTags] = useState([]);
 
   function changeHandler(event) {
     const field = event.target;
@@ -37,6 +34,7 @@ export default function Details({ member, updateMember, members }) {
     event.preventDefault();
 
     if (isValidEntry(entry)) {
+      setTags([]);
       //Add valid entry to entries array and set entry to initial state afterwards
       const newEntry = { ...entry, id: uuid4() };
       const memberEntries = [...entries, newEntry];
@@ -62,21 +60,33 @@ export default function Details({ member, updateMember, members }) {
       (entry) => entry.id !== idToDelete
     );
     setEntries(remainingEntries);
-    console.log('remainingEntries', remainingEntries);
 
     //Update the newMember with the reduced entries and send it to App.js
     const updatedMember = { ...newMember, entries: remainingEntries };
-    console.log('updatedMember', updatedMember);
     setNewMember(updatedMember);
     updateMember(updatedMember);
   }
 
-  function addTag(noteTags) {
+  function addTag(noteTag) {
     setEntry({
       ...entry,
-      remember: [...entry.remember, noteTags],
+      remember: [...entry.remember, noteTag],
     });
   }
+
+  function deleteTag(tagToDelete) {
+    const remainingTags = tags.filter((tag) => tag !== tagToDelete);
+    console.log('remainingTags', remainingTags);
+    setTags(remainingTags);
+  }
+
+  /*   function deleteTag(tagToDelete) {
+    const newTags = product.tags.filter((tag) => tag !== tagToDelete);
+    setProduct({
+      ...product,
+      tags: newTags,
+    });
+  } */
 
   return (
     <>
@@ -109,8 +119,10 @@ export default function Details({ member, updateMember, members }) {
             />
             <NoteTags
               entry={entry}
-              //handleChange={changeHandler}
               onCreateTag={addTag}
+              tags={tags}
+              setTags={setTags}
+              onDeleteTag={deleteTag}
             />
             <button onClick={submitHandler}>SAVE</button>
           </>

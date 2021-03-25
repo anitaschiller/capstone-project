@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { StarIconEmpty } from '../icons/StarIconEmpty';
 
 export default function EntryCard({ entry, onDeleteEntry }) {
-  console.log('entryId', entry.id);
   return (
     <CardWrapper>
       <DeleteIcon onClick={() => onDeleteEntry(entry.id)}>x</DeleteIcon>

@@ -1,10 +1,8 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 
-export default function NoteTags({ onCreateTag }) {
+export default function NoteTags({ onCreateTag, tags, setTags, onDeleteTag }) {
   const [tagValue, setTagValue] = useState('');
-  const [tags, setTags] = useState([]);
-  console.log('tagValue', tagValue);
   console.log('tags', tags);
 
   function handleChange(event) {
@@ -27,13 +25,12 @@ export default function NoteTags({ onCreateTag }) {
       <TagsWrapper>
         {tags.map((tag, index) => (
           <Tag key={index}>
-            {tag} <i /* onClick={() => onDeleteTag(tag)} */>&times;</i>
+            {tag} <i onClick={() => onDeleteTag(tag)}>&times;</i>
           </Tag>
         ))}
         <TagInput
           type="text"
           name="remember"
-          /* value={entry.remember} */
           value={tagValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
