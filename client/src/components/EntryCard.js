@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { StarIconEmpty } from '../icons/StarIconEmpty';
 
 export default function EntryCard({ entry, onDeleteEntry }) {
   console.log('entryId', entry.id);
@@ -8,12 +9,21 @@ export default function EntryCard({ entry, onDeleteEntry }) {
       <Headline>
         {entry.date} · {entry.title}
       </Headline>
-      <p>{entry.remember}</p>
+      {entry.remember.map((note) => (
+        <NoteTag>
+          <StarEmptyStyled />
+          <Note>{note}</Note>
+        </NoteTag>
+      ))}
     </CardWrapper>
   );
 }
 
 const CardWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
   background: white;
   border-radius: 5px;
   margin: 0.3rem 0;
@@ -33,4 +43,25 @@ const Headline = styled.h2`
   color: var(--secondary);
   font-size: 0.9rem;
   font-weight: bold;
+  width: 100%;
+`;
+
+const Note = styled.span`
+  padding-left: 1.5rem;
+`;
+
+const StarEmptyStyled = styled(StarIconEmpty)`
+  color: var(--primary);
+  height: 1.1rem;
+  width: auto;
+  position: absolute;
+  top: 5px;
+`;
+
+const NoteTag = styled.span`
+  border: solid #a8a8a8 1px;
+  border-radius: 5px;
+  margin: 0 0.4rem 0.4rem 0;
+  padding: 0.5rem;
+  position: relative;
 `;

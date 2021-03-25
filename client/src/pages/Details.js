@@ -4,13 +4,14 @@ import { v4 as uuid4 } from 'uuid';
 import { isValidEntry } from '../lib/validateFunctions';
 
 import EntryCard from '../components/EntryCard';
+import NoteTags from '../components/NoteTags';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
 export default function Details({ member, updateMember, members }) {
   const initialEntry = {
     date: '',
     title: '',
-    remember: '',
+    remember: [],
   };
 
   //Takes current state of the member out of the members Array.
@@ -20,8 +21,9 @@ export default function Details({ member, updateMember, members }) {
   console.log('newMember', newMember);
 
   const [entry, setEntry] = useState(initialEntry);
+  console.log('entry', entry);
   const [entries, setEntries] = useState(newMember.entries ?? []);
-  console.log(entries);
+  console.log('entries', entries);
   const [isError, setIsError] = useState(false);
   const [isUnfolded, setIsUnfolded] = useState(false);
 
@@ -69,6 +71,13 @@ export default function Details({ member, updateMember, members }) {
     updateMember(updatedMember);
   }
 
+  function addTag(noteTags) {
+    setEntry({
+      ...entry,
+      remember: [...entry.remember, noteTags],
+    });
+  }
+
   return (
     <>
       <DetailsHeader>
@@ -85,25 +94,23 @@ export default function Details({ member, updateMember, members }) {
         {isUnfolded && (
           <>
             <label htmlFor="date">Date</label>
-            <input
+            <Input
               type="text"
               name="date"
               value={entry.date}
               onChange={changeHandler}
             />
             <label htmlFor="title">Title</label>
-            <input
+            <Input
               type="text"
               name="title"
               value={entry.title}
               onChange={changeHandler}
             />
-            <label htmlFor="remember">Remember</label>
-            <input
-              type="text"
-              name="remember"
-              value={entry.remember}
-              onChange={changeHandler}
+            <NoteTags
+              entry={entry}
+              //handleChange={changeHandler}
+              onCreateTag={addTag}
             />
             <button onClick={submitHandler}>SAVE</button>
           </>
@@ -173,18 +180,19 @@ const FormStyled = styled.form`
     width: 100%;
   }
 
-  input {
-    border: #a8a8a8 solid 1px;
-    border-radius: 5px;
-    height: 1.5rem;
-    margin: 0.5rem 0;
-    width: 100%;
-  }
-
   label {
     color: var(--font);
     font-size: small;
   }
+`;
+
+const Input = styled.input`
+  border: #a8a8a8 solid 1px;
+  border-radius: 5px;
+  height: 1.8rem;
+  margin: 0.5rem 0;
+  outline: none;
+  width: 100%;
 `;
 
 const UnfoldIconStyled = styled(UnfoldIcon)`
