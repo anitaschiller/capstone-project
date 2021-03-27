@@ -4,7 +4,7 @@ import { v4 as uuid4 } from 'uuid';
 
 import EntryCard from '../components/EntryCard';
 import { isValidEntry } from '../lib/validateFunctions';
-import NoteTagsList from '../components/NoteTagsList';
+import NoteTags from '../components/NoteTags';
 import { StarIconFilled } from '../icons/StarIconFilled';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
@@ -24,22 +24,23 @@ export default function Details({ member, updateMember, members }) {
   const [isUnfolded, setIsUnfolded] = useState(false);
   const [tags, setTags] = useState([]);
   const [savedNotes, setSavedNotes] = useState(findSavedNotes() ?? []);
-  console.log('savedNotes', savedNotes);
 
   function findSavedNotes() {
-    const entryRemember = newMember.entries.map((entry) => entry.remember);
-    const allNotes = [];
+    if (newMember.entries) {
+      const entryRemember = newMember.entries.map((entry) => entry.remember);
+      const allNotes = [];
 
-    entryRemember.map((entry) =>
-      entry.forEach((note) => {
-        allNotes.push(note);
-      })
-    );
+      entryRemember.map((entry) =>
+        entry.forEach((note) => {
+          allNotes.push(note);
+        })
+      );
 
-    const currentlySavedNotes = allNotes.filter(
-      (note) => note.isSaved === true
-    );
-    return currentlySavedNotes;
+      const currentlySavedNotes = allNotes.filter(
+        (note) => note.isSaved === true
+      );
+      return currentlySavedNotes;
+    }
   }
 
   function unfoldForm() {
@@ -102,7 +103,6 @@ export default function Details({ member, updateMember, members }) {
     entryRemember.map((entry) =>
       entry.forEach((note) => {
         if (note.noteTag === noteToToggle.noteTag) {
-          //lieber nach ID suchen??
           note.isSaved = !note.isSaved;
         }
         return note;
@@ -167,7 +167,7 @@ export default function Details({ member, updateMember, members }) {
               value={entry.title}
               onChange={changeHandler}
             />
-            <NoteTagsList
+            <NoteTags
               entry={entry}
               onCreateTag={addTag}
               tags={tags}
@@ -240,14 +240,6 @@ const FormStyled = styled.form`
 
   div {
     grid-column: 1 / 3;
-    width: 100%;
-  }
-
-  input {
-    border: var(--grey) solid 1px;
-    border-radius: 5px;
-    height: 1.5rem;
-    margin: 0.5rem 0;
     width: 100%;
   }
 

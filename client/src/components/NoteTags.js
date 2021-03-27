@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 export default function NoteTags({ onCreateTag, tags, setTags, onDeleteTag }) {
   const [tagValue, setTagValue] = useState('');
-  console.log('tags', tags);
 
   function handleChange(event) {
     setTagValue(event.target.value);
