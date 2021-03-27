@@ -30,7 +30,7 @@ const Nav = styled.nav`
 `;
 
 const NavLinkStyled = styled(NavLink)`
-  color: var(--nav-inact);
+  color: var(--lightgrey);
 
   &.active {
     color: var(--primary);

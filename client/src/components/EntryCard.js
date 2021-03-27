@@ -24,7 +24,7 @@ const CardWrapper = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
 
-  background: white;
+  background: var(--white);
   border-radius: 5px;
   margin: 0.3rem 0;
   padding: 0.8rem;
@@ -32,7 +32,7 @@ const CardWrapper = styled.div`
 `;
 
 const DeleteIcon = styled.span`
-  color: red;
+  color: var(--signal);
   font-size: 1.3rem;
   position: absolute;
   top: 1rem;

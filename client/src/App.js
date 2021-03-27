@@ -15,7 +15,6 @@ function App() {
   const [members, setMembers] = useState(loadFromLocal('members') ?? []);
   const [isShown, setIsShown] = useState(false);
   const [remainingMembers, setRemainingMembers] = useState(members);
-  console.log('remainingMebers', remainingMembers);
 
   useEffect(() => {
     saveToLocal('members', members);
@@ -37,7 +36,6 @@ function App() {
   }
 
   function openModal(idToDelete) {
-    console.log('deleteMember');
     setRemainingMembers(members.filter((member) => member.id !== idToDelete));
     setIsShown(true);
   }
@@ -48,12 +46,10 @@ function App() {
   }
 
   function confirmDeletion() {
-    console.log('confirmDeletion');
     setMembers(remainingMembers);
     setIsShown(false);
   }
 
-  console.log('members', members);
   return (
     <Wrapper>
       <Header />

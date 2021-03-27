@@ -18,7 +18,6 @@ export default function Details({ member, updateMember, members }) {
   const [newMember, setNewMember] = useState(
     members.find((newMember) => newMember.id === member.id)
   );
-  console.log('newMember', newMember);
   const [entry, setEntry] = useState(initialEntry);
   const [entries, setEntries] = useState(newMember.entries ?? []);
   const [isError, setIsError] = useState(false);
@@ -71,12 +70,10 @@ export default function Details({ member, updateMember, members }) {
   }
 
   function deleteEntry(idToDelete) {
-    //Search for idToDelete and remove it in the remainingEntries Array
     const remainingEntries = newMember.entries.filter(
       (entry) => entry.id !== idToDelete
     );
     setEntries(remainingEntries);
-
     updateMemberEntries(remainingEntries);
   }
 
@@ -204,7 +201,7 @@ const CardContainer = styled.section`
 `;
 
 const DetailsHeader = styled.div`
-  border-bottom: var(--font) solid 1px;
+  border-bottom: var(--grey) solid 1px;
   padding: 0 0 0.5rem 0;
 `;
 
@@ -213,28 +210,28 @@ const DetailsHeadline = styled.h2`
 `;
 
 const DetailsGroup = styled.p`
-  color: #a8a8a8;
+  color: var(--grey);
   font-style: italic;
   margin: 0.4rem 0;
 `;
 
 const Error = styled.span`
-  border: 1px solid red;
-  color: red;
+  border: 1px solid var(--signal);
+  color: var(--signal);
   margin-top: 0.5rem;
   padding: 0.5rem;
 `;
 
 const FormStyled = styled.form`
   display: flex;
-  border-bottom: var(--font) solid 1px;
+  border-bottom: var(--grey) solid 1px;
   flex-direction: column;
   align-items: flex-start;
   padding: 0.5rem 0;
 
   button {
     font-size: 14px;
-    color: white;
+    color: var(--white);
     background: var(--primary);
     margin: 0.5rem 0;
     padding: 0.3rem;
@@ -246,8 +243,16 @@ const FormStyled = styled.form`
     width: 100%;
   }
 
+  input {
+    border: var(--grey) solid 1px;
+    border-radius: 5px;
+    height: 1.5rem;
+    margin: 0.5rem 0;
+    width: 100%;
+  }
+
   label {
-    color: var(--font);
+    color: var(--grey);
     font-size: small;
   }
 `;
