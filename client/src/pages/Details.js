@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
-import { isValidEntry } from '../lib/validateFunctions';
 
 import EntryCard from '../components/EntryCard';
-import NoteTags from '../components/NoteTags';
+import { isValidEntry } from '../lib/validateFunctions';
+import NoteTagsList from '../components/NoteTagsList';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
 export default function Details({ member, updateMember, members }) {
@@ -14,15 +14,37 @@ export default function Details({ member, updateMember, members }) {
     remember: [],
   };
 
-  //Takes current state of the member out of the members Array.
   const [newMember, setNewMember] = useState(
     members.find((newMember) => newMember.id === member.id)
   );
+  console.log('newMember', newMember);
   const [entry, setEntry] = useState(initialEntry);
   const [entries, setEntries] = useState(newMember.entries ?? []);
   const [isError, setIsError] = useState(false);
   const [isUnfolded, setIsUnfolded] = useState(false);
   const [tags, setTags] = useState([]);
+  const [savedNotes, setSavedNotes] = useState(findSavedNotes() ?? []);
+  console.log('savedNotes', savedNotes);
+
+  function findSavedNotes() {
+    const entryRemember = newMember.entries.map((entry) => entry.remember);
+    const allNotes = [];
+
+    entryRemember.map((entry) =>
+      entry.forEach((note) => {
+        allNotes.push(note);
+      })
+    );
+
+    const currentlySavedNotes = allNotes.filter(
+      (note) => note.isSaved === true
+    );
+    return currentlySavedNotes;
+  }
+
+  function unfoldForm() {
+    setIsUnfolded(!isUnfolded);
+  }
 
   function changeHandler(event) {
     const field = event.target;
@@ -34,24 +56,17 @@ export default function Details({ member, updateMember, members }) {
     event.preventDefault();
 
     if (isValidEntry(entry)) {
-      setTags([]);
-      //Add valid entry to entries array and set entry to initial state afterwards
       const newEntry = { ...entry, id: uuid4() };
       const memberEntries = [...entries, newEntry];
       setEntries(memberEntries);
-      setEntry(initialEntry);
 
-      //Update the newMember with the new entries and send the updatedMember to App.js
-      const updatedMember = { ...newMember, entries: memberEntries };
-      setNewMember(updatedMember);
-      updateMember(updatedMember);
+      setEntry(initialEntry);
+      setTags([]);
+
+      updateMemberEntries(memberEntries);
     } else {
       setIsError(true);
     }
-  }
-
-  function unfoldForm() {
-    setIsUnfolded(!isUnfolded);
   }
 
   function deleteEntry(idToDelete) {
@@ -61,32 +76,56 @@ export default function Details({ member, updateMember, members }) {
     );
     setEntries(remainingEntries);
 
-    //Update the newMember with the reduced entries and send it to App.js
-    const updatedMember = { ...newMember, entries: remainingEntries };
+    updateMemberEntries(remainingEntries);
+  }
+
+  function updateMemberEntries(updatedEntries) {
+    const updatedMember = { ...newMember, entries: updatedEntries };
     setNewMember(updatedMember);
     updateMember(updatedMember);
   }
 
   function addTag(noteTag) {
+    const newNoteTag = { noteTag, isSaved: false, id: uuid4() };
     setEntry({
       ...entry,
-      remember: [...entry.remember, noteTag],
+      remember: [...entry.remember, newNoteTag],
     });
   }
 
   function deleteTag(tagToDelete) {
     const remainingTags = tags.filter((tag) => tag !== tagToDelete);
-    console.log('remainingTags', remainingTags);
     setTags(remainingTags);
   }
 
-  /*   function deleteTag(tagToDelete) {
-    const newTags = product.tags.filter((tag) => tag !== tagToDelete);
-    setProduct({
-      ...product,
-      tags: newTags,
+  function toggleNote(noteToToggle, entry) {
+    entry.remember.map((note) => {
+      if (note.noteTag === noteToToggle.noteTag) {
+        //lieber nach ID suchen??
+        note.isSaved = !note.isSaved;
+      }
+      return note;
     });
-  } */
+    updateMemberEntries(newMember.entries);
+    filterSavedNotes();
+  }
+
+  function filterSavedNotes() {
+    const entryRemember = newMember.entries.map((entry) => entry.remember);
+    const allNotes = [];
+
+    entryRemember.map((entry) =>
+      entry.forEach((note) => {
+        allNotes.push(note);
+      })
+    );
+
+    const currentlySavedNotes = allNotes.filter(
+      (note) => note.isSaved === true
+    );
+    setSavedNotes(currentlySavedNotes);
+    return currentlySavedNotes;
+  }
 
   return (
     <>
@@ -96,6 +135,8 @@ export default function Details({ member, updateMember, members }) {
         </DetailsHeadline>
         <DetailsGroup>{newMember.group}</DetailsGroup>
         <p>{newMember.description}</p>
+        {savedNotes.length >= 1 &&
+          savedNotes.map((note) => <SavedNote>{note.noteTag}</SavedNote>)}
       </DetailsHeader>
       <FormStyled>
         <h3 onClick={unfoldForm}>
@@ -117,7 +158,7 @@ export default function Details({ member, updateMember, members }) {
               value={entry.title}
               onChange={changeHandler}
             />
-            <NoteTags
+            <NoteTagsList
               entry={entry}
               onCreateTag={addTag}
               tags={tags}
@@ -138,6 +179,7 @@ export default function Details({ member, updateMember, members }) {
               entry={entry}
               onDeleteEntry={deleteEntry}
               key={entry.id}
+              onToggleNote={toggleNote}
             />
           ))}
       </CardContainer>
@@ -215,4 +257,10 @@ const UnfoldIconStyled = styled(UnfoldIcon)`
 const FoldIconStyled = styled(UnfoldIcon)`
   color: var(--primary);
   transform: scale(0.8) rotate(180deg);
+`;
+
+const SavedNote = styled.span`
+  border: 1px solid black;
+  padding: 0.5rem;
+  margin: 0.3rem;
 `;

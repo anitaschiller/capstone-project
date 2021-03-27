@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { StarIconEmpty } from '../icons/StarIconEmpty';
 
-export default function EntryCard({ entry, onDeleteEntry }) {
+export default function EntryCard({ entry, onDeleteEntry, onToggleNote }) {
   return (
     <CardWrapper>
       <DeleteIcon onClick={() => onDeleteEntry(entry.id)}>x</DeleteIcon>
@@ -9,9 +9,9 @@ export default function EntryCard({ entry, onDeleteEntry }) {
         {entry.date} · {entry.title}
       </Headline>
       {entry.remember.map((note) => (
-        <NoteTag>
+        <NoteTag onClick={() => onToggleNote(note, entry)} key={note.id}>
           <StarEmptyStyled />
-          <Note>{note}</Note>
+          <Note>{note.noteTag}</Note>
         </NoteTag>
       ))}
     </CardWrapper>
