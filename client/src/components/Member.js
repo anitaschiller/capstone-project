@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { EditIcon } from '../icons/EditIcon';
 import { DeleteIcon } from '../icons/DeleteIcon';
 
-export default function Member({ member }) {
+export default function Member({ member, onOpenModal }) {
   const firstName = `${member.firstName}`;
   const firstNameLowerCase = firstName.toLowerCase();
   const lastName = `${member.lastName}`;
@@ -27,14 +27,16 @@ export default function Member({ member }) {
             <EditIconStyled />
           </Link>
         }
-        <DeleteIconStyled />
+        <span onClick={onOpenModal}>
+          <DeleteIconStyled />
+        </span>
       </MemberStyled>
     </>
   );
 }
 
 const MemberStyled = styled.div`
-  background: white;
+  background: var(--white);
   border-radius: 5px;
   margin: 0.3rem 0;
   padding: 1rem;
@@ -42,7 +44,7 @@ const MemberStyled = styled.div`
 `;
 
 const EditIconStyled = styled(EditIcon)`
-  color: var(--font);
+  color: var(--grey);
   transform: scale(0.8);
   position: absolute;
   right: 2.7rem;
@@ -50,7 +52,7 @@ const EditIconStyled = styled(EditIcon)`
 `;
 
 const DeleteIconStyled = styled(DeleteIcon)`
-  color: #bc1616;
+  color: var(--signal);
   transform: scale(0.8);
   position: absolute;
   right: 1rem;

@@ -5,6 +5,7 @@ import { v4 as uuid4 } from 'uuid';
 
 import Add from './pages/Add';
 import Details from './pages/Details';
+import DeletionModal from './components/DeletionModal';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Navigation from './components/Navigation';
@@ -12,11 +13,12 @@ import { loadFromLocal, saveToLocal } from './lib/localStorage';
 
 function App() {
   const [members, setMembers] = useState(loadFromLocal('members') ?? []);
-  const orderedMembers = members.slice().sort(compareFirstName);
+  const [isShown, setIsShown] = useState(false);
+  const [remainingMembers, setRemainingMembers] = useState(members);
 
   useEffect(() => {
-    saveToLocal('members', orderedMembers);
-  }, [orderedMembers]);
+    saveToLocal('members', members);
+  }, [members]);
 
   const location = useLocation();
   const member = location?.state?.member ?? null;
@@ -26,21 +28,26 @@ function App() {
     setMembers([...members, newMember]);
   }
 
-  function compareFirstName(a, b) {
-    if (a.firstName === b.firstName) {
-      return 0;
-    } else if (a.firstName < b.firstName) {
-      return -1;
-    } else {
-      return 1;
-    }
-  }
-
   function updateMember(updatedMember) {
     const upToDateMembers = members.filter(
       (member) => member.id !== updatedMember.id
     );
     setMembers([...upToDateMembers, updatedMember]);
+  }
+
+  function openModal(idToDelete) {
+    setRemainingMembers(members.filter((member) => member.id !== idToDelete));
+    setIsShown(true);
+  }
+
+  function denyDeletion() {
+    setMembers(members);
+    setIsShown(false);
+  }
+
+  function confirmDeletion() {
+    setMembers(remainingMembers);
+    setIsShown(false);
   }
 
   return (
@@ -49,7 +56,7 @@ function App() {
       <main>
         <Switch>
           <Route exact path="/">
-            <Home orderedMembers={orderedMembers} />
+            <Home members={members} onOpenModal={openModal} />
           </Route>
           <Route path="/add">
             <Add submitFunction={addMember} />
@@ -63,6 +70,12 @@ function App() {
           </Route>
         </Switch>
       </main>
+      {isShown && (
+        <DeletionModal
+          denyDeletion={denyDeletion}
+          confirmDeletion={confirmDeletion}
+        />
+      )}
       <Navigation />
     </Wrapper>
   );

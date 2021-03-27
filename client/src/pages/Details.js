@@ -13,12 +13,14 @@ export default function Details({ member, updateMember, members }) {
     remember: '',
   };
 
+  const [newMember, setNewMember] = useState(
+    members.find((newMember) => newMember.id === member.id)
+  );
+
   const [entry, setEntry] = useState(initialEntry);
-  const [entries, setEntries] = useState(member.entries ?? []);
+  const [entries, setEntries] = useState(newMember.entries ?? []);
   const [isError, setIsError] = useState(false);
   const [isUnfolded, setIsUnfolded] = useState(false);
-
-  const newMember = members.filter((newMember) => newMember.id === member.id);
 
   function changeHandler(event) {
     const field = event.target;
@@ -30,12 +32,15 @@ export default function Details({ member, updateMember, members }) {
     event.preventDefault();
 
     if (isValidEntry(entry)) {
+      //Add valid entry to entries array and set entry to initial state afterwards
       const newEntry = { ...entry, id: uuid4() };
       const memberEntries = [...entries, newEntry];
       setEntries(memberEntries);
       setEntry(initialEntry);
 
-      const updatedMember = { ...member, entries: memberEntries };
+      //Update the newMember with the new entries and send the updatedMember to App.js
+      const updatedMember = { ...newMember, entries: memberEntries };
+      setNewMember(updatedMember);
       updateMember(updatedMember);
     } else {
       setIsError(true);
@@ -46,14 +51,25 @@ export default function Details({ member, updateMember, members }) {
     setIsUnfolded(!isUnfolded);
   }
 
+  function deleteEntry(idToDelete) {
+    const remainingEntries = newMember.entries.filter(
+      (entry) => entry.id !== idToDelete
+    );
+    setEntries(remainingEntries);
+
+    const updatedMember = { ...newMember, entries: remainingEntries };
+    setNewMember(updatedMember);
+    updateMember(updatedMember);
+  }
+
   return (
     <>
       <DetailsHeader>
         <DetailsHeadline>
-          {member.firstName} {member.lastName}
+          {newMember.firstName} {newMember.lastName}
         </DetailsHeadline>
-        <DetailsGroup>{member.group}</DetailsGroup>
-        <p>{member.description}</p>
+        <DetailsGroup>{newMember.group}</DetailsGroup>
+        <p>{newMember.description}</p>
       </DetailsHeader>
       <FormStyled>
         <h3 onClick={unfoldForm}>
@@ -90,9 +106,13 @@ export default function Details({ member, updateMember, members }) {
         )}
       </FormStyled>
       <CardContainer>
-        {newMember[0].entries &&
-          newMember[0].entries.map((entry) => (
-            <EntryCard entry={entry} key={newMember.id} />
+        {newMember.entries &&
+          newMember.entries.map((entry) => (
+            <EntryCard
+              entry={entry}
+              onDeleteEntry={deleteEntry}
+              key={entry.id}
+            />
           ))}
       </CardContainer>
     </>
@@ -104,7 +124,7 @@ const CardContainer = styled.section`
 `;
 
 const DetailsHeader = styled.div`
-  border-bottom: var(--font) solid 1px;
+  border-bottom: var(--grey) solid 1px;
   padding: 0 0 0.5rem 0;
 `;
 
@@ -113,28 +133,28 @@ const DetailsHeadline = styled.h2`
 `;
 
 const DetailsGroup = styled.p`
-  color: #a8a8a8;
+  color: var(--grey);
   font-style: italic;
   margin: 0.4rem 0;
 `;
 
 const Error = styled.span`
-  border: 1px solid red;
-  color: red;
+  border: 1px solid var(--signal);
+  color: var(--signal);
   margin-top: 0.5rem;
   padding: 0.5rem;
 `;
 
 const FormStyled = styled.form`
   display: flex;
-  border-bottom: var(--font) solid 1px;
+  border-bottom: var(--grey) solid 1px;
   flex-direction: column;
   align-items: flex-start;
   padding: 0.5rem 0;
 
   button {
     font-size: 14px;
-    color: white;
+    color: var(--white);
     background: var(--primary);
     margin: 0.5rem 0;
     padding: 0.3rem;
@@ -147,7 +167,7 @@ const FormStyled = styled.form`
   }
 
   input {
-    border: #a8a8a8 solid 1px;
+    border: var(--grey) solid 1px;
     border-radius: 5px;
     height: 1.5rem;
     margin: 0.5rem 0;
@@ -155,7 +175,7 @@ const FormStyled = styled.form`
   }
 
   label {
-    color: var(--font);
+    color: var(--grey);
     font-size: small;
   }
 `;

@@ -5,9 +5,10 @@ export default createGlobalStyle`
 :root {
   --primary: #07D6A0;
   --secondary: #354AA8;
-  --background: #F2F0F0;
-  --font: #4d4c4c;
-  --nav-inact: #D8D8D8;
+  --lightgrey: #F2F0F0;
+  --grey: #4d4c4c; 
+  --white: #ffffff;
+  --signal: #bc1616;
 }
 
 * {
@@ -15,12 +16,14 @@ export default createGlobalStyle`
 }
 
 body {
-  background: var(--background);
+  background: var(--lightgrey);
   font: 0.9rem Helvetica, sans-serif;
   margin: 0;
 }
 
 main {
   padding: 6rem 1rem 1rem 1rem;
+  position: relative;
+  height: 100vh;
 }
 `;
