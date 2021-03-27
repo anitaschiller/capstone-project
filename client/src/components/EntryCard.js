@@ -10,7 +10,7 @@ export default function EntryCard({ entry, onDeleteEntry, onToggleNote }) {
         {entry.date} · {entry.title}
       </Headline>
       {entry.remember.map((note) => (
-        <NoteTag onClick={() => onToggleNote(note, entry)} key={note.id}>
+        <NoteTag onClick={() => onToggleNote(note)} key={note.id}>
           {note.isSaved ? <StarFilledStyled /> : <StarEmptyStyled />}
           <Note>{note.noteTag}</Note>
         </NoteTag>

@@ -99,14 +99,18 @@ export default function Details({ member, updateMember, members }) {
     setTags(remainingTags);
   }
 
-  function toggleNote(noteToToggle, entry) {
-    entry.remember.map((note) => {
-      if (note.noteTag === noteToToggle.noteTag) {
-        //lieber nach ID suchen??
-        note.isSaved = !note.isSaved;
-      }
-      return note;
-    });
+  function toggleNote(noteToToggle) {
+    const entryRemember = newMember.entries.map((entry) => entry.remember);
+
+    entryRemember.map((entry) =>
+      entry.forEach((note) => {
+        if (note.noteTag === noteToToggle.noteTag) {
+          //lieber nach ID suchen??
+          note.isSaved = !note.isSaved;
+        }
+        return note;
+      })
+    );
     updateMemberEntries(newMember.entries);
     filterSavedNotes();
   }
@@ -139,7 +143,7 @@ export default function Details({ member, updateMember, members }) {
         <SavedNoteWrapper>
           {savedNotes.length >= 1 &&
             savedNotes.map((note) => (
-              <SavedNote>
+              <SavedNote onClick={() => toggleNote(note)}>
                 <StarFilledStyled />
                 <Note>{note.noteTag}</Note>
               </SavedNote>
