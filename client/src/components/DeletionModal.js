@@ -22,8 +22,8 @@ const ModalWrapper = styled.div`
   right: 1rem;
   left: 1rem;
 
-  background: white;
-  border: #bc1616 solid 2px;
+  background: var(--white);
+  border: var(--signal) solid 2px;
   padding: 1rem;
 `;
 
@@ -39,5 +39,5 @@ const DenyButton = styled.button`
 `;
 
 const ConfirmButton = styled(DenyButton)`
-  color: #bc1616;
+  color: var(--signal);
 `;

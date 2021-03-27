@@ -13,15 +13,12 @@ export default function Details({ member, updateMember, members }) {
     remember: '',
   };
 
-  //Takes current state of the member out of the members Array.
   const [newMember, setNewMember] = useState(
     members.find((newMember) => newMember.id === member.id)
   );
-  console.log('newMember', newMember);
 
   const [entry, setEntry] = useState(initialEntry);
   const [entries, setEntries] = useState(newMember.entries ?? []);
-  console.log(entries);
   const [isError, setIsError] = useState(false);
   const [isUnfolded, setIsUnfolded] = useState(false);
 
@@ -55,16 +52,12 @@ export default function Details({ member, updateMember, members }) {
   }
 
   function deleteEntry(idToDelete) {
-    //Search for idToDelete and remove it in the remainingEntries Array
     const remainingEntries = newMember.entries.filter(
       (entry) => entry.id !== idToDelete
     );
     setEntries(remainingEntries);
-    console.log('remainingEntries', remainingEntries);
 
-    //Update the newMember with the reduced entries and send it to App.js
     const updatedMember = { ...newMember, entries: remainingEntries };
-    console.log('updatedMember', updatedMember);
     setNewMember(updatedMember);
     updateMember(updatedMember);
   }
@@ -131,7 +124,7 @@ const CardContainer = styled.section`
 `;
 
 const DetailsHeader = styled.div`
-  border-bottom: var(--font) solid 1px;
+  border-bottom: var(--grey) solid 1px;
   padding: 0 0 0.5rem 0;
 `;
 
@@ -140,28 +133,28 @@ const DetailsHeadline = styled.h2`
 `;
 
 const DetailsGroup = styled.p`
-  color: #a8a8a8;
+  color: var(--grey);
   font-style: italic;
   margin: 0.4rem 0;
 `;
 
 const Error = styled.span`
-  border: 1px solid red;
-  color: red;
+  border: 1px solid var(--signal);
+  color: var(--signal);
   margin-top: 0.5rem;
   padding: 0.5rem;
 `;
 
 const FormStyled = styled.form`
   display: flex;
-  border-bottom: var(--font) solid 1px;
+  border-bottom: var(--grey) solid 1px;
   flex-direction: column;
   align-items: flex-start;
   padding: 0.5rem 0;
 
   button {
     font-size: 14px;
-    color: white;
+    color: var(--white);
     background: var(--primary);
     margin: 0.5rem 0;
     padding: 0.3rem;
@@ -174,7 +167,7 @@ const FormStyled = styled.form`
   }
 
   input {
-    border: #a8a8a8 solid 1px;
+    border: var(--grey) solid 1px;
     border-radius: 5px;
     height: 1.5rem;
     margin: 0.5rem 0;
@@ -182,7 +175,7 @@ const FormStyled = styled.form`
   }
 
   label {
-    color: var(--font);
+    color: var(--grey);
     font-size: small;
   }
 `;

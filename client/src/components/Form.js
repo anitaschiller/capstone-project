@@ -91,8 +91,8 @@ export default function Form({ submitFunction }) {
 }
 
 const Error = styled.span`
-  border: 1px solid red;
-  color: red;
+  border: 1px solid var(--signal);
+  color: var(--signal);
   padding: 0.5rem;
 `;
 
@@ -103,7 +103,7 @@ const FormStyled = styled.form`
 
   button {
     font-size: 14px;
-    color: white;
+    color: var(--white);
     background: var(--primary);
     padding: 0.3rem;
     width: 100%;
@@ -115,7 +115,7 @@ const FormStyled = styled.form`
   }
 
   input {
-    border: #a8a8a8 solid 1px;
+    border: var(--grey) solid 1px;
     border-radius: 5px;
     height: 1.5rem;
     margin: 0.5rem 0;
@@ -123,11 +123,11 @@ const FormStyled = styled.form`
   }
 
   label {
-    color: var(--font);
+    color: var(--grey);
   }
 
   select {
-    border: #a8a8a8 solid 1px;
+    border: var(--grey) solid 1px;
     border-radius: 5px;
     height: 1.5rem;
     margin: 0.5rem 0;
@@ -140,7 +140,7 @@ const FormStyled = styled.form`
   }
 
   textarea {
-    border: #a8a8a8 solid 1px;
+    border: var(--grey) solid 1px;
     border-radius: 5px;
     margin: 0.5rem 0;
     width: 100%;

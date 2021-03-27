@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export default function EntryCard({ entry, onDeleteEntry }) {
-  console.log('entryId', entry.id);
   return (
     <CardWrapper>
       <DeleteIcon onClick={() => onDeleteEntry(entry.id)}>x</DeleteIcon>
@@ -14,7 +13,7 @@ export default function EntryCard({ entry, onDeleteEntry }) {
 }
 
 const CardWrapper = styled.div`
-  background: white;
+  background: var(--white);
   border-radius: 5px;
   margin: 0.3rem 0;
   padding: 0.8rem;
@@ -22,7 +21,7 @@ const CardWrapper = styled.div`
 `;
 
 const DeleteIcon = styled.span`
-  color: red;
+  color: var(--signal);
   font-size: 1.3rem;
   position: absolute;
   top: 1rem;
