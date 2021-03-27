@@ -5,6 +5,7 @@ import { v4 as uuid4 } from 'uuid';
 import EntryCard from '../components/EntryCard';
 import { isValidEntry } from '../lib/validateFunctions';
 import NoteTagsList from '../components/NoteTagsList';
+import { StarIconFilled } from '../icons/StarIconFilled';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
 export default function Details({ member, updateMember, members }) {
@@ -135,8 +136,15 @@ export default function Details({ member, updateMember, members }) {
         </DetailsHeadline>
         <DetailsGroup>{newMember.group}</DetailsGroup>
         <p>{newMember.description}</p>
-        {savedNotes.length >= 1 &&
-          savedNotes.map((note) => <SavedNote>{note.noteTag}</SavedNote>)}
+        <SavedNoteWrapper>
+          {savedNotes.length >= 1 &&
+            savedNotes.map((note) => (
+              <SavedNote>
+                <StarFilledStyled />
+                <Note>{note.noteTag}</Note>
+              </SavedNote>
+            ))}
+        </SavedNoteWrapper>
       </DetailsHeader>
       <FormStyled>
         <h3 onClick={unfoldForm}>
@@ -249,6 +257,30 @@ const Input = styled.input`
   width: 100%;
 `;
 
+const Note = styled.span`
+  padding-left: 1.5rem;
+`;
+
+const StarFilledStyled = styled(StarIconFilled)`
+  color: var(--primary);
+  height: 1.1rem;
+  width: auto;
+  position: absolute;
+  top: 5px;
+`;
+
+const SavedNote = styled.span`
+  border: solid #a8a8a8 1px;
+  border-radius: 5px;
+  margin: 0 0.4rem 0.4rem 0;
+  padding: 0.5rem;
+  position: relative;
+`;
+
+const SavedNoteWrapper = styled.div`
+  margin: 1.5rem 0rem 0.8rem 0;
+`;
+
 const UnfoldIconStyled = styled(UnfoldIcon)`
   color: var(--primary);
   transform: scale(0.8);
@@ -257,10 +289,4 @@ const UnfoldIconStyled = styled(UnfoldIcon)`
 const FoldIconStyled = styled(UnfoldIcon)`
   color: var(--primary);
   transform: scale(0.8) rotate(180deg);
-`;
-
-const SavedNote = styled.span`
-  border: 1px solid black;
-  padding: 0.5rem;
-  margin: 0.3rem;
 `;

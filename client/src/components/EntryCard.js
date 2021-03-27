@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { StarIconEmpty } from '../icons/StarIconEmpty';
+import { StarIconFilled } from '../icons/StarIconFilled';
 
 export default function EntryCard({ entry, onDeleteEntry, onToggleNote }) {
   return (
@@ -10,7 +11,7 @@ export default function EntryCard({ entry, onDeleteEntry, onToggleNote }) {
       </Headline>
       {entry.remember.map((note) => (
         <NoteTag onClick={() => onToggleNote(note, entry)} key={note.id}>
-          <StarEmptyStyled />
+          {note.isSaved ? <StarFilledStyled /> : <StarEmptyStyled />}
           <Note>{note.noteTag}</Note>
         </NoteTag>
       ))}
@@ -50,6 +51,14 @@ const Note = styled.span`
 `;
 
 const StarEmptyStyled = styled(StarIconEmpty)`
+  color: var(--primary);
+  height: 1.1rem;
+  width: auto;
+  position: absolute;
+  top: 5px;
+`;
+
+const StarFilledStyled = styled(StarIconFilled)`
   color: var(--primary);
   height: 1.1rem;
   width: auto;
