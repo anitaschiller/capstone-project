@@ -2,7 +2,7 @@ This is the documentation of the app's header. If you would like to see the plan
 
 ```jsx
 import React from 'react';
-//import styled from 'styled-components';
+import styled from 'styled-components';
 
 <Header isStatic />;
 ```

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 
 export default function DeletionModal({ denyDeletion, confirmDeletion }) {
@@ -41,3 +42,8 @@ const DenyButton = styled.button`
 const ConfirmButton = styled(DenyButton)`
   color: var(--signal);
 `;
+
+DeletionModal.propTypes = {
+  denyDeletion: PropTypes.func,
+  confirmDeletion: PropTypes.func,
+};

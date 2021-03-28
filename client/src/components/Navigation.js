@@ -1,5 +1,6 @@
-import styled from 'styled-components/macro';
 import { NavLink } from 'react-router-dom';
+import styled from 'styled-components/macro';
+
 import { AddIcon } from '../icons/AddIcon';
 import { HomeIcon } from '../icons/HomeIcon';
 

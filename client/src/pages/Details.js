@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
@@ -274,3 +275,9 @@ const FoldIconStyled = styled(UnfoldIcon)`
   color: var(--primary);
   transform: scale(0.8) rotate(180deg);
 `;
+
+Details.propTypes = {
+  member: PropTypes.object,
+  updateMember: PropTypes.func,
+  members: PropTypes.array,
+};

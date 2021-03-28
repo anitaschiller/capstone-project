@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Member from '../components/Member';
 
 export default function Home({ members, onOpenModal }) {
@@ -26,3 +27,8 @@ export default function Home({ members, onOpenModal }) {
     </>
   );
 }
+
+Home.propTypes = {
+  members: PropTypes.array,
+  onOpenModal: PropTypes.func,
+};

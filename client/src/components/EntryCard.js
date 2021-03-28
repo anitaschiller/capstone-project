@@ -1,4 +1,6 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
+
 import { StarIconEmpty } from '../icons/StarIconEmpty';
 import { StarIconFilled } from '../icons/StarIconFilled';
 
@@ -73,3 +75,9 @@ const NoteTag = styled.span`
   padding: 0.5rem;
   position: relative;
 `;
+
+EntryCard.propTypes = {
+  entry: PropTypes.object,
+  onDeleteEntry: PropTypes.func,
+  onToggleNote: PropTypes.func,
+};

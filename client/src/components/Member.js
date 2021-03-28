@@ -1,4 +1,5 @@
 import { Link, useRouteMatch } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 
 import { EditIcon } from '../icons/EditIcon';
@@ -58,3 +59,8 @@ const DeleteIconStyled = styled(DeleteIcon)`
   right: 1rem;
   bottom: 0.8rem;
 `;
+
+Member.propTypes = {
+  member: PropTypes.object,
+  onOpenModal: PropTypes.func,
+};

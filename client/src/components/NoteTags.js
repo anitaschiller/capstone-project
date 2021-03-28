@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { useState } from 'react';
 
@@ -64,3 +65,10 @@ const TagInput = styled.input`
   outline: none;
   height: 1.7rem;
 `;
+
+NoteTags.propTypes = {
+  onCreateTag: PropTypes.func,
+  tags: PropTypes.array,
+  setTags: PropTypes.func,
+  onDeleteTag: PropTypes.func,
+};
