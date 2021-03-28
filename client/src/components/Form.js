@@ -148,7 +148,7 @@ const FormStyled = styled.form`
 `;
 
 const Success = styled.span`
-  border: 1px solid black;
+  border: 1px solid #000000;
   padding: 0.5rem;
 `;
 

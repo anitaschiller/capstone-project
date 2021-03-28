@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { useState } from 'react';
 
 export default function NoteTags({ onCreateTag, tags, setTags, onDeleteTag }) {
@@ -14,7 +14,7 @@ export default function NoteTags({ onCreateTag, tags, setTags, onDeleteTag }) {
       const memberTags = [...tags, tagValue];
       setTags(memberTags);
       onCreateTag(tagValue);
-      setTagValue([]);
+      setTagValue('');
     }
   }
 
@@ -28,6 +28,7 @@ export default function NoteTags({ onCreateTag, tags, setTags, onDeleteTag }) {
           </Tag>
         ))}
         <TagInput
+          id="remember"
           type="text"
           name="remember"
           value={tagValue}
@@ -44,8 +45,8 @@ const TagsWrapper = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
 
-  background: white;
-  border: 1px solid #a8a8a8;
+  background: var(--white);
+  border: 1px solid var(--grey);
   border-radius: 5px;
   height: fit-content;
   margin: 0.5rem 0;
@@ -53,7 +54,7 @@ const TagsWrapper = styled.div`
 
 const Tag = styled.span`
   background: var(--secondary);
-  color: white;
+  color: var(--white);
   margin: 0.1rem;
   padding: 0.3rem;
 `;

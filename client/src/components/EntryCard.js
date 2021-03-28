@@ -1,18 +1,18 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { StarIconEmpty } from '../icons/StarIconEmpty';
 import { StarIconFilled } from '../icons/StarIconFilled';
 
 export default function EntryCard({ entry, onDeleteEntry, onToggleNote }) {
   return (
     <CardWrapper>
-      <DeleteIcon onClick={() => onDeleteEntry(entry.id)}>x</DeleteIcon>
+      <DeleteIcon onClick={() => onDeleteEntry(entry.id)}>&times;</DeleteIcon>
       <Headline>
         {entry.date} · {entry.title}
       </Headline>
       {entry.remember.map((note) => (
         <NoteTag onClick={() => onToggleNote(note)} key={note.id}>
           {note.isSaved ? <StarFilledStyled /> : <StarEmptyStyled />}
-          <Note>{note.noteTag}</Note>
+          <Note>{note.noteContent}</Note>
         </NoteTag>
       ))}
     </CardWrapper>
@@ -67,7 +67,7 @@ const StarFilledStyled = styled(StarIconFilled)`
 `;
 
 const NoteTag = styled.span`
-  border: solid #a8a8a8 1px;
+  border: solid var(--grey) 1px;
   border-radius: 5px;
   margin: 0 0.4rem 0.4rem 0;
   padding: 0.5rem;

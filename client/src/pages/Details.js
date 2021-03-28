@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
 
@@ -27,19 +27,9 @@ export default function Details({ member, updateMember, members }) {
 
   function findSavedNotes() {
     if (newMember.entries) {
-      const entryRemember = newMember.entries.map((entry) => entry.remember);
-      const allNotes = [];
-
-      entryRemember.map((entry) =>
-        entry.forEach((note) => {
-          allNotes.push(note);
-        })
-      );
-
-      const currentlySavedNotes = allNotes.filter(
-        (note) => note.isSaved === true
-      );
-      return currentlySavedNotes;
+      return newMember.entries
+        .flatMap((entry) => entry.remember)
+        .filter((note) => note.isSaved);
     }
   }
 
@@ -84,11 +74,11 @@ export default function Details({ member, updateMember, members }) {
     updateMember(updatedMember);
   }
 
-  function addTag(noteTag) {
-    const newNoteTag = { noteTag, isSaved: false, id: uuid4() };
+  function addTag(note) {
+    const newNote = { noteContent: note, isSaved: false, id: uuid4() };
     setEntry({
       ...entry,
-      remember: [...entry.remember, newNoteTag],
+      remember: [...entry.remember, newNote],
     });
   }
 
@@ -102,7 +92,7 @@ export default function Details({ member, updateMember, members }) {
 
     entryRemember.map((entry) =>
       entry.forEach((note) => {
-        if (note.noteTag === noteToToggle.noteTag) {
+        if (note.noteContent === noteToToggle.noteContent) {
           note.isSaved = !note.isSaved;
         }
         return note;
@@ -113,18 +103,10 @@ export default function Details({ member, updateMember, members }) {
   }
 
   function filterSavedNotes() {
-    const entryRemember = newMember.entries.map((entry) => entry.remember);
-    const allNotes = [];
+    const currentlySavedNotes = newMember.entries
+      .flatMap((entry) => entry.remember)
+      .filter((note) => note.isSaved);
 
-    entryRemember.map((entry) =>
-      entry.forEach((note) => {
-        allNotes.push(note);
-      })
-    );
-
-    const currentlySavedNotes = allNotes.filter(
-      (note) => note.isSaved === true
-    );
     setSavedNotes(currentlySavedNotes);
     return currentlySavedNotes;
   }
@@ -138,13 +120,12 @@ export default function Details({ member, updateMember, members }) {
         <DetailsGroup>{newMember.group}</DetailsGroup>
         <p>{newMember.description}</p>
         <SavedNoteWrapper>
-          {savedNotes.length >= 1 &&
-            savedNotes.map((note) => (
-              <SavedNote onClick={() => toggleNote(note)}>
-                <StarFilledStyled />
-                <Note>{note.noteTag}</Note>
-              </SavedNote>
-            ))}
+          {savedNotes.map((note) => (
+            <SavedNote onClick={() => toggleNote(note)}>
+              <StarFilledStyled />
+              <Note>{note.noteContent}</Note>
+            </SavedNote>
+          ))}
         </SavedNoteWrapper>
       </DetailsHeader>
       <FormStyled>
@@ -155,6 +136,7 @@ export default function Details({ member, updateMember, members }) {
           <>
             <label htmlFor="date">Date</label>
             <Input
+              id="date"
               type="text"
               name="date"
               value={entry.date}
@@ -162,6 +144,7 @@ export default function Details({ member, updateMember, members }) {
             />
             <label htmlFor="title">Title</label>
             <Input
+              id="title"
               type="text"
               name="title"
               value={entry.title}
@@ -250,7 +233,7 @@ const FormStyled = styled.form`
 `;
 
 const Input = styled.input`
-  border: #a8a8a8 solid 1px;
+  border: var(--grey) solid 1px;
   border-radius: 5px;
   height: 1.8rem;
   margin: 0.5rem 0;
@@ -271,7 +254,7 @@ const StarFilledStyled = styled(StarIconFilled)`
 `;
 
 const SavedNote = styled.span`
-  border: solid #a8a8a8 1px;
+  border: solid var(--grey) 1px;
   border-radius: 5px;
   margin: 0 0.4rem 0.4rem 0;
   padding: 0.5rem;
@@ -279,7 +262,7 @@ const SavedNote = styled.span`
 `;
 
 const SavedNoteWrapper = styled.div`
-  margin: 1.5rem 0rem 0.8rem 0;
+  margin: 1.5rem 0 0.8rem 0;
 `;
 
 const UnfoldIconStyled = styled(UnfoldIcon)`

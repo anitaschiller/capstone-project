@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import logo from '../assets/remember-logo.png';
 
 export default function Header({ isStatic }) {
