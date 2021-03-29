@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
 import Form from '../components/Form';
 
-export default function Add({ submitFunction }) {
+export default function Add({ submitFunction, availableGroups, addGroup }) {
   return (
     <>
       <h2>Add</h2>
-      <Form submitFunction={submitFunction} />
+      <Form
+        submitFunction={submitFunction}
+        availableGroups={availableGroups}
+        addGroup={addGroup}
+      />
     </>
   );
 }

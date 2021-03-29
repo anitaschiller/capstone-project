@@ -2,9 +2,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { useState } from 'react';
 
+import ErrorMessage from '../components/ErrorMessage';
 import { isValidMember } from '../lib/validateFunctions';
+import NewGroup from '../components/NewGroup';
 
-export default function Form({ submitFunction }) {
+export default function Form({ submitFunction, availableGroups, addGroup }) {
   const initialMember = {
     firstName: '',
     lastName: '',
@@ -67,34 +69,31 @@ export default function Form({ submitFunction }) {
       </div>
       <div>
         <label htmlFor="group">Group*:</label>
-        <select
-          name="group"
-          id="group"
-          value={member.group}
-          onChange={handleChange}
-        >
-          <option>Please select...</option>
-          <option>Neue Fische</option>
-          <option>ABC congress</option>
-          <option>Partner company A</option>
-        </select>
+        <div>
+          <select
+            name="group"
+            id="group"
+            value={member.group}
+            onChange={handleChange}
+          >
+            <option>Please select...</option>
+            {availableGroups.map((group) => (
+              <option>{group}</option>
+            ))}
+          </select>
+          <NewGroup addGroup={addGroup} />
+        </div>
       </div>
 
       {wasSuccessful && <Success>Member successfully added!</Success>}
 
-      {isError && <Error>Please fill in all required fields!</Error>}
+      {isError && <ErrorMessage text="Please fill in all required fields!" />}
       <div>
         <button onClick={submitHandler}>SAVE</button>
       </div>
     </FormStyled>
   );
 }
-
-const Error = styled.span`
-  border: 1px solid var(--signal);
-  color: var(--signal);
-  padding: 0.5rem;
-`;
 
 const FormStyled = styled.form`
   display: grid;
@@ -131,7 +130,7 @@ const FormStyled = styled.form`
     border-radius: 5px;
     height: 1.5rem;
     margin: 0.5rem 0;
-    width: 100%;
+    width: 88%;
   }
 
   span {

@@ -15,10 +15,19 @@ function App() {
   const [members, setMembers] = useState(loadFromLocal('members') ?? []);
   const [isShown, setIsShown] = useState(false);
   const [remainingMembers, setRemainingMembers] = useState(members);
+  const [availableGroups, setAvailableGroups] = useState(
+    loadFromLocal('groups') ?? []
+  );
+  const [canDeleteGroup, setCanDeleteGroup] = useState(true);
+  console.log(availableGroups);
 
   useEffect(() => {
     saveToLocal('members', members);
   }, [members]);
+
+  useEffect(() => {
+    saveToLocal('groups', availableGroups);
+  }, [availableGroups]);
 
   const location = useLocation();
   const member = location?.state?.member ?? null;
@@ -56,16 +65,45 @@ function App() {
     }
   }
 
+  function addGroup(groupToAdd) {
+    setAvailableGroups([...availableGroups, groupToAdd]);
+  }
+
+  function deleteGroup(groupToDelete) {
+    const groupMembers = members.filter(
+      (member) => member.group === groupToDelete
+    );
+    console.log('groupMembers', groupMembers);
+    if (groupMembers.length === 0) {
+      const remainingGroups = availableGroups.filter(
+        (group) => group !== groupToDelete
+      );
+      setAvailableGroups(remainingGroups);
+    } else {
+      setCanDeleteGroup(false);
+    }
+  }
+
   return (
     <Wrapper>
       <Header />
       <main>
         <Switch>
           <Route exact path="/">
-            <Home members={members} onOpenModal={openModal} />
+            <Home
+              members={members}
+              onOpenModal={openModal}
+              availableGroups={availableGroups}
+              deleteGroup={deleteGroup}
+              canDeleteGroup={canDeleteGroup}
+            />
           </Route>
           <Route path="/add">
-            <Add submitFunction={addMember} />
+            <Add
+              submitFunction={addMember}
+              availableGroups={availableGroups}
+              addGroup={addGroup}
+            />
           </Route>
           <Route>
             <Details updateMember={updateMember} member={findCurrentMember()} />

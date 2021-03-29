@@ -18,9 +18,9 @@ export const PlusIcon = ({ className }) => (
       dataName="Pfad 5"
       d="M40.332,21.451A18.667,18.667,0,0,1,3,21.451a18.667,18.667,0,0,1,37.332,0Z"
       stroke="#fff4f4"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="3"
     ></path>
     <path
       fill="currentColor"
