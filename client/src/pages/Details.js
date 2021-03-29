@@ -21,7 +21,7 @@ export default function Details({ updateMember, member }) {
   const [isError, setIsError] = useState(false);
   const [isUnfolded, setIsUnfolded] = useState(false);
   const [tags, setTags] = useState([]);
-  const savedNotes = findSavedNotes();
+  const savedNotes = findSavedNotes() ?? [];
 
   function findSavedNotes() {
     if (member.entries) {
@@ -96,17 +96,7 @@ export default function Details({ updateMember, member }) {
       })
     );
     updateMemberEntries(member.entries);
-    /*    filterSavedNotes(); */
   }
-
-  /* function filterSavedNotes() {
-    const currentlySavedNotes = member.entries
-      .flatMap((entry) => entry.remember)
-      .filter((note) => note.isSaved);
-
-    setSavedNotes(currentlySavedNotes);
-    return currentlySavedNotes;
-  } */
 
   return (
     <>
@@ -259,7 +249,12 @@ const SavedNote = styled.span`
 `;
 
 const SavedNoteWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
   margin: 1.5rem 0 0.8rem 0;
+  height: fit-content;
 `;
 
 const UnfoldIconStyled = styled(UnfoldIcon)`

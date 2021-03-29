@@ -4,10 +4,10 @@ import styled from 'styled-components/macro';
 import { AddIcon } from '../icons/AddIcon';
 import { HomeIcon } from '../icons/HomeIcon';
 
-export default function Navigation() {
+export default function Navigation({ isStatic }) {
   return (
     <footer>
-      <Nav>
+      <Nav isStatic={isStatic}>
         <NavLinkStyled exact to="/">
           <HomeIconStyled />
         </NavLinkStyled>
@@ -24,7 +24,7 @@ const Nav = styled.nav`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  position: fixed;
+  position: ${(props) => (props.isStatic ? 'static' : 'fixed')};
   bottom: 0;
   right: 0;
   left: 0;

@@ -1,9 +1,13 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 
-export default function DeletionModal({ denyDeletion, confirmDeletion }) {
+export default function DeletionModal({
+  isStatic,
+  denyDeletion,
+  confirmDeletion,
+}) {
   return (
-    <ModalWrapper>
+    <ModalWrapper isStatic={isStatic}>
       <Message>Are you sure you want to delete this entry?</Message>
       <DenyButton onClick={denyDeletion}>Cancel</DenyButton>
       <ConfirmButton onClick={confirmDeletion}>Delete</ConfirmButton>
@@ -18,7 +22,7 @@ const ModalWrapper = styled.div`
   gap: 0.3rem;
   justify-content: space-around;
 
-  position: absolute;
+  position: ${(props) => (props.isStatic ? 'static' : 'absolute')};
   bottom: 4rem;
   right: 1rem;
   left: 1rem;
