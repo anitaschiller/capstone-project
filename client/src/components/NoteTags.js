@@ -12,8 +12,6 @@ export default function NoteTags({ onCreateTag, tags, setTags, onDeleteTag }) {
   function handleKeyDown(event) {
     if (event.key === 'Enter') {
       event.preventDefault();
-      const memberTags = [...tags, tagValue];
-      setTags(memberTags);
       onCreateTag(tagValue);
       setTagValue('');
     }

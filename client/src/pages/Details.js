@@ -71,8 +71,11 @@ export default function Details({ updateMember, member }) {
     updateMember(updatedMember);
   }
 
-  function addTag(note) {
-    const newNote = { noteContent: note, isSaved: false, id: uuid4() };
+  function addTag(tagValue) {
+    const memberTags = [...tags, tagValue];
+    setTags(memberTags);
+
+    const newNote = { noteContent: tagValue, isSaved: false, id: uuid4() };
     setEntry({
       ...entry,
       remember: [...entry.remember, newNote],
