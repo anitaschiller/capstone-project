@@ -9,26 +9,23 @@ import NoteTags from '../components/NoteTags';
 import { StarIconFilled } from '../icons/StarIconFilled';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
-export default function Details({ member, updateMember, members }) {
+export default function Details({ updateMember, member }) {
   const initialEntry = {
     date: '',
     title: '',
     remember: [],
   };
 
-  const [newMember, setNewMember] = useState(
-    members.find((newMember) => newMember.id === member.id)
-  );
   const [entry, setEntry] = useState(initialEntry);
-  const [entries, setEntries] = useState(newMember.entries ?? []);
+  const [entries, setEntries] = useState(member.entries ?? []);
   const [isError, setIsError] = useState(false);
   const [isUnfolded, setIsUnfolded] = useState(false);
   const [tags, setTags] = useState([]);
-  const [savedNotes, setSavedNotes] = useState(findSavedNotes() ?? []);
+  const savedNotes = findSavedNotes();
 
   function findSavedNotes() {
-    if (newMember.entries) {
-      return newMember.entries
+    if (member.entries) {
+      return member.entries
         .flatMap((entry) => entry.remember)
         .filter((note) => note.isSaved);
     }
@@ -62,7 +59,7 @@ export default function Details({ member, updateMember, members }) {
   }
 
   function deleteEntry(idToDelete) {
-    const remainingEntries = newMember.entries.filter(
+    const remainingEntries = member.entries.filter(
       (entry) => entry.id !== idToDelete
     );
     setEntries(remainingEntries);
@@ -70,8 +67,7 @@ export default function Details({ member, updateMember, members }) {
   }
 
   function updateMemberEntries(updatedEntries) {
-    const updatedMember = { ...newMember, entries: updatedEntries };
-    setNewMember(updatedMember);
+    const updatedMember = { ...member, entries: updatedEntries };
     updateMember(updatedMember);
   }
 
@@ -89,7 +85,7 @@ export default function Details({ member, updateMember, members }) {
   }
 
   function toggleNote(noteToToggle) {
-    const entryRemember = newMember.entries.map((entry) => entry.remember);
+    const entryRemember = member.entries.map((entry) => entry.remember);
 
     entryRemember.map((entry) =>
       entry.forEach((note) => {
@@ -99,27 +95,27 @@ export default function Details({ member, updateMember, members }) {
         return note;
       })
     );
-    updateMemberEntries(newMember.entries);
-    filterSavedNotes();
+    updateMemberEntries(member.entries);
+    /*    filterSavedNotes(); */
   }
 
-  function filterSavedNotes() {
-    const currentlySavedNotes = newMember.entries
+  /* function filterSavedNotes() {
+    const currentlySavedNotes = member.entries
       .flatMap((entry) => entry.remember)
       .filter((note) => note.isSaved);
 
     setSavedNotes(currentlySavedNotes);
     return currentlySavedNotes;
-  }
+  } */
 
   return (
     <>
       <DetailsHeader>
         <DetailsHeadline>
-          {newMember.firstName} {newMember.lastName}
+          {member.firstName} {member.lastName}
         </DetailsHeadline>
-        <DetailsGroup>{newMember.group}</DetailsGroup>
-        <p>{newMember.description}</p>
+        <DetailsGroup>{member.group}</DetailsGroup>
+        <p>{member.description}</p>
         <SavedNoteWrapper>
           {savedNotes.map((note) => (
             <SavedNote onClick={() => toggleNote(note)}>
@@ -166,8 +162,8 @@ export default function Details({ member, updateMember, members }) {
         )}
       </FormStyled>
       <CardContainer>
-        {newMember.entries &&
-          newMember.entries.map((entry) => (
+        {member.entries &&
+          member.entries.map((entry) => (
             <EntryCard
               entry={entry}
               onDeleteEntry={deleteEntry}
