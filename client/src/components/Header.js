@@ -1,4 +1,6 @@
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import styled from 'styled-components/macro';
+
 import logo from '../assets/remember-logo.png';
 
 export default function Header({ isStatic }) {
@@ -26,3 +28,7 @@ const Logo = styled.img`
   padding: 1rem;
   width: 12rem;
 `;
+
+Header.propTypes = {
+  isStatic: PropTypes.bool,
+};

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Form from '../components/Form';
 
 export default function Add({ submitFunction }) {
@@ -8,3 +9,7 @@ export default function Add({ submitFunction }) {
     </>
   );
 }
+
+Add.propTypes = {
+  submitFunction: PropTypes.func,
+};

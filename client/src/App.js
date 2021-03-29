@@ -50,6 +50,12 @@ function App() {
     setIsShown(false);
   }
 
+  function findCurrentMember() {
+    if (member) {
+      return members.find((memberToWorkOn) => memberToWorkOn.id === member.id);
+    }
+  }
+
   return (
     <Wrapper>
       <Header />
@@ -62,11 +68,7 @@ function App() {
             <Add submitFunction={addMember} />
           </Route>
           <Route>
-            <Details
-              member={member}
-              updateMember={updateMember}
-              members={members}
-            />
+            <Details updateMember={updateMember} member={findCurrentMember()} />
           </Route>
         </Switch>
       </main>

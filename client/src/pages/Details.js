@@ -1,26 +1,39 @@
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import styled from 'styled-components/macro';
 import { useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
-import { isValidEntry } from '../lib/validateFunctions';
 
 import EntryCard from '../components/EntryCard';
+import { isValidEntry } from '../lib/validateFunctions';
+import NoteTags from '../components/NoteTags';
+import { StarIconFilled } from '../icons/StarIconFilled';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
-export default function Details({ member, updateMember, members }) {
+export default function Details({ updateMember, member }) {
   const initialEntry = {
     date: '',
     title: '',
-    remember: '',
+    remember: [],
   };
 
-  const [newMember, setNewMember] = useState(
-    members.find((newMember) => newMember.id === member.id)
-  );
-
   const [entry, setEntry] = useState(initialEntry);
-  const [entries, setEntries] = useState(newMember.entries ?? []);
+  const [entries, setEntries] = useState(member.entries ?? []);
   const [isError, setIsError] = useState(false);
   const [isUnfolded, setIsUnfolded] = useState(false);
+  const [tags, setTags] = useState([]);
+  const savedNotes = findSavedNotes() ?? [];
+
+  function findSavedNotes() {
+    if (member.entries) {
+      return member.entries
+        .flatMap((entry) => entry.remember)
+        .filter((note) => note.isSaved);
+    }
+  }
+
+  function unfoldForm() {
+    setIsUnfolded(!isUnfolded);
+  }
 
   function changeHandler(event) {
     const field = event.target;
@@ -32,44 +45,78 @@ export default function Details({ member, updateMember, members }) {
     event.preventDefault();
 
     if (isValidEntry(entry)) {
-      //Add valid entry to entries array and set entry to initial state afterwards
       const newEntry = { ...entry, id: uuid4() };
       const memberEntries = [...entries, newEntry];
       setEntries(memberEntries);
-      setEntry(initialEntry);
 
-      //Update the newMember with the new entries and send the updatedMember to App.js
-      const updatedMember = { ...newMember, entries: memberEntries };
-      setNewMember(updatedMember);
-      updateMember(updatedMember);
+      setEntry(initialEntry);
+      setTags([]);
+
+      updateMemberEntries(memberEntries);
     } else {
       setIsError(true);
     }
   }
 
-  function unfoldForm() {
-    setIsUnfolded(!isUnfolded);
-  }
-
   function deleteEntry(idToDelete) {
-    const remainingEntries = newMember.entries.filter(
+    const remainingEntries = member.entries.filter(
       (entry) => entry.id !== idToDelete
     );
     setEntries(remainingEntries);
+    updateMemberEntries(remainingEntries);
+  }
 
-    const updatedMember = { ...newMember, entries: remainingEntries };
-    setNewMember(updatedMember);
+  function updateMemberEntries(updatedEntries) {
+    const updatedMember = { ...member, entries: updatedEntries };
     updateMember(updatedMember);
+  }
+
+  function addTag(tagValue) {
+    const memberTags = [...tags, tagValue];
+    setTags(memberTags);
+
+    const newNote = { noteContent: tagValue, isSaved: false, id: uuid4() };
+    setEntry({
+      ...entry,
+      remember: [...entry.remember, newNote],
+    });
+  }
+
+  function deleteTag(tagToDelete) {
+    const remainingTags = tags.filter((tag) => tag !== tagToDelete);
+    setTags(remainingTags);
+  }
+
+  function toggleNote(noteToToggle) {
+    const entryRemember = member.entries.map((entry) => entry.remember);
+
+    entryRemember.map((entry) =>
+      entry.forEach((note) => {
+        if (note.noteContent === noteToToggle.noteContent) {
+          note.isSaved = !note.isSaved;
+        }
+        return note;
+      })
+    );
+    updateMemberEntries(member.entries);
   }
 
   return (
     <>
       <DetailsHeader>
         <DetailsHeadline>
-          {newMember.firstName} {newMember.lastName}
+          {member.firstName} {member.lastName}
         </DetailsHeadline>
-        <DetailsGroup>{newMember.group}</DetailsGroup>
-        <p>{newMember.description}</p>
+        <DetailsGroup>{member.group}</DetailsGroup>
+        <p>{member.description}</p>
+        <SavedNoteWrapper>
+          {savedNotes.map((note) => (
+            <SavedNote onClick={() => toggleNote(note)}>
+              <StarFilledStyled />
+              <Note>{note.noteContent}</Note>
+            </SavedNote>
+          ))}
+        </SavedNoteWrapper>
       </DetailsHeader>
       <FormStyled>
         <h3 onClick={unfoldForm}>
@@ -78,25 +125,27 @@ export default function Details({ member, updateMember, members }) {
         {isUnfolded && (
           <>
             <label htmlFor="date">Date</label>
-            <input
+            <Input
+              id="date"
               type="text"
               name="date"
               value={entry.date}
               onChange={changeHandler}
             />
             <label htmlFor="title">Title</label>
-            <input
+            <Input
+              id="title"
               type="text"
               name="title"
               value={entry.title}
               onChange={changeHandler}
             />
-            <label htmlFor="remember">Remember</label>
-            <input
-              type="text"
-              name="remember"
-              value={entry.remember}
-              onChange={changeHandler}
+            <NoteTags
+              entry={entry}
+              onCreateTag={addTag}
+              tags={tags}
+              setTags={setTags}
+              onDeleteTag={deleteTag}
             />
             <button onClick={submitHandler}>SAVE</button>
           </>
@@ -106,12 +155,13 @@ export default function Details({ member, updateMember, members }) {
         )}
       </FormStyled>
       <CardContainer>
-        {newMember.entries &&
-          newMember.entries.map((entry) => (
+        {member.entries &&
+          member.entries.map((entry) => (
             <EntryCard
               entry={entry}
               onDeleteEntry={deleteEntry}
               key={entry.id}
+              onToggleNote={toggleNote}
             />
           ))}
       </CardContainer>
@@ -166,18 +216,48 @@ const FormStyled = styled.form`
     width: 100%;
   }
 
-  input {
-    border: var(--grey) solid 1px;
-    border-radius: 5px;
-    height: 1.5rem;
-    margin: 0.5rem 0;
-    width: 100%;
-  }
-
   label {
     color: var(--grey);
     font-size: small;
   }
+`;
+
+const Input = styled.input`
+  border: var(--grey) solid 1px;
+  border-radius: 5px;
+  height: 1.8rem;
+  margin: 0.5rem 0;
+  outline: none;
+  width: 100%;
+`;
+
+const Note = styled.span`
+  padding-left: 1.5rem;
+`;
+
+const StarFilledStyled = styled(StarIconFilled)`
+  color: var(--primary);
+  height: 1.1rem;
+  width: auto;
+  position: absolute;
+  top: 5px;
+`;
+
+const SavedNote = styled.span`
+  border: solid var(--grey) 1px;
+  border-radius: 5px;
+  margin: 0 0.4rem 0.4rem 0;
+  padding: 0.5rem;
+  position: relative;
+`;
+
+const SavedNoteWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  margin: 1.5rem 0 0.8rem 0;
+  height: fit-content;
 `;
 
 const UnfoldIconStyled = styled(UnfoldIcon)`
@@ -189,3 +269,9 @@ const FoldIconStyled = styled(UnfoldIcon)`
   color: var(--primary);
   transform: scale(0.8) rotate(180deg);
 `;
+
+Details.propTypes = {
+  member: PropTypes.object,
+  updateMember: PropTypes.func,
+  members: PropTypes.array,
+};
