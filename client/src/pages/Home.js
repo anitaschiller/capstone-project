@@ -3,6 +3,7 @@ import styled from 'styled-components/macro';
 import { useState } from 'react';
 
 import ErrorMessage from '../components/ErrorMessage';
+import { FilterDeleteIcon } from '../icons/FilterDeleteIcon';
 import Member from '../components/Member';
 import Searchbar from '../components/Searchbar';
 
@@ -31,10 +32,16 @@ export default function Home({
   }
 
   function filterGroups(event) {
-    const searchedGroup = availableGroups.filter(
-      (group) => group === event.target.value
-    );
-    setRenderedGroups(searchedGroup);
+    setGroupValue(event.target.value);
+    event.preventDefault();
+    if (event.target.value === 'Please select...') {
+      setRenderedGroups(availableGroups);
+    } else {
+      const searchedGroup = availableGroups.filter(
+        (group) => group === event.target.value
+      );
+      setRenderedGroups(searchedGroup);
+    }
   }
 
   function findMember(searchValue) {
@@ -49,7 +56,7 @@ export default function Home({
         if (
           memberFirstName.includes(currentSearchValue) ||
           memberLastName.includes(currentSearchValue) ||
-          memberLastName.includes(currentSearchValue)
+          memberDescription.includes(currentSearchValue)
         ) {
           return member;
         }
@@ -57,8 +64,11 @@ export default function Home({
 
       const fittingMembersGroups = fittingMembers.map((member) => member.group);
 
+      const uniqueFittingMembersGroups = [...new Set(fittingMembersGroups)];
+      console.log('uniquefittingMembersGroups', uniqueFittingMembersGroups);
+
       setRenderedMembers(fittingMembers);
-      setRenderedGroups(fittingMembersGroups);
+      setRenderedGroups(uniqueFittingMembersGroups);
     } else {
       setRenderedMembers(orderedMembers);
       setRenderedGroups(availableGroups);
@@ -68,15 +78,18 @@ export default function Home({
   return (
     <>
       <h2>Home</h2>
-      <Searchbar findMember={findMember} />
-      <label>Filter group:</label>
-      <select value={groupValue} onChange={filterGroups}>
-        <option>Please select...</option>
-        {availableGroups.map((group) => (
-          <option>{group}</option>
-        ))}
-      </select>
-      <span onClick={() => setRenderedGroups(availableGroups)}>&times;</span>
+      <FilterSection>
+        <Searchbar findMember={findMember} />
+        <label>Filter group:</label>
+        <select value={groupValue} onChange={filterGroups}>
+          <option>Please select...</option>
+          {availableGroups.map((group) => (
+            <option>{group}</option>
+          ))}
+        </select>
+        <FilterDeleteStyled />
+      </FilterSection>
+      {/* <span onClick={() => setRenderedGroups(availableGroups)}>&times;</span> */}
       {renderedGroups.map((group) => (
         <GroupWrapper>
           <GroupHeadline>
@@ -100,6 +113,19 @@ export default function Home({
     </>
   );
 }
+
+const FilterDeleteStyled = styled(FilterDeleteIcon)`
+  color: var(--grey);
+  transform: scale(0.7);
+
+  position: absolute;
+  top: 0;
+  right: 0;
+`;
+
+const FilterSection = styled.section`
+  position: relative;
+`;
 
 const GroupWrapper = styled.div`
   display: flex;

@@ -12,7 +12,7 @@ export default function Searchbar({ findMember }) {
   return (
     <form>
       <label htmlFor="searchbar">
-        <span>Search a person</span>
+        <span>Search person: </span>
       </label>
       <input
         type="text"
