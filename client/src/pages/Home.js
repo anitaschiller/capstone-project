@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
+import { useState } from 'react';
 
 import ErrorMessage from '../components/ErrorMessage';
 import Member from '../components/Member';
@@ -12,6 +13,9 @@ export default function Home({
   canDeleteGroup,
 }) {
   const orderedMembers = members.slice().sort(compareFirstName);
+  const [groupValue, setGroupValue] = useState('');
+  console.log('groupValue', groupValue);
+  const [renderedGroups, setRenderedGroups] = useState(availableGroups ?? []);
 
   function compareFirstName(a, b) {
     if (a.firstName === b.firstName) {
@@ -23,10 +27,25 @@ export default function Home({
     }
   }
 
+  function filterGroups(event) {
+    const searchedGroup = availableGroups.filter(
+      (group) => group === event.target.value
+    );
+    setRenderedGroups(searchedGroup);
+  }
+
   return (
     <>
       <h2>Home</h2>
-      {availableGroups.map((group) => (
+      <label>Filter group:</label>
+      <select value={groupValue} onChange={filterGroups}>
+        <option>Please select...</option>
+        {availableGroups.map((group) => (
+          <option>{group}</option>
+        ))}
+      </select>
+      <span onClick={() => setRenderedGroups(availableGroups)}>&times;</span>
+      {renderedGroups.map((group) => (
         <GroupWrapper>
           <GroupHeadline>
             {group}

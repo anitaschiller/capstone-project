@@ -19,8 +19,7 @@ export default function NewGroup({ addGroup }) {
       </span>
 
       {isUnfolded && (
-        <StyledForm>
-          {/*   <label>Add a new group:</label> */}
+        <InputWrapper>
           <input
             type="text"
             name="new-group"
@@ -28,8 +27,8 @@ export default function NewGroup({ addGroup }) {
             value={groupValue}
             onChange={(event) => setGroupValue(event.target.value)}
           />
-          <button onClick={submitHandler}>ADD</button>
-        </StyledForm>
+          <GroupButton onClick={submitHandler}>ADD</GroupButton>
+        </InputWrapper>
       )}
     </Wrapper>
   );
@@ -47,19 +46,11 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const StyledForm = styled.form`
+const InputWrapper = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-
-  button {
-    align-self: center;
-    font-size: 0.8rem;
-    width: 25%;
-    height: 1.5rem;
-    padding: 0;
-  }
 
   input {
     border: var(--grey) solid 1px;
@@ -68,4 +59,12 @@ const StyledForm = styled.form`
     margin: 0.5rem 0;
     width: 70%;
   }
+`;
+
+const GroupButton = styled.button`
+  align-self: center;
+  font-size: 0.8rem;
+  width: 25%;
+  height: 1.5rem;
+  padding: 0;
 `;

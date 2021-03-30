@@ -89,24 +89,24 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
 
       {isError && <ErrorMessage text="Please fill in all required fields!" />}
       <div>
-        <button onClick={submitHandler}>SAVE</button>
+        <Button onClick={submitHandler}>SAVE</Button>
       </div>
     </FormStyled>
   );
 }
 
+const Button = styled.button`
+  font-size: 14px;
+  color: var(--white);
+  background: var(--primary);
+  padding: 0.3rem;
+  width: 100%;
+`;
+
 const FormStyled = styled.form`
   display: grid;
   grid-template-columns: 55% auto;
   grid-gap: 1rem;
-
-  button {
-    font-size: 14px;
-    color: var(--white);
-    background: var(--primary);
-    padding: 0.3rem;
-    width: 100%;
-  }
 
   div {
     grid-column: 1 / 3;
