@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import ErrorMessage from '../components/ErrorMessage';
 import Member from '../components/Member';
+import Searchbar from '../components/Searchbar';
 
 export default function Home({
   members,
@@ -12,10 +13,12 @@ export default function Home({
   deleteGroup,
   canDeleteGroup,
 }) {
+  console.log('availableGroups', availableGroups);
   const orderedMembers = members.slice().sort(compareFirstName);
   const [groupValue, setGroupValue] = useState('');
   console.log('groupValue', groupValue);
   const [renderedGroups, setRenderedGroups] = useState(availableGroups ?? []);
+  const [renderedMembers, setRenderedMembers] = useState(orderedMembers ?? []);
 
   function compareFirstName(a, b) {
     if (a.firstName === b.firstName) {
@@ -34,9 +37,38 @@ export default function Home({
     setRenderedGroups(searchedGroup);
   }
 
+  function findMember(searchValue) {
+    const currentSearchValue = searchValue.toLowerCase();
+    console.log('currentSearchValue', currentSearchValue);
+
+    if (currentSearchValue !== '') {
+      const fittingMembers = orderedMembers.filter((member) => {
+        const memberFirstName = member.firstName.toLowerCase();
+        const memberLastName = member.lastName.toLowerCase();
+        const memberDescription = member.description.toLowerCase();
+        if (
+          memberFirstName.includes(currentSearchValue) ||
+          memberLastName.includes(currentSearchValue) ||
+          memberLastName.includes(currentSearchValue)
+        ) {
+          return member;
+        }
+      });
+
+      const fittingMembersGroups = fittingMembers.map((member) => member.group);
+
+      setRenderedMembers(fittingMembers);
+      setRenderedGroups(fittingMembersGroups);
+    } else {
+      setRenderedMembers(orderedMembers);
+      setRenderedGroups(availableGroups);
+    }
+  }
+
   return (
     <>
       <h2>Home</h2>
+      <Searchbar findMember={findMember} />
       <label>Filter group:</label>
       <select value={groupValue} onChange={filterGroups}>
         <option>Please select...</option>
@@ -54,7 +86,7 @@ export default function Home({
           {!canDeleteGroup && (
             <ErrorMessage text="Please add the members below to other groups first!" />
           )}
-          {orderedMembers
+          {renderedMembers
             .filter((member) => member.group === group)
             .map((member) => (
               <Member
