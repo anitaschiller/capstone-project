@@ -18,6 +18,7 @@ export default function Home({
   console.log('availableGroups', availableGroups);
   const orderedMembers = members.slice().sort(compareFirstName);
   const [groupValue, setGroupValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
   console.log('groupValue', groupValue);
   const [renderedGroups, setRenderedGroups] = useState(availableGroups ?? []);
   const [renderedMembers, setRenderedMembers] = useState(orderedMembers ?? []);
@@ -29,6 +30,10 @@ export default function Home({
   useEffect(() => {
     setRenderedGroups(availableGroups);
   }, [availableGroups]);
+
+  useEffect(() => {
+    findMember(searchValue);
+  }, [searchValue]);
 
   function compareFirstName(a, b) {
     if (a.firstName === b.firstName) {
@@ -84,11 +89,20 @@ export default function Home({
     }
   }
 
+  function removeFilters() {
+    setSearchValue('');
+    setGroupValue('');
+  }
+
   return (
     <>
       <h2>Home</h2>
       <FilterSection>
-        <Searchbar findMember={findMember} />
+        <Searchbar
+          findMember={findMember}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+        />
         <label>Filter group:</label>
         <select value={groupValue} onChange={filterGroups}>
           <option>Please select...</option>
@@ -96,7 +110,9 @@ export default function Home({
             <option>{group}</option>
           ))}
         </select>
-        <FilterDeleteStyled />
+        <span onClick={removeFilters}>
+          <FilterDeleteStyled />
+        </span>
       </FilterSection>
       {/* <span onClick={() => setRenderedGroups(availableGroups)}>&times;</span> */}
       {renderedGroups.map((group) => (
