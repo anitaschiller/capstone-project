@@ -16,14 +16,14 @@ export default createGlobalStyle`
 }
 
 body {
+  background-size: cover;
   background: var(--lightgrey);
   font: 0.9rem Helvetica, sans-serif;
-  margin: 0;
+  margin: 0 0 4rem 0;
 }
 
 main {
   padding: 6rem 1rem 1rem 1rem;
   position: relative;
-  height: 100vh;
 }
 `;

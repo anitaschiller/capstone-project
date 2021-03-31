@@ -52,6 +52,10 @@ export default function Details({ updateMember, member }) {
       updateMemberEntries(memberEntries);
     } else {
       setIsError(true);
+
+      setTimeout(function () {
+        setIsError(false);
+      }, 3000);
     }
   }
 
@@ -144,11 +148,11 @@ export default function Details({ updateMember, member }) {
               setTags={setTags}
               onDeleteTag={deleteTag}
             />
+            {isError && (
+              <ErrorMessage text="Please check if all fields were filled correctly!" />
+            )}
             <button onClick={submitHandler}>SAVE</button>
           </>
-        )}
-        {isError && (
-          <ErrorMessage text="Please check if all fields were filled correctly!" />
         )}
       </FormStyled>
       <CardContainer>

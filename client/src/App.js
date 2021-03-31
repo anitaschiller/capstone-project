@@ -81,6 +81,10 @@ function App() {
       setAvailableGroups(remainingGroups);
     } else {
       setCanDeleteGroup(false);
+
+      setTimeout(function () {
+        setCanDeleteGroup(true);
+      }, 3000);
     }
   }
 
@@ -96,6 +100,7 @@ function App() {
               availableGroups={availableGroups}
               deleteGroup={deleteGroup}
               canDeleteGroup={canDeleteGroup}
+              remainingMembers={remainingMembers}
             />
           </Route>
           <Route path="/add">

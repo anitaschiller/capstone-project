@@ -6,6 +6,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import { FilterDeleteIcon } from '../icons/FilterDeleteIcon';
 import Member from '../components/Member';
 import Searchbar from '../components/Searchbar';
+import { useEffect } from 'react';
 
 export default function Home({
   members,
@@ -20,6 +21,14 @@ export default function Home({
   console.log('groupValue', groupValue);
   const [renderedGroups, setRenderedGroups] = useState(availableGroups ?? []);
   const [renderedMembers, setRenderedMembers] = useState(orderedMembers ?? []);
+
+  useEffect(() => {
+    setRenderedMembers(members);
+  }, [members]);
+
+  useEffect(() => {
+    setRenderedGroups(availableGroups);
+  }, [availableGroups]);
 
   function compareFirstName(a, b) {
     if (a.firstName === b.firstName) {
