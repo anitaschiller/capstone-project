@@ -10,11 +10,10 @@ export default function Home({
   onOpenModal,
   availableGroups,
   deleteGroup,
-  canDeleteGroup,
+  cantDeleteGroup,
 }) {
   const orderedMembers = members.slice().sort(compareFirstName);
   const [groupValue, setGroupValue] = useState('');
-  console.log('groupValue', groupValue);
   const [renderedGroups, setRenderedGroups] = useState(availableGroups ?? []);
 
   function compareFirstName(a, b) {
@@ -28,8 +27,10 @@ export default function Home({
   }
 
   function filterGroups(event) {
+    const fieldValue = event.target.value;
+    setGroupValue(fieldValue);
     const searchedGroup = availableGroups.filter(
-      (group) => group === event.target.value
+      (group) => group === fieldValue
     );
     setRenderedGroups(searchedGroup);
   }
@@ -37,22 +38,24 @@ export default function Home({
   return (
     <>
       <h2>Home</h2>
-      <label>Filter group:</label>
-      <select value={groupValue} onChange={filterGroups}>
-        <option>Please select...</option>
-        {availableGroups.map((group) => (
-          <option>{group}</option>
-        ))}
-      </select>
-      <span onClick={() => setRenderedGroups(availableGroups)}>&times;</span>
+      <GroupFilter>
+        <label htmlFor="group">Filter group:</label>
+        <select id="group" value={groupValue} onChange={filterGroups}>
+          <option>Please select...</option>
+          {availableGroups.map((group) => (
+            <option>{group}</option>
+          ))}
+        </select>
+        <span onClick={() => setRenderedGroups(availableGroups)}>&times;</span>
+      </GroupFilter>
       {renderedGroups.map((group) => (
         <GroupWrapper>
           <GroupHeadline>
             {group}
             <Delete onClick={() => deleteGroup(group)}>&times;</Delete>
           </GroupHeadline>
-          {!canDeleteGroup && (
-            <ErrorMessage text="Please add the members below to other groups first!" />
+          {cantDeleteGroup === group && (
+            <ErrorMessage text="Please add remaining members to other groups first!" />
           )}
           {orderedMembers
             .filter((member) => member.group === group)
@@ -68,6 +71,23 @@ export default function Home({
     </>
   );
 }
+
+const GroupFilter = styled.form`
+  margin: 1rem 0;
+
+  label {
+    color: var(--grey);
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  select {
+    border: var(--grey) solid 1px;
+    border-radius: 5px;
+    height: 1.3rem;
+    margin: 0 0.5rem 0 0;
+  }
+`;
 
 const GroupWrapper = styled.div`
   display: flex;

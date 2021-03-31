@@ -18,8 +18,7 @@ function App() {
   const [availableGroups, setAvailableGroups] = useState(
     loadFromLocal('groups') ?? []
   );
-  const [canDeleteGroup, setCanDeleteGroup] = useState(true);
-  console.log(availableGroups);
+  const [cantDeleteGroup, setCantDeleteGroup] = useState('');
 
   useEffect(() => {
     saveToLocal('members', members);
@@ -80,7 +79,7 @@ function App() {
       );
       setAvailableGroups(remainingGroups);
     } else {
-      setCanDeleteGroup(false);
+      setCantDeleteGroup(groupToDelete);
     }
   }
 
@@ -95,7 +94,7 @@ function App() {
               onOpenModal={openModal}
               availableGroups={availableGroups}
               deleteGroup={deleteGroup}
-              canDeleteGroup={canDeleteGroup}
+              cantDeleteGroup={cantDeleteGroup}
             />
           </Route>
           <Route path="/add">
