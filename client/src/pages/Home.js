@@ -15,12 +15,11 @@ export default function Home({
   deleteGroup,
   canDeleteGroup,
 }) {
-  console.log('availableGroups', availableGroups);
   const orderedMembers = members.slice().sort(compareFirstName);
   const [groupValue, setGroupValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
-  console.log('groupValue', groupValue);
   const [renderedGroups, setRenderedGroups] = useState(availableGroups ?? []);
+  console.log('renderedGroups', renderedGroups);
   const [renderedMembers, setRenderedMembers] = useState(orderedMembers ?? []);
 
   useEffect(() => {
@@ -60,7 +59,6 @@ export default function Home({
 
   function findMember(searchValue) {
     const currentSearchValue = searchValue.toLowerCase();
-    console.log('currentSearchValue', currentSearchValue);
 
     if (currentSearchValue !== '') {
       const fittingMembers = orderedMembers.filter((member) => {
@@ -77,12 +75,18 @@ export default function Home({
       });
 
       const fittingMembersGroups = fittingMembers.map((member) => member.group);
+      const filteredFittingMembersGroups = fittingMembersGroups.filter(
+        (group) => {
+          if (renderedGroups.includes(group)) {
+            return group;
+          }
+        }
+      );
 
-      const uniqueFittingMembersGroups = [...new Set(fittingMembersGroups)];
-      console.log('uniquefittingMembersGroups', uniqueFittingMembersGroups);
+      const uniqueFittingGroups = [...new Set(filteredFittingMembersGroups)];
 
       setRenderedMembers(fittingMembers);
-      setRenderedGroups(uniqueFittingMembersGroups);
+      setRenderedGroups(uniqueFittingGroups);
     } else {
       setRenderedMembers(orderedMembers);
       setRenderedGroups(availableGroups);
