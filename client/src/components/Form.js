@@ -3,9 +3,9 @@ import styled from 'styled-components/macro';
 import { useState } from 'react';
 
 import ErrorMessage from '../components/ErrorMessage';
+import ImageCropper from './ImageCropper';
 import { isValidMember } from '../lib/validateFunctions';
 import NewGroup from '../components/NewGroup';
-import imagePlaceholder from '../assets/image-placeholder.png';
 
 export default function Form({ submitFunction, availableGroups, addGroup }) {
   const initialMember = {
@@ -22,8 +22,10 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
   const [selectedFileURL, setSelectedFileURL] = useState(
     'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
   );
-  console.log(selectedFileURL);
   const [selectedFile, setSelectedFile] = useState(null);
+  console.log(selectedFile);
+
+  const [openImageCropper, setOpenImageCropper] = useState(false);
 
   function handleChange(event) {
     const field = event.target;
@@ -52,73 +54,84 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
   }
 
   return (
-    <FormStyled>
-      <Name>
-        <label htmlFor="first-name">First name*:</label>
-        <input
-          type="text"
-          name="firstName"
-          id="first-name"
-          value={member.firstName}
-          onChange={handleChange}
-        />
-      </Name>
-      <Name>
-        <label htmlFor="last-name">Last name*:</label>
-        <input
-          type="text"
-          name="lastName"
-          id="last-name"
-          value={member.lastName}
-          onChange={handleChange}
-        />
-      </Name>
-      <ImagePreview src={selectedFileURL} alt="" />
-      <Image>
-        <label htmlFor="image">Image:</label>
-        <input
-          type="file"
-          name="image"
-          id="image"
-          onChange={(event) => {
-            setSelectedFile(event.target.files[0]);
-            setSelectedFileURL(URL.createObjectURL(event.target.files[0]));
-          }}
-        />
-      </Image>
-      <Description>
-        <label htmlFor="description">Description:</label>
-        <textarea
-          name="description"
-          id="description"
-          value={member.description}
-          onChange={handleChange}
-        />
-      </Description>
-      <Group>
-        <label htmlFor="group">Group*:</label>
-        <div>
-          <select
-            name="group"
-            id="group"
-            value={member.group}
+    <>
+      <FormStyled>
+        <Name>
+          <label htmlFor="first-name">First name*:</label>
+          <input
+            type="text"
+            name="firstName"
+            id="first-name"
+            value={member.firstName}
             onChange={handleChange}
-          >
-            <option>Please select...</option>
-            {availableGroups.map((group) => (
-              <option>{group}</option>
-            ))}
-          </select>
-          <NewGroup addGroup={addGroup} />
-        </div>
-      </Group>
+          />
+        </Name>
+        <Name>
+          <label htmlFor="last-name">Last name*:</label>
+          <input
+            type="text"
+            name="lastName"
+            id="last-name"
+            value={member.lastName}
+            onChange={handleChange}
+          />
+        </Name>
 
-      {wasSuccessful && <Success>Member successfully added!</Success>}
+        <ImagePreview src={selectedFileURL} alt="" />
+        <Image>
+          <label htmlFor="image">Image:</label>
+          <input
+            type="file"
+            name="image"
+            id="image"
+            onChange={(event) => {
+              setSelectedFile(event.target.files[0]);
+              setSelectedFileURL(URL.createObjectURL(event.target.files[0]));
+              setOpenImageCropper(true);
+            }}
+          />
+        </Image>
+        <Description>
+          <label htmlFor="description">Description:</label>
+          <textarea
+            name="description"
+            id="description"
+            value={member.description}
+            onChange={handleChange}
+          />
+        </Description>
+        <Group>
+          <label htmlFor="group">Group*:</label>
+          <div>
+            <select
+              name="group"
+              id="group"
+              value={member.group}
+              onChange={handleChange}
+            >
+              <option>Please select...</option>
+              {availableGroups.map((group) => (
+                <option>{group}</option>
+              ))}
+            </select>
+            <NewGroup addGroup={addGroup} />
+          </div>
+        </Group>
 
-      {isError && <ErrorMessage text="Please fill in all required fields!" />}
+        {wasSuccessful && <Success>Member successfully added!</Success>}
 
-      <Button onClick={submitHandler}>SAVE</Button>
-    </FormStyled>
+        {isError && <ErrorMessage text="Please fill in all required fields!" />}
+
+        <Button onClick={submitHandler}>SAVE</Button>
+      </FormStyled>
+      {openImageCropper && (
+        <ImageCropper
+          setOpenImageCropper={setOpenImageCropper}
+          selectedFileURL={selectedFileURL}
+          setSelectedFileURL={setSelectedFileURL}
+        />
+      )}
+    </>
   );
 }
 
