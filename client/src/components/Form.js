@@ -5,11 +5,13 @@ import { useState } from 'react';
 import ErrorMessage from '../components/ErrorMessage';
 import { isValidMember } from '../lib/validateFunctions';
 import NewGroup from '../components/NewGroup';
+import imagePlaceholder from '../assets/image-placeholder.png';
 
 export default function Form({ submitFunction, availableGroups, addGroup }) {
   const initialMember = {
     firstName: '',
     lastName: '',
+    image: '',
     description: '',
     group: '',
   };
@@ -17,6 +19,11 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
   const [member, setMember] = useState(initialMember);
   const [isError, setIsError] = useState(false);
   const [wasSuccessful, setWasSuccessful] = useState(false);
+  const [selectedFileURL, setSelectedFileURL] = useState(
+    'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
+  );
+  console.log(selectedFileURL);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   function handleChange(event) {
     const field = event.target;
@@ -46,7 +53,7 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
 
   return (
     <FormStyled>
-      <div>
+      <Name>
         <label htmlFor="first-name">First name*:</label>
         <input
           type="text"
@@ -55,8 +62,8 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
           value={member.firstName}
           onChange={handleChange}
         />
-      </div>
-      <div>
+      </Name>
+      <Name>
         <label htmlFor="last-name">Last name*:</label>
         <input
           type="text"
@@ -65,8 +72,21 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
           value={member.lastName}
           onChange={handleChange}
         />
-      </div>
-      <div>
+      </Name>
+      <ImagePreview src={selectedFileURL} alt="" />
+      <Image>
+        <label htmlFor="image">Image:</label>
+        <input
+          type="file"
+          name="image"
+          id="image"
+          onChange={(event) => {
+            setSelectedFile(event.target.files[0]);
+            setSelectedFileURL(URL.createObjectURL(event.target.files[0]));
+          }}
+        />
+      </Image>
+      <Description>
         <label htmlFor="description">Description:</label>
         <textarea
           name="description"
@@ -74,8 +94,8 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
           value={member.description}
           onChange={handleChange}
         />
-      </div>
-      <div>
+      </Description>
+      <Group>
         <label htmlFor="group">Group*:</label>
         <div>
           <select
@@ -91,19 +111,19 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
           </select>
           <NewGroup addGroup={addGroup} />
         </div>
-      </div>
+      </Group>
 
       {wasSuccessful && <Success>Member successfully added!</Success>}
 
       {isError && <ErrorMessage text="Please fill in all required fields!" />}
-      <div>
-        <Button onClick={submitHandler}>SAVE</Button>
-      </div>
+
+      <Button onClick={submitHandler}>SAVE</Button>
     </FormStyled>
   );
 }
 
 const Button = styled.button`
+  grid-column: 1 / 3;
   font-size: 14px;
   color: var(--white);
   background: var(--primary);
@@ -111,15 +131,15 @@ const Button = styled.button`
   width: 100%;
 `;
 
+const Description = styled.div`
+  grid-column: 1 / 3;
+  width: 100%;
+`;
+
 const FormStyled = styled.form`
   display: grid;
   grid-template-columns: 55% auto;
   grid-gap: 1rem;
-
-  div {
-    grid-column: 1 / 3;
-    width: 100%;
-  }
 
   input {
     border: var(--grey) solid 1px;
@@ -152,6 +172,31 @@ const FormStyled = styled.form`
     margin: 0.5rem 0;
     width: 100%;
   }
+`;
+
+const Group = styled.div`
+  grid-column: 1 / 3;
+  width: 100%;
+`;
+
+const Name = styled.div`
+  grid-column: 1 / 2;
+`;
+
+const Image = styled.div`
+  grid-column: 1 / 3;
+`;
+
+const ImagePreview = styled.img`
+  align-self: flex-end;
+  justify-self: center;
+  grid-column: 2 / 3;
+  grid-row: 1 / 3;
+  margin: 0 0 0.5rem 0;
+  /*   width: 8rem;
+  height: auto; */
+  width: 128px;
+  height: 128px;
 `;
 
 const Success = styled.span`
