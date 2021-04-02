@@ -11,21 +11,18 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
   const initialMember = {
     firstName: '',
     lastName: '',
-    image: '',
+    image:
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
     description: '',
     group: '',
   };
 
   const [member, setMember] = useState(initialMember);
-  console.log('member', member);
   const [isError, setIsError] = useState(false);
   const [wasSuccessful, setWasSuccessful] = useState(false);
   const [selectedFileURL, setSelectedFileURL] = useState(
     'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
   );
-  const [selectedFile, setSelectedFile] = useState(null);
-  console.log(selectedFile);
-
   const [openImageCropper, setOpenImageCropper] = useState(false);
 
   function handleChange(event) {
@@ -37,9 +34,12 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
   function submitHandler(event) {
     event.preventDefault();
     if (isValidMember(member)) {
-      setMember({ ...member, image: selectedFileURL });
-      submitFunction(member);
+      const memberWithImage = { ...member, image: selectedFileURL };
+      submitFunction(memberWithImage);
       setMember(initialMember);
+      setSelectedFileURL(
+        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
+      );
 
       setWasSuccessful(true);
       setIsError(false);
@@ -60,7 +60,7 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
       <FormStyled>
         <Name>
           <label htmlFor="first-name">First name*:</label>
-          <input
+          <TextInput
             type="text"
             name="firstName"
             id="first-name"
@@ -70,7 +70,7 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
         </Name>
         <Name>
           <label htmlFor="last-name">Last name*:</label>
-          <input
+          <TextInput
             type="text"
             name="lastName"
             id="last-name"
@@ -78,16 +78,14 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
             onChange={handleChange}
           />
         </Name>
-
         <ImagePreview src={selectedFileURL} alt="" />
         <Image>
           <label htmlFor="image">Image:</label>
-          <input
+          <FileInput
             type="file"
             name="image"
             id="image"
             onChange={(event) => {
-              setSelectedFile(event.target.files[0]);
               setSelectedFileURL(URL.createObjectURL(event.target.files[0]));
               setOpenImageCropper(true);
             }}
@@ -112,8 +110,8 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
               onChange={handleChange}
             >
               <option>Please select...</option>
-              {availableGroups.map((group) => (
-                <option>{group}</option>
+              {availableGroups.map((group, index) => (
+                <option key={index}>{group}</option>
               ))}
             </select>
             <NewGroup addGroup={addGroup} />
@@ -121,7 +119,6 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
         </Group>
 
         {wasSuccessful && <Success>Member successfully added!</Success>}
-
         {isError && <ErrorMessage text="Please fill in all required fields!" />}
 
         <Button onClick={submitHandler}>SAVE</Button>
@@ -153,18 +150,17 @@ const Description = styled.div`
   width: 100%;
 `;
 
+const FileInput = styled.input`
+  border: none;
+  height: 1.5rem;
+  margin: 0.5rem 0;
+  width: 100%;
+`;
+
 const FormStyled = styled.form`
   display: grid;
   grid-template-columns: 55% auto;
   grid-gap: 1rem;
-
-  input {
-    border: var(--grey) solid 1px;
-    border-radius: 5px;
-    height: 1.5rem;
-    margin: 0.5rem 0;
-    width: 100%;
-  }
 
   label {
     color: var(--grey);
@@ -196,10 +192,6 @@ const Group = styled.div`
   width: 100%;
 `;
 
-const Name = styled.div`
-  grid-column: 1 / 2;
-`;
-
 const Image = styled.div`
   grid-column: 1 / 3;
 `;
@@ -209,14 +201,28 @@ const ImagePreview = styled.img`
   justify-self: center;
   grid-column: 2 / 3;
   grid-row: 1 / 3;
+
+  border-radius: 50%;
   margin: 0 0 0.5rem 0;
   width: 128px;
-  height: 128px;
+  height: auto;
+`;
+
+const Name = styled.div`
+  grid-column: 1 / 2;
 `;
 
 const Success = styled.span`
   border: 1px solid #000000;
   padding: 0.5rem;
+`;
+
+const TextInput = styled.input`
+  border: var(--grey) solid 1px;
+  border-radius: 5px;
+  height: 1.5rem;
+  margin: 0.5rem 0;
+  width: 100%;
 `;
 
 Form.propTypes = {

@@ -16,7 +16,7 @@ export default createGlobalStyle`
 }
 
 body {
-  background-size: cover;
+/*   background-size: cover; */
   background: var(--lightgrey);
   font: 0.9rem Helvetica, sans-serif;
   margin: 0 0 4rem 0;

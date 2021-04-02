@@ -120,6 +120,7 @@ export default function Details({ updateMember, member }) {
         </SavedNoteWrapper>
         <Portrait src={member.image} alt="" />
       </DetailsHeader>
+
       <FormStyled>
         <h3 onClick={() => setIsUnfolded(!isUnfolded)}>
           New Entry {isUnfolded ? <FoldIconStyled /> : <UnfoldIconStyled />}
@@ -181,7 +182,8 @@ const DetailsDescription = styled.p`
 
 const DetailsHeader = styled.div`
   display: grid;
-  grid-template-columns: 70% auto;
+  grid-template-columns: 2fr auto;
+  gap: 0.3rem;
 
   border-bottom: var(--grey) solid 1px;
   padding: 0 0 0.5rem 0;
@@ -240,10 +242,11 @@ const Note = styled.span`
 `;
 
 const Portrait = styled.img`
+  border-radius: 50%;
   grid-column: 2 / 3;
   grid-row: 2 / 6;
   margin-bottom: 0.5rem;
-  width: 8rem;
+  width: 6rem;
   height: auto;
 `;
 

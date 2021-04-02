@@ -19,7 +19,6 @@ export default function Home({
   const [groupValue, setGroupValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [renderedGroups, setRenderedGroups] = useState(availableGroups ?? []);
-  console.log('renderedGroups', renderedGroups);
   const [renderedMembers, setRenderedMembers] = useState(orderedMembers ?? []);
 
   useEffect(() => {
@@ -118,9 +117,8 @@ export default function Home({
           <FilterDeleteStyled />
         </span>
       </FilterSection>
-      {/* <span onClick={() => setRenderedGroups(availableGroups)}>&times;</span> */}
-      {renderedGroups.map((group) => (
-        <GroupWrapper>
+      {renderedGroups.map((group, index) => (
+        <GroupWrapper key={index}>
           <GroupHeadline>
             {group}
             <Delete onClick={() => deleteGroup(group)}>&times;</Delete>

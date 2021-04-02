@@ -13,41 +13,28 @@ export default function ImageCropper({
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  console.log('croppedAreaPixels', croppedAreaPixels);
-  const [croppedImage, setCroppedImage] = useState(null);
-
-  /* const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-    console.log(croppedArea, croppedAreaPixels);
-    window.localStorage.setItem(
-      'croppedAreaPixels',
-      JSON.stringify(croppedAreaPixels)
-    );
-  }, []); */
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
   const showCroppedImage = useCallback(async () => {
-    console.log('showCroppedImage');
     try {
       const croppedImage = await getCroppedImg(
         selectedFileURL,
         croppedAreaPixels
       );
-      console.log('donee', { croppedImage });
-      setCroppedImage(croppedImage);
       setOpenImageCropper(false);
       setSelectedFileURL(croppedImage);
       setMember({ ...member, image: croppedImage });
-    } catch (e) {
-      console.error(e);
+    } catch (event) {
+      console.error(event);
     }
   }, [croppedAreaPixels]);
 
   return (
     <>
-      <div>
+      <CropperWrapper>
         <Cropper
           image={selectedFileURL}
           crop={crop}
@@ -57,13 +44,32 @@ export default function ImageCropper({
           onCropComplete={onCropComplete}
           onZoomChange={setZoom}
         />
-        <Button onClick={showCroppedImage}>Show Result</Button>
-      </div>
+        <ButtonWrapper>
+          <Button onClick={showCroppedImage}>SAVE</Button>
+        </ButtonWrapper>
+      </CropperWrapper>
     </>
   );
 }
 
+const CropperWrapper = styled.div`
+  .reactEasyCrop_Container {
+    background: var(--white);
+    overflow: visible;
+  }
+`;
+
 const Button = styled.button`
+  font-size: 14px;
+  color: var(--white);
+  background: var(--primary);
+  margin: 1rem 0;
+  padding: 0.5rem 0.7rem;
+`;
+
+const ButtonWrapper = styled.div`
   position: absolute;
   z-index: 100;
+  bottom: 5rem;
+  right: 155px;
 `;
