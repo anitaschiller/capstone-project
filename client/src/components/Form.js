@@ -17,6 +17,7 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
   };
 
   const [member, setMember] = useState(initialMember);
+  console.log('member', member);
   const [isError, setIsError] = useState(false);
   const [wasSuccessful, setWasSuccessful] = useState(false);
   const [selectedFileURL, setSelectedFileURL] = useState(
@@ -36,6 +37,7 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
   function submitHandler(event) {
     event.preventDefault();
     if (isValidMember(member)) {
+      setMember({ ...member, image: selectedFileURL });
       submitFunction(member);
       setMember(initialMember);
 
@@ -129,6 +131,8 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
           setOpenImageCropper={setOpenImageCropper}
           selectedFileURL={selectedFileURL}
           setSelectedFileURL={setSelectedFileURL}
+          setMember={setMember}
+          member={member}
         />
       )}
     </>
@@ -206,8 +210,6 @@ const ImagePreview = styled.img`
   grid-column: 2 / 3;
   grid-row: 1 / 3;
   margin: 0 0 0.5rem 0;
-  /*   width: 8rem;
-  height: auto; */
   width: 128px;
   height: 128px;
 `;

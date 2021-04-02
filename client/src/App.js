@@ -13,6 +13,7 @@ import { loadFromLocal, saveToLocal } from './lib/localStorage';
 
 function App() {
   const [members, setMembers] = useState(loadFromLocal('members') ?? []);
+  console.log('members', members);
   const [isShown, setIsShown] = useState(false);
   const [remainingMembers, setRemainingMembers] = useState(members);
   const [availableGroups, setAvailableGroups] = useState(

@@ -4,6 +4,8 @@ import getCroppedImg from '../lib/cropImage';
 import styled from 'styled-components';
 
 export default function ImageCropper({
+  member,
+  setMember,
   setOpenImageCropper,
   selectedFileURL,
   setSelectedFileURL,
@@ -37,6 +39,7 @@ export default function ImageCropper({
       setCroppedImage(croppedImage);
       setOpenImageCropper(false);
       setSelectedFileURL(croppedImage);
+      setMember({ ...member, image: croppedImage });
     } catch (e) {
       console.error(e);
     }

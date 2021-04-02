@@ -109,7 +109,7 @@ export default function Details({ updateMember, member }) {
           {member.firstName} {member.lastName}
         </DetailsHeadline>
         <DetailsGroup>{member.group}</DetailsGroup>
-        <p>{member.description}</p>
+        <DetailsDescription>{member.description}</DetailsDescription>
         <SavedNoteWrapper>
           {savedNotes.map((note) => (
             <SavedNote onClick={() => toggleNote(note)}>
@@ -118,6 +118,7 @@ export default function Details({ updateMember, member }) {
             </SavedNote>
           ))}
         </SavedNoteWrapper>
+        <Portrait src={member.image} alt="" />
       </DetailsHeader>
       <FormStyled>
         <h3 onClick={() => setIsUnfolded(!isUnfolded)}>
@@ -174,17 +175,26 @@ const CardContainer = styled.section`
   margin: 1rem 0 3rem 0;
 `;
 
+const DetailsDescription = styled.p`
+  grid-column: 1 / 2;
+`;
+
 const DetailsHeader = styled.div`
+  display: grid;
+  grid-template-columns: 70% auto;
+
   border-bottom: var(--grey) solid 1px;
   padding: 0 0 0.5rem 0;
 `;
 
 const DetailsHeadline = styled.h2`
+  grid-column: 1 / 3;
   margin: 0;
 `;
 
 const DetailsGroup = styled.p`
   color: var(--grey);
+  grid-column: 1 / 2;
   font-style: italic;
   margin: 0.4rem 0;
 `;
@@ -227,6 +237,14 @@ const Input = styled.input`
 
 const Note = styled.span`
   padding-left: 1.5rem;
+`;
+
+const Portrait = styled.img`
+  grid-column: 2 / 3;
+  grid-row: 2 / 6;
+  margin-bottom: 0.5rem;
+  width: 8rem;
+  height: auto;
 `;
 
 const StarFilledStyled = styled(StarIconFilled)`
