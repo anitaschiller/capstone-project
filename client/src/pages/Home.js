@@ -142,15 +142,36 @@ export default function Home({
 }
 
 const FilterDeleteStyled = styled(FilterDeleteIcon)`
-  color: var(--grey);
+  color: #000000;
   transform: scale(0.7);
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 20px;
+  right: 20px;
 `;
 
-const FilterSection = styled.section`
+const FilterSection = styled.form`
   position: relative;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: 0.5rem;
+
+  background: #b1bded;
+  border-radius: 5px;
+  margin: 2rem 0;
+  padding: 1rem 1rem 0.6rem 1rem;
+
+  label {
+    align-self: center;
+    font-weight: bold;
+  }
+
+  input,
+  select {
+    border: solid 1px var(--grey);
+    border-radius: 5px;
+    height: 1.5rem;
+    width: 80%;
+  }
 `;
 
 const GroupWrapper = styled.div`

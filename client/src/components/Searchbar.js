@@ -6,18 +6,18 @@ export default function Searchbar({ findMember, searchValue, setSearchValue }) {
   }
 
   return (
-    <form>
+    <>
       <label htmlFor="searchbar">
         <span>Search person: </span>
       </label>
       <input
         type="text"
         id="searchbar"
-        placeholder="Search a name or description"
+        placeholder=" Search for a name or description..."
         name="searchbar"
         onChange={changeHandler}
         value={searchValue}
       />
-    </form>
+    </>
   );
 }
