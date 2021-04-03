@@ -12,7 +12,12 @@ import NoteTags from '../components/NoteTags';
 import { StarIconFilled } from '../icons/StarIconFilled';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
-export default function Details({ availableGroups, updateMember, member }) {
+export default function Details({
+  availableGroups,
+  updateMember,
+  member,
+  addGroup,
+}) {
   const initialEntry = {
     date: '',
     title: '',
@@ -127,16 +132,19 @@ export default function Details({ availableGroups, updateMember, member }) {
         <Portrait src={member.image} alt="" />
       </DetailsHeader>
       {openEditForm && (
-        <Form
-          availableGroups={availableGroups}
-          currentMember={member}
-          submitFunction={updateMember}
-          openEditForm={openEditForm}
-          setOpenEditForm={setOpenEditForm}
-        />
+        <EditFormWrapper>
+          <Form
+            availableGroups={availableGroups}
+            currentMember={member}
+            submitFunction={updateMember}
+            openEditForm={openEditForm}
+            setOpenEditForm={setOpenEditForm}
+            addGroup={addGroup}
+          />
+        </EditFormWrapper>
       )}
 
-      <FormStyled>
+      <EntryFormStyled>
         <h3 onClick={() => setIsUnfolded(!isUnfolded)}>
           New Entry {isUnfolded ? <FoldIconStyled /> : <UnfoldIconStyled />}
         </h3>
@@ -171,7 +179,7 @@ export default function Details({ availableGroups, updateMember, member }) {
             <button onClick={submitHandler}>SAVE</button>
           </>
         )}
-      </FormStyled>
+      </EntryFormStyled>
       <CardContainer>
         {member.entries &&
           member.entries.map((entry) => (
@@ -216,13 +224,24 @@ const DetailsGroup = styled.p`
   margin: 0.4rem 0;
 `;
 
+const EditFormWrapper = styled.div`
+  background: var(--lightgrey);
+  position: absolute;
+  top: 90px;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 1rem;
+  z-index: 200;
+`;
+
 const EditIconStyled = styled(EditIcon)`
   color: var(--secondary);
-  margin: 0 0.5rem;
+  margin: 0 1rem;
   transform: scale(0.8);
 `;
 
-const FormStyled = styled.form`
+const EntryFormStyled = styled.form`
   display: flex;
   border-bottom: var(--grey) solid 1px;
   flex-direction: column;

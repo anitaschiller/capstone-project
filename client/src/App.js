@@ -114,6 +114,7 @@ function App() {
               updateMember={updateMember}
               member={findCurrentMember()}
               updateMember={updateMember}
+              addGroup={addGroup}
             />
           </Route>
         </Switch>
