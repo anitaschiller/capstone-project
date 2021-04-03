@@ -13,13 +13,12 @@ export default function Home({
   onOpenModal,
   availableGroups,
   deleteGroup,
-  canDeleteGroup,
+  undeletableGroup,
 }) {
   const orderedMembers = members.slice().sort(compareFirstName);
   const [groupValue, setGroupValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [renderedGroups, setRenderedGroups] = useState(availableGroups ?? []);
-  console.log('renderedGroups', renderedGroups);
   const [renderedMembers, setRenderedMembers] = useState(orderedMembers ?? []);
 
   useEffect(() => {
@@ -118,15 +117,14 @@ export default function Home({
           <FilterDeleteStyled />
         </span>
       </FilterSection>
-      {/* <span onClick={() => setRenderedGroups(availableGroups)}>&times;</span> */}
       {renderedGroups.map((group) => (
         <GroupWrapper>
           <GroupHeadline>
             {group}
             <Delete onClick={() => deleteGroup(group)}>&times;</Delete>
           </GroupHeadline>
-          {!canDeleteGroup && (
-            <ErrorMessage text="Please add the members below to other groups first!" />
+          {undeletableGroup === group && (
+            <ErrorMessage text="Please add remaining members to other groups first!" />
           )}
           {renderedMembers
             .filter((member) => member.group === group)
@@ -146,7 +144,6 @@ export default function Home({
 const FilterDeleteStyled = styled(FilterDeleteIcon)`
   color: var(--grey);
   transform: scale(0.7);
-
   position: absolute;
   top: 0;
   right: 0;

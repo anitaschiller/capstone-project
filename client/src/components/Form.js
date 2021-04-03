@@ -48,7 +48,7 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
     <FormStyled>
       <div>
         <label htmlFor="first-name">First name*:</label>
-        <input
+        <Input
           type="text"
           name="firstName"
           id="first-name"
@@ -58,7 +58,7 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
       </div>
       <div>
         <label htmlFor="last-name">Last name*:</label>
-        <input
+        <Input
           type="text"
           name="lastName"
           id="last-name"
@@ -121,14 +121,6 @@ const FormStyled = styled.form`
     width: 100%;
   }
 
-  input {
-    border: var(--grey) solid 1px;
-    border-radius: 5px;
-    height: 1.5rem;
-    margin: 0.5rem 0;
-    width: 100%;
-  }
-
   label {
     color: var(--grey);
   }
@@ -152,6 +144,14 @@ const FormStyled = styled.form`
     margin: 0.5rem 0;
     width: 100%;
   }
+`;
+
+const Input = styled.input`
+  border: var(--grey) solid 1px;
+  border-radius: 5px;
+  height: 1.5rem;
+  margin: 0.5rem 0;
+  width: 100%;
 `;
 
 const Success = styled.span`
