@@ -7,7 +7,14 @@ import ImageCropper from './ImageCropper';
 import { isValidMember } from '../lib/validateFunctions';
 import NewGroup from '../components/NewGroup';
 
-export default function Form({ submitFunction, availableGroups, addGroup }) {
+export default function Form({
+  submitFunction,
+  availableGroups,
+  addGroup,
+  currentMember,
+  openEditForm,
+  setOpenEditForm,
+}) {
   const initialMember = {
     firstName: '',
     lastName: '',
@@ -17,11 +24,13 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
     group: '',
   };
 
-  const [member, setMember] = useState(initialMember);
+  const [member, setMember] = useState(currentMember ?? initialMember);
   const [isError, setIsError] = useState(false);
   const [wasSuccessful, setWasSuccessful] = useState(false);
   const [selectedFileURL, setSelectedFileURL] = useState(
-    'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
+    currentMember
+      ? currentMember.image
+      : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
   );
   const [openImageCropper, setOpenImageCropper] = useState(false);
 
@@ -46,6 +55,10 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
       setTimeout(function () {
         setWasSuccessful(false);
       }, 3000);
+
+      if (openEditForm !== undefined) {
+        setOpenEditForm(false);
+      }
     } else {
       setIsError(true);
 

@@ -72,7 +72,6 @@ function App() {
     const groupMembers = members.filter(
       (member) => member.group === groupToDelete
     );
-    console.log('groupMembers', groupMembers);
     if (groupMembers.length === 0) {
       const remainingGroups = availableGroups.filter(
         (group) => group !== groupToDelete
@@ -110,7 +109,12 @@ function App() {
             />
           </Route>
           <Route>
-            <Details updateMember={updateMember} member={findCurrentMember()} />
+            <Details
+              availableGroups={availableGroups}
+              updateMember={updateMember}
+              member={findCurrentMember()}
+              updateMember={updateMember}
+            />
           </Route>
         </Switch>
       </main>

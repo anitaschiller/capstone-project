@@ -3,14 +3,16 @@ import styled from 'styled-components/macro';
 import { useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
 
+import { EditIcon } from '../icons/EditIcon';
 import EntryCard from '../components/EntryCard';
 import ErrorMessage from '../components/ErrorMessage';
+import Form from '../components/Form';
 import { isValidEntry } from '../lib/validateFunctions';
 import NoteTags from '../components/NoteTags';
 import { StarIconFilled } from '../icons/StarIconFilled';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
-export default function Details({ updateMember, member }) {
+export default function Details({ availableGroups, updateMember, member }) {
   const initialEntry = {
     date: '',
     title: '',
@@ -23,6 +25,7 @@ export default function Details({ updateMember, member }) {
   const [isUnfolded, setIsUnfolded] = useState(false);
   const [tags, setTags] = useState([]);
   const savedNotes = findSavedNotes() ?? [];
+  const [openEditForm, setOpenEditForm] = useState(false);
 
   function findSavedNotes() {
     if (member.entries) {
@@ -107,6 +110,9 @@ export default function Details({ updateMember, member }) {
       <DetailsHeader>
         <DetailsHeadline>
           {member.firstName} {member.lastName}
+          <span onClick={() => setOpenEditForm(!openEditForm)}>
+            <EditIconStyled />
+          </span>
         </DetailsHeadline>
         <DetailsGroup>{member.group}</DetailsGroup>
         <DetailsDescription>{member.description}</DetailsDescription>
@@ -120,6 +126,15 @@ export default function Details({ updateMember, member }) {
         </SavedNoteWrapper>
         <Portrait src={member.image} alt="" />
       </DetailsHeader>
+      {openEditForm && (
+        <Form
+          availableGroups={availableGroups}
+          currentMember={member}
+          submitFunction={updateMember}
+          openEditForm={openEditForm}
+          setOpenEditForm={setOpenEditForm}
+        />
+      )}
 
       <FormStyled>
         <h3 onClick={() => setIsUnfolded(!isUnfolded)}>
@@ -201,6 +216,12 @@ const DetailsGroup = styled.p`
   margin: 0.4rem 0;
 `;
 
+const EditIconStyled = styled(EditIcon)`
+  color: var(--secondary);
+  margin: 0 0.5rem;
+  transform: scale(0.8);
+`;
+
 const FormStyled = styled.form`
   display: flex;
   border-bottom: var(--grey) solid 1px;
@@ -245,7 +266,7 @@ const Portrait = styled.img`
   border-radius: 50%;
   grid-column: 2 / 3;
   grid-row: 2 / 6;
-  margin-bottom: 0.5rem;
+  margin: 0 1rem 0.5rem 0;
   width: 6rem;
   height: auto;
 `;
