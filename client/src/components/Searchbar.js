@@ -1,7 +1,6 @@
 export default function Searchbar({ findMember, searchValue, setSearchValue }) {
   function changeHandler(event) {
     setSearchValue(event.target.value);
-    console.log('searchValue', searchValue);
     findMember(event.target.value);
   }
 

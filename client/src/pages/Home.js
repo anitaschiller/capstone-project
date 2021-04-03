@@ -73,16 +73,22 @@ export default function Home({
         }
       });
 
-      const fittingMembersGroups = fittingMembers.map((member) => member.group);
-      const filteredFittingMembersGroups = fittingMembersGroups.filter(
+      const fittingGroups = fittingMembers
+        .map((member) => member.group)
+        .filter((group) => {
+          if (renderedGroups.includes(group)) {
+            return group;
+          }
+        });
+      /*       const filteredFittingMembersGroups = fittingMembersGroups.filter(
         (group) => {
           if (renderedGroups.includes(group)) {
             return group;
           }
         }
-      );
+      ); */
 
-      const uniqueFittingGroups = [...new Set(filteredFittingMembersGroups)];
+      const uniqueFittingGroups = [...new Set(fittingGroups)];
 
       setRenderedMembers(fittingMembers);
       setRenderedGroups(uniqueFittingGroups);
