@@ -8,7 +8,7 @@ export default function Searchbar({ findMember, searchValue, setSearchValue }) {
   return (
     <>
       <label htmlFor="searchbar">
-        <span>Search person: </span>
+        <span>Search member: </span>
       </label>
       <input
         type="text"

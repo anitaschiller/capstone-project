@@ -145,15 +145,15 @@ const FilterDeleteStyled = styled(FilterDeleteIcon)`
   color: #000000;
   transform: scale(0.7);
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 25%;
+  right: 3%;
 `;
 
 const FilterSection = styled.form`
   position: relative;
   display: grid;
   grid-template-columns: 1fr 5fr;
-  gap: 0.5rem;
+  gap: 0.7rem;
 
   background: #b1bded;
   border-radius: 5px;
@@ -161,6 +161,7 @@ const FilterSection = styled.form`
   padding: 1rem 1rem 0.6rem 1rem;
 
   label {
+    font-size: 12px;
     align-self: center;
     font-weight: bold;
   }
