@@ -10,7 +10,7 @@ export default function Home({
   onOpenModal,
   availableGroups,
   deleteGroup,
-  cantDeleteGroup,
+  undeletableGroup,
 }) {
   const orderedMembers = members.slice().sort(compareFirstName);
   const [groupValue, setGroupValue] = useState('');
@@ -54,7 +54,7 @@ export default function Home({
             {group}
             <Delete onClick={() => deleteGroup(group)}>&times;</Delete>
           </GroupHeadline>
-          {cantDeleteGroup === group && (
+          {undeletableGroup === group && (
             <ErrorMessage text="Please add remaining members to other groups first!" />
           )}
           {orderedMembers
