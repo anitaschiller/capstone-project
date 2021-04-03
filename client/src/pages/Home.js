@@ -80,13 +80,6 @@ export default function Home({
             return group;
           }
         });
-      /*       const filteredFittingMembersGroups = fittingMembersGroups.filter(
-        (group) => {
-          if (renderedGroups.includes(group)) {
-            return group;
-          }
-        }
-      ); */
 
       const uniqueFittingGroups = [...new Set(fittingGroups)];
 
