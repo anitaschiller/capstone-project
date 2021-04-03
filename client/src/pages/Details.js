@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
 
 import EntryCard from '../components/EntryCard';
+import ErrorMessage from '../components/ErrorMessage';
 import { isValidEntry } from '../lib/validateFunctions';
 import NoteTags from '../components/NoteTags';
 import { StarIconFilled } from '../icons/StarIconFilled';
@@ -29,10 +30,6 @@ export default function Details({ updateMember, member }) {
         .flatMap((entry) => entry.remember)
         .filter((note) => note.isSaved);
     }
-  }
-
-  function unfoldForm() {
-    setIsUnfolded(!isUnfolded);
   }
 
   function changeHandler(event) {
@@ -119,7 +116,7 @@ export default function Details({ updateMember, member }) {
         </SavedNoteWrapper>
       </DetailsHeader>
       <FormStyled>
-        <h3 onClick={unfoldForm}>
+        <h3 onClick={() => setIsUnfolded(!isUnfolded)}>
           New Entry {isUnfolded ? <FoldIconStyled /> : <UnfoldIconStyled />}
         </h3>
         {isUnfolded && (
@@ -151,7 +148,7 @@ export default function Details({ updateMember, member }) {
           </>
         )}
         {isError && (
-          <Error>Please check if all fields were filled correctly!</Error>
+          <ErrorMessage text="Please check if all fields were filled correctly!" />
         )}
       </FormStyled>
       <CardContainer>
@@ -186,13 +183,6 @@ const DetailsGroup = styled.p`
   color: var(--grey);
   font-style: italic;
   margin: 0.4rem 0;
-`;
-
-const Error = styled.span`
-  border: 1px solid var(--signal);
-  color: var(--signal);
-  margin-top: 0.5rem;
-  padding: 0.5rem;
 `;
 
 const FormStyled = styled.form`
@@ -256,7 +246,7 @@ const SavedNoteWrapper = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
 
-  margin: 1.5rem 0 0.8rem 0;
+  margin: 0.5rem 0 0.5rem 0;
   height: fit-content;
 `;
 

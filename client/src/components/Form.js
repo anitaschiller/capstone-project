@@ -2,9 +2,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { useState } from 'react';
 
+import ErrorMessage from '../components/ErrorMessage';
 import { isValidMember } from '../lib/validateFunctions';
+import NewGroup from '../components/NewGroup';
 
-export default function Form({ submitFunction }) {
+export default function Form({ submitFunction, availableGroups, addGroup }) {
   const initialMember = {
     firstName: '',
     lastName: '',
@@ -38,7 +40,7 @@ export default function Form({ submitFunction }) {
     <FormStyled>
       <div>
         <label htmlFor="first-name">First name*:</label>
-        <input
+        <Input
           type="text"
           name="firstName"
           id="first-name"
@@ -48,7 +50,7 @@ export default function Form({ submitFunction }) {
       </div>
       <div>
         <label htmlFor="last-name">Last name*:</label>
-        <input
+        <Input
           type="text"
           name="lastName"
           id="last-name"
@@ -67,33 +69,38 @@ export default function Form({ submitFunction }) {
       </div>
       <div>
         <label htmlFor="group">Group*:</label>
-        <select
-          name="group"
-          id="group"
-          value={member.group}
-          onChange={handleChange}
-        >
-          <option>Please select...</option>
-          <option>Neue Fische</option>
-          <option>ABC congress</option>
-          <option>Partner company A</option>
-        </select>
+        <div>
+          <select
+            name="group"
+            id="group"
+            value={member.group}
+            onChange={handleChange}
+          >
+            <option>Please select...</option>
+            {availableGroups.map((group) => (
+              <option>{group}</option>
+            ))}
+          </select>
+          <NewGroup addGroup={addGroup} />
+        </div>
       </div>
 
       {wasSuccessful && <Success>Member successfully added!</Success>}
 
-      {isError && <Error>Please fill in all required fields!</Error>}
+      {isError && <ErrorMessage text="Please fill in all required fields!" />}
       <div>
-        <button onClick={submitHandler}>SAVE</button>
+        <Button onClick={submitHandler}>SAVE</Button>
       </div>
     </FormStyled>
   );
 }
 
-const Error = styled.span`
-  border: 1px solid var(--signal);
-  color: var(--signal);
-  padding: 0.5rem;
+const Button = styled.button`
+  font-size: 14px;
+  color: var(--white);
+  background: var(--primary);
+  padding: 0.3rem;
+  width: 100%;
 `;
 
 const FormStyled = styled.form`
@@ -101,24 +108,8 @@ const FormStyled = styled.form`
   grid-template-columns: 55% auto;
   grid-gap: 1rem;
 
-  button {
-    font-size: 14px;
-    color: var(--white);
-    background: var(--primary);
-    padding: 0.3rem;
-    width: 100%;
-  }
-
   div {
     grid-column: 1 / 3;
-    width: 100%;
-  }
-
-  input {
-    border: var(--grey) solid 1px;
-    border-radius: 5px;
-    height: 1.5rem;
-    margin: 0.5rem 0;
     width: 100%;
   }
 
@@ -131,7 +122,7 @@ const FormStyled = styled.form`
     border-radius: 5px;
     height: 1.5rem;
     margin: 0.5rem 0;
-    width: 100%;
+    width: 88%;
   }
 
   span {
@@ -145,6 +136,14 @@ const FormStyled = styled.form`
     margin: 0.5rem 0;
     width: 100%;
   }
+`;
+
+const Input = styled.input`
+  border: var(--grey) solid 1px;
+  border-radius: 5px;
+  height: 1.5rem;
+  margin: 0.5rem 0;
+  width: 100%;
 `;
 
 const Success = styled.span`
