@@ -5,7 +5,7 @@ import styled from 'styled-components/macro';
 import { EditIcon } from '../icons/EditIcon';
 import { DeleteIcon } from '../icons/DeleteIcon';
 
-export default function Member({ member, onOpenModal }) {
+export default function Member({ member, onOpenModal, setShowHomeIcon }) {
   const firstName = `${member.firstName}`;
   const firstNameLowerCase = firstName.toLowerCase();
   const lastName = `${member.lastName}`;
@@ -21,16 +21,16 @@ export default function Member({ member, onOpenModal }) {
         <MemberName>
           {member.firstName} {member.lastName}
         </MemberName>
-        {
-          <Link
-            to={{
-              pathname: url + `${fullName}`,
-              state: { member },
-            }}
-          >
-            <EditIconStyled />
-          </Link>
-        }
+        <Link
+          to={{
+            pathname: url + `${fullName}`,
+            state: { member },
+          }}
+          onClick={() => setShowHomeIcon(false)}
+        >
+          <EditIconStyled />
+        </Link>
+
         <span onClick={onOpenModal}>
           <DeleteIconStyled />
         </span>

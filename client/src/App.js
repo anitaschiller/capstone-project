@@ -19,6 +19,7 @@ function App() {
     loadFromLocal('groups') ?? []
   );
   const [canDeleteGroup, setCanDeleteGroup] = useState(true);
+  const [showHomeIcon, setShowHomeIcon] = useState(true);
 
   useEffect(() => {
     saveToLocal('members', members);
@@ -99,6 +100,7 @@ function App() {
               deleteGroup={deleteGroup}
               canDeleteGroup={canDeleteGroup}
               remainingMembers={remainingMembers}
+              setShowHomeIcon={setShowHomeIcon}
             />
           </Route>
           <Route path="/add">
@@ -113,7 +115,6 @@ function App() {
               availableGroups={availableGroups}
               updateMember={updateMember}
               member={findCurrentMember()}
-              updateMember={updateMember}
               addGroup={addGroup}
             />
           </Route>
@@ -125,7 +126,10 @@ function App() {
           confirmDeletion={confirmDeletion}
         />
       )}
-      <Navigation />
+      <Navigation
+        showHomeIcon={showHomeIcon}
+        setShowHomeIcon={setShowHomeIcon}
+      />
     </Wrapper>
   );
 }
