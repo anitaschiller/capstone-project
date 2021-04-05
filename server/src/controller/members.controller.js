@@ -1,26 +1,52 @@
-/* function customerForm(request, response) {
-  response.send(`
-  <h1>Please enter your details</h1>
-  <form method='POST'>
-    <label for='customername'> Name:
-      <input type='text' name='customername'>
-    </label>
-    <label for='customeremail'> Email:
-      <input type='text' name='customeremail'>
-    </label>
-    <button>Send</button>
-  </form>
-  `);
+import Member from '../models/member.model.js';
+
+function getMember(request, response) {
+  Member.find()
+    .then((members) => response.json(members))
+    .catch((error) => response.json(error.message));
 }
 
-function postCustomer(request, response) {
-  const { customername, customeremail } = request.body;
-  response.send(`
-  <h2>You entered the following details:</h2>
-  <p>Name: ${customername}</p>
-  <p>E-Mail: ${customeremail}</p>
-  `);
+function postMember(request, response) {
+  const newMember = new Member({
+    firstName: request.body.firstName,
+    lastName: request.body.lastName,
+    description: request.body.description,
+    group: request.body.group,
+    image: request.body.image,
+    entries: request.body.entries,
+  });
+
+  newMember
+    .save()
+    .then((member) => response.json(member))
+    .catch((error) => response.json(error.message));
 }
 
-export { customerForm, postCustomer };
- */
+function updateMember(request, response) {
+  const memberId = request.params.memberId;
+
+  const updatedMember = {
+    firstName: request.body.firstName,
+    lastName: request.body.lastName,
+    description: request.body.description,
+    group: request.body.group,
+    image: request.body.image,
+    entries: request.body.entries,
+  };
+
+  Member.findOneAndUpdate({ _id: memberId }, updatedMember, {
+    new: true,
+  })
+    .then((member) => response.json(member))
+    .catch((error) => response.json(error.message));
+}
+
+function deleteMember(request, response) {
+  const idToDelete = request.params.memberId;
+
+  Member.findOneAndDelete({ _id: idToDelete }).catch((error) =>
+    response.json(error.message)
+  );
+}
+
+export { getMember, postMember, updateMember, deleteMember };
