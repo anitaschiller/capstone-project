@@ -110,8 +110,8 @@ export default function Home({
         <label>Filter group:</label>
         <select value={groupValue} onChange={filterGroups}>
           <option>Please select...</option>
-          {availableGroups.map((group, index) => (
-            <option key={index}>{group}</option>
+          {availableGroups.map((group) => (
+            <option key={group._id}>{group.name}</option>
           ))}
         </select>
         <span onClick={removeFilters}>
@@ -121,14 +121,14 @@ export default function Home({
       {renderedGroups.map((group, index) => (
         <GroupWrapper key={index}>
           <GroupHeadline>
-            {group}
+            {group.name}
             <Delete onClick={() => deleteGroup(group)}>&times;</Delete>
           </GroupHeadline>
           {!canDeleteGroup && (
             <ErrorMessage text="Please add the members below to other groups first!" />
           )}
           {renderedMembers
-            .filter((member) => member.group === group)
+            .filter((member) => member.group === group.name)
             .map((member) => (
               <Member
                 key={member._id}

@@ -3,8 +3,8 @@ import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
 
-import Member from './models/member.model.js';
 import memberRoutes from './routes/members.routes.js';
+import groupRoutes from './routes/groups.routes.js';
 
 const connectionString = 'mongodb://localhost:27017/remember-app';
 
@@ -23,5 +23,6 @@ server.get('/', (request, response) => {
 });
 
 server.use(memberRoutes);
+server.use(groupRoutes);
 
 server.listen(4000, () => console.log('Server started'));

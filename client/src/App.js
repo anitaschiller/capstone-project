@@ -15,17 +15,26 @@ function App() {
   console.log('members', members);
   const [isShown, setIsShown] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
-  console.log('idToDelete', idToDelete);
   const [availableGroups, setAvailableGroups] = useState(
-    loadFromLocal('groups') ?? []
+    /*   loadFromLocal('groups') ?? */ []
   );
   const [canDeleteGroup, setCanDeleteGroup] = useState(true);
   const [showHomeIcon, setShowHomeIcon] = useState(true);
+
+  const location = useLocation();
+  const member = location?.state?.member ?? null;
 
   useEffect(() => {
     fetch('http://localhost:4000/members')
       .then((result) => result.json())
       .then((members) => setMembers(members))
+      .catch((error) => console.error(error.message));
+  }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:4000/groups')
+      .then((result) => result.json())
+      .then((groups) => setAvailableGroups(groups))
       .catch((error) => console.error(error.message));
   }, []);
 
@@ -36,9 +45,6 @@ function App() {
   useEffect(() => {
     saveToLocal('groups', availableGroups);
   }, [availableGroups]);
-
-  const location = useLocation();
-  const member = location?.state?.member ?? null;
 
   function addMember(member) {
     fetch('http://localhost:4000/members', {
@@ -101,10 +107,7 @@ function App() {
       headers: {
         'Content-Type': 'application/json',
       },
-    })
-      /*   .then((result) => result.json())
-      .then((updatedMember) => setMembers([...upToDateMembers, updatedMember])) */
-      .catch((error) => console.error(error.message));
+    }).catch((error) => console.error(error.message));
   }
 
   function findCurrentMember() {
@@ -116,14 +119,30 @@ function App() {
   }
 
   function addGroup(groupToAdd) {
-    setAvailableGroups([...availableGroups, groupToAdd]);
+    fetch('http://localhost:4000/groups', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: groupToAdd,
+      }),
+    })
+      .then((result) => result.json())
+      .then((group) => setAvailableGroups([...availableGroups, group]))
+      .catch((error) => console.error(error.message));
   }
 
   function deleteGroup(groupToDelete) {
     const groupMembers = members.filter(
-      (member) => member.group === groupToDelete
+      (member) => member.group === groupToDelete.name
     );
     if (groupMembers.length === 0) {
+      fetch(`http://localhost:4000/groups/${groupToDelete._id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).catch((error) => console.error(error.message));
+
       const remainingGroups = availableGroups.filter(
         (group) => group !== groupToDelete
       );
@@ -149,7 +168,6 @@ function App() {
               availableGroups={availableGroups}
               deleteGroup={deleteGroup}
               canDeleteGroup={canDeleteGroup}
-              /* remainingMembers={remainingMembers} */
               setShowHomeIcon={setShowHomeIcon}
             />
           </Route>

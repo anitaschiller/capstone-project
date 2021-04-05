@@ -25,6 +25,7 @@ export default function Form({
   };
 
   const [member, setMember] = useState(currentMember ?? initialMember);
+  console.log('member', member);
   const [isError, setIsError] = useState(false);
   const [wasSuccessful, setWasSuccessful] = useState(false);
   const [selectedFileURL, setSelectedFileURL] = useState(
@@ -123,8 +124,8 @@ export default function Form({
               onChange={handleChange}
             >
               <option>Please select...</option>
-              {availableGroups.map((group, index) => (
-                <option key={index}>{group}</option>
+              {availableGroups.map((group) => (
+                <option key={group._id}>{group.name}</option>
               ))}
             </select>
             <NewGroup addGroup={addGroup} />

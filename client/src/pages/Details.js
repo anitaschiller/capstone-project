@@ -122,8 +122,8 @@ export default function Details({
         <DetailsGroup>{member.group}</DetailsGroup>
         <DetailsDescription>{member.description}</DetailsDescription>
         <SavedNoteWrapper>
-          {savedNotes.map((note) => (
-            <SavedNote onClick={() => toggleNote(note)}>
+          {savedNotes.map((note, index) => (
+            <SavedNote key={index} onClick={() => toggleNote(note)}>
               <StarFilledStyled />
               <Note>{note.noteContent}</Note>
             </SavedNote>
