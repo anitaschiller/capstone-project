@@ -131,9 +131,9 @@ export default function Home({
             .filter((member) => member.group === group)
             .map((member) => (
               <Member
-                key={member.id}
+                key={member._id}
                 member={member}
-                onOpenModal={() => onOpenModal(member.id)}
+                onOpenModal={() => onOpenModal(member._id)}
                 setShowHomeIcon={setShowHomeIcon}
               />
             ))}

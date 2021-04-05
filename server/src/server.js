@@ -1,4 +1,5 @@
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
 
@@ -17,6 +18,7 @@ import customerRoutes from './routes/customers.routes.js'; */
 const server = express();
 
 server.use(bodyParser.json());
+server.use(cors());
 
 server.get('/', (request, response) => {
   response.json({ status: 'Server is up and running' });
@@ -24,11 +26,7 @@ server.get('/', (request, response) => {
 
 server.get('/members', (request, response) => {
   Member.find()
-    .then((members) =>
-      response.json(
-        members /* members.length !== 0 ? members : 'No members available' */
-      )
-    )
+    .then((members) => response.json(members))
     .catch((error) => response.json(error.message));
 });
 
@@ -37,6 +35,7 @@ server.post('/members', (request, response) => {
     firstName: request.body.firstName,
     lastName: request.body.lastName,
     description: request.body.description,
+    group: request.body.group,
     image: request.body.image,
     entries: request.body.entries,
   });
@@ -54,6 +53,7 @@ server.put('/:memberId', (request, response) => {
     firstName: request.body.firstName,
     lastName: request.body.lastName,
     description: request.body.description,
+    group: request.body.group,
     image: request.body.image,
     entries: request.body.entries,
   };
@@ -68,9 +68,9 @@ server.put('/:memberId', (request, response) => {
 server.delete('/:memberId', (request, response) => {
   const idToDelete = request.params.memberId;
 
-  Member.findOneAndDelete({ _id: idToDelete })
-    .then((member) => response.json(member))
-    .catch((error) => response.json(error.message));
+  Member.findOneAndDelete({ _id: idToDelete }).catch((error) =>
+    response.json(error.message)
+  );
 });
 
 /* app.use(productRoutes);
