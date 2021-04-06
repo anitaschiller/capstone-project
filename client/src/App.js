@@ -17,6 +17,7 @@ function App() {
   const [availableGroups, setAvailableGroups] = useState(
     loadFromLocal('groups') ?? []
   );
+  console.log('availableGroups', availableGroups);
   const [canDeleteGroup, setCanDeleteGroup] = useState(true);
   const [showHomeIcon, setShowHomeIcon] = useState(true);
 
@@ -126,7 +127,9 @@ function App() {
       }),
     })
       .then((result) => result.json())
-      .then((group) => setAvailableGroups([...availableGroups, group]))
+      .then((groupToAdd) =>
+        setAvailableGroups([...availableGroups, groupToAdd])
+      )
       .catch((error) => console.error(error.message));
   }
 

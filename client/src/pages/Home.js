@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import ErrorMessage from '../components/ErrorMessage';
-import { FilterDeleteIcon } from '../icons/FilterDeleteIcon';
 import Member from '../components/Member';
 import Searchbar from '../components/Searchbar';
-import { useEffect } from 'react';
 
 export default function Home({
   members,
@@ -17,10 +15,10 @@ export default function Home({
   setShowHomeIcon,
 }) {
   const orderedMembers = members.slice().sort(compareFirstName);
-  const [groupValue, setGroupValue] = useState('');
-  const [searchValue, setSearchValue] = useState('');
   const [renderedGroups, setRenderedGroups] = useState(availableGroups ?? []);
   const [renderedMembers, setRenderedMembers] = useState(orderedMembers ?? []);
+  const renderedGroupNames = renderedGroups.map((group) => group.name);
+  console.log('renderedGroupNames', renderedGroupNames);
 
   useEffect(() => {
     setRenderedMembers(members);
@@ -30,10 +28,6 @@ export default function Home({
     setRenderedGroups(availableGroups);
   }, [availableGroups]);
 
-  useEffect(() => {
-    findMember(searchValue);
-  }, [searchValue]);
-
   function compareFirstName(a, b) {
     if (a.firstName === b.firstName) {
       return 0;
@@ -41,19 +35,6 @@ export default function Home({
       return -1;
     } else {
       return 1;
-    }
-  }
-
-  function filterGroups(event) {
-    setGroupValue(event.target.value);
-    event.preventDefault();
-    if (event.target.value === 'Please select...') {
-      setRenderedGroups(availableGroups);
-    } else {
-      const searchedGroup = availableGroups.filter(
-        (group) => group === event.target.value
-      );
-      setRenderedGroups(searchedGroup);
     }
   }
 
@@ -73,15 +54,22 @@ export default function Home({
           return member;
         }
       });
+      console.log('fittingMembers', fittingMembers);
 
       const fittingMembersGroups = fittingMembers.map((member) => member.group);
+      console.log('fittingMembersGroups', fittingMembersGroups);
+
+      /* const renderedGroupNames = renderedGroups.map((group) => group.name);
+      console.log('renderedGroupNames', renderedGroupNames); */
       const filteredFittingMembersGroups = fittingMembersGroups.filter(
         (group) => {
-          if (renderedGroups.includes(group)) {
+          if (renderedGroupNames.includes(group)) {
             return group;
           }
         }
       );
+      //console.log('renderedGroups', renderedGroups);
+      console.log('filteredFittingMembersGroups', filteredFittingMembersGroups);
 
       const uniqueFittingGroups = [...new Set(filteredFittingMembersGroups)];
 
@@ -93,31 +81,14 @@ export default function Home({
     }
   }
 
-  function removeFilters() {
-    setSearchValue('');
-    setGroupValue('');
-  }
-
   return (
     <>
       <h2>Home</h2>
-      <FilterSection>
-        <Searchbar
-          findMember={findMember}
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-        />
-        <label>Filter group:</label>
-        <select value={groupValue} onChange={filterGroups}>
-          <option>Please select...</option>
-          {availableGroups.map((group) => (
-            <option key={group._id}>{group.name}</option>
-          ))}
-        </select>
-        <span onClick={removeFilters}>
-          <FilterDeleteStyled />
-        </span>
-      </FilterSection>
+      <Searchbar
+        findMember={findMember}
+        availableGroups={availableGroups}
+        setRenderedGroups={setRenderedGroups}
+      />
       {renderedGroups.map((group, index) => (
         <GroupWrapper key={index}>
           <GroupHeadline>
@@ -142,19 +113,6 @@ export default function Home({
     </>
   );
 }
-
-const FilterDeleteStyled = styled(FilterDeleteIcon)`
-  color: var(--grey);
-  transform: scale(0.7);
-
-  position: absolute;
-  top: 0;
-  right: 0;
-`;
-
-const FilterSection = styled.section`
-  position: relative;
-`;
 
 const GroupWrapper = styled.div`
   display: flex;
