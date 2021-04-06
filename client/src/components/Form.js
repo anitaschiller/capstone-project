@@ -136,7 +136,7 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
   );
 }
 
-const Button = styled.button`
+/* const Button = styled.button`
   grid-column: 1 / 3;
   font-size: 14px;
   color: var(--white);
@@ -193,6 +193,90 @@ const Input = styled.input`
   height: 1.5rem;
   margin: 0.5rem 0;
   width: 100%;
+`;
+
+const Success = styled.span`
+  border: 1px solid #000000;
+  padding: 0.5rem;
+`;
+
+const TextInput = styled.input`
+  border: var(--grey) solid 1px;
+  border-radius: 5px;
+  height: 1.5rem;
+  margin: 0.5rem 0;
+  width: 100%;
+`; */
+
+const Button = styled.button`
+  grid-column: 1 / 3;
+  font-size: 14px;
+  color: var(--white);
+  background: var(--primary);
+  padding: 0.3rem;
+  width: 100%;
+`;
+
+const Description = styled.div`
+  grid-column: 1 / 3;
+  width: 100%;
+`;
+
+const FileInput = styled.input`
+  border: none;
+  height: 1.5rem;
+  margin: 0.5rem 0;
+  width: 100%;
+`;
+
+const FormStyled = styled.form`
+  display: grid;
+  grid-template-columns: 55% auto;
+  grid-gap: 1rem;
+  label {
+    color: var(--grey);
+  }
+  select {
+    border: var(--grey) solid 1px;
+    border-radius: 5px;
+    height: 1.5rem;
+    margin: 0.5rem 0;
+    width: 88%;
+  }
+  span {
+    grid-column: 1 / 3;
+    justify-self: center;
+  }
+  textarea {
+    border: var(--grey) solid 1px;
+    border-radius: 5px;
+    margin: 0.5rem 0;
+    width: 100%;
+  }
+`;
+
+const Group = styled.div`
+  grid-column: 1 / 3;
+  width: 100%;
+`;
+
+const Image = styled.div`
+  grid-column: 1 / 3;
+`;
+
+const ImagePreview = styled.img`
+  align-self: flex-end;
+  justify-self: center;
+  grid-column: 2 / 3;
+  grid-row: 1 / 3;
+  border-radius: 50%;
+  margin: 0 0 0.5rem 0;
+  width: 128px;
+  height: auto;
+`;
+
+const Name = styled.div`
+  grid-column: 1 / 2;
 `;
 
 const Success = styled.span`
