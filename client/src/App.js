@@ -11,12 +11,11 @@ import Navigation from './components/Navigation';
 import { loadFromLocal, saveToLocal } from './lib/localStorage';
 
 function App() {
-  const [members, setMembers] = useState(/* loadFromLocal('members') ?? */ []);
-  console.log('members', members);
+  const [members, setMembers] = useState(loadFromLocal('members') ?? []);
   const [isShown, setIsShown] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
   const [availableGroups, setAvailableGroups] = useState(
-    /*   loadFromLocal('groups') ?? */ []
+    loadFromLocal('groups') ?? []
   );
   const [canDeleteGroup, setCanDeleteGroup] = useState(true);
   const [showHomeIcon, setShowHomeIcon] = useState(true);
