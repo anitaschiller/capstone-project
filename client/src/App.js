@@ -79,6 +79,10 @@ function App() {
       setAvailableGroups(remainingGroups);
     } else {
       setUndeletableGroup(groupToDelete);
+
+      setTimeout(function () {
+        setUndeletableGroup('');
+      }, 3000);
     }
   }
 
@@ -93,6 +97,8 @@ function App() {
               onOpenModal={openModal}
               availableGroups={availableGroups}
               deleteGroup={deleteGroup}
+              undeleteableGroup={undeletableGroup}
+              remainingMembers={remainingMembers}
               undeletableGroup={undeletableGroup}
             />
           </Route>

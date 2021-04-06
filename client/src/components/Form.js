@@ -29,10 +29,18 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
     if (isValidMember(member)) {
       submitFunction(member);
       setMember(initialMember);
+
       setWasSuccessful(true);
       setIsError(false);
+      setTimeout(function () {
+        setWasSuccessful(false);
+      }, 3000);
     } else {
       setIsError(true);
+
+      setTimeout(function () {
+        setIsError(false);
+      }, 3000);
     }
   }
 
