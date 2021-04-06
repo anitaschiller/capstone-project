@@ -8,11 +8,13 @@ import { isValidMember } from '../lib/validateFunctions';
 import NewGroup from '../components/NewGroup';
 
 export default function Form({ submitFunction, availableGroups, addGroup }) {
+  const PLACEHOLDER_URL =
+    'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';
+
   const initialMember = {
     firstName: '',
     lastName: '',
-    image:
-      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+    image: PLACEHOLDER_URL,
     description: '',
     group: '',
   };
@@ -20,9 +22,7 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
   const [member, setMember] = useState(initialMember);
   const [isError, setIsError] = useState(false);
   const [wasSuccessful, setWasSuccessful] = useState(false);
-  const [selectedFileURL, setSelectedFileURL] = useState(
-    'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
-  );
+  const [selectedFileURL, setSelectedFileURL] = useState(PLACEHOLDER_URL);
   const [openImageCropper, setOpenImageCropper] = useState(false);
 
   function handleChange(event) {
@@ -37,9 +37,7 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
       const memberWithImage = { ...member, image: selectedFileURL };
       submitFunction(memberWithImage);
       setMember(initialMember);
-      setSelectedFileURL(
-        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
-      );
+      setSelectedFileURL(PLACEHOLDER_URL);
 
       setWasSuccessful(true);
       setIsError(false);
@@ -135,78 +133,6 @@ export default function Form({ submitFunction, availableGroups, addGroup }) {
     </>
   );
 }
-
-/* const Button = styled.button`
-  grid-column: 1 / 3;
-  font-size: 14px;
-  color: var(--white);
-  background: var(--primary);
-  padding: 0.3rem;
-  width: 100%;
-`;
-
-const Description = styled.div`
-  grid-column: 1 / 3;
-  width: 100%;
-`;
-
-const FileInput = styled.input`
-  border: none;
-  height: 1.5rem;
-  margin: 0.5rem 0;
-  width: 100%;
-`;
-
-const FormStyled = styled.form`
-  display: grid;
-  grid-template-columns: 55% auto;
-  grid-gap: 1rem;
-
-  label {
-    color: var(--grey);
-  }
-
-  select {
-    border: var(--grey) solid 1px;
-    border-radius: 5px;
-    height: 1.5rem;
-    margin: 0.5rem 0;
-    width: 88%;
-  }
-
-  span {
-    grid-column: 1 / 3;
-    justify-self: center;
-  }
-
-  textarea {
-    border: var(--grey) solid 1px;
-    border-radius: 5px;
-    margin: 0.5rem 0;
-    width: 100%;
-  }
-`;
-
-const Input = styled.input`
-  border: var(--grey) solid 1px;
-  border-radius: 5px;
-  height: 1.5rem;
-  margin: 0.5rem 0;
-  width: 100%;
-`;
-
-const Success = styled.span`
-  border: 1px solid #000000;
-  padding: 0.5rem;
-`;
-
-const TextInput = styled.input`
-  border: var(--grey) solid 1px;
-  border-radius: 5px;
-  height: 1.5rem;
-  margin: 0.5rem 0;
-  width: 100%;
-`; */
 
 const Button = styled.button`
   grid-column: 1 / 3;
