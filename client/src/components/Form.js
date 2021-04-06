@@ -187,29 +187,12 @@ const FormStyled = styled.form`
   }
 `;
 
-const Group = styled.div`
-  grid-column: 1 / 3;
+const Input = styled.input`
+  border: var(--grey) solid 1px;
+  border-radius: 5px;
+  height: 1.5rem;
+  margin: 0.5rem 0;
   width: 100%;
-`;
-
-const Image = styled.div`
-  grid-column: 1 / 3;
-`;
-
-const ImagePreview = styled.img`
-  align-self: flex-end;
-  justify-self: center;
-  grid-column: 2 / 3;
-  grid-row: 1 / 3;
-
-  border-radius: 50%;
-  margin: 0 0 0.5rem 0;
-  width: 128px;
-  height: auto;
-`;
-
-const Name = styled.div`
-  grid-column: 1 / 2;
 `;
 
 const Success = styled.span`

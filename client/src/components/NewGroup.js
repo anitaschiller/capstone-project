@@ -20,7 +20,7 @@ export default function NewGroup({ addGroup }) {
 
       {isUnfolded && (
         <InputWrapper>
-          <input
+          <GroupInput
             type="text"
             name="new-group"
             placeholder=" New Group"
@@ -51,20 +51,21 @@ const InputWrapper = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+`;
 
-  input {
-    border: var(--grey) solid 1px;
-    border-radius: 5px;
-    height: 1.5rem;
-    margin: 0.5rem 0;
-    width: 70%;
-  }
+const GroupInput = styled.input`
+  border: var(--grey) solid 1px;
+  border-radius: 5px;
+  height: 1.5rem;
+  margin: 0.5rem 0;
+  width: 70%;
 `;
 
 const GroupButton = styled.button`
   align-self: center;
+  background: var(--primary);
+  color: var(--white);
   font-size: 0.8rem;
   width: 25%;
-  height: 1.5rem;
-  padding: 0;
+  padding: 0.2rem;
 `;

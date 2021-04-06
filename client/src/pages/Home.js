@@ -13,7 +13,7 @@ export default function Home({
   onOpenModal,
   availableGroups,
   deleteGroup,
-  canDeleteGroup,
+  undeletableGroup,
 }) {
   const orderedMembers = members.slice().sort(compareFirstName);
   const [groupValue, setGroupValue] = useState('');
@@ -73,16 +73,15 @@ export default function Home({
         }
       });
 
-      const fittingMembersGroups = fittingMembers.map((member) => member.group);
-      const filteredFittingMembersGroups = fittingMembersGroups.filter(
-        (group) => {
+      const fittingGroups = fittingMembers
+        .map((member) => member.group)
+        .filter((group) => {
           if (renderedGroups.includes(group)) {
             return group;
           }
-        }
-      );
+        });
 
-      const uniqueFittingGroups = [...new Set(filteredFittingMembersGroups)];
+      const uniqueFittingGroups = [...new Set(fittingGroups)];
 
       setRenderedMembers(fittingMembers);
       setRenderedGroups(uniqueFittingGroups);
@@ -117,14 +116,19 @@ export default function Home({
           <FilterDeleteStyled />
         </span>
       </FilterSection>
+<<<<<<< HEAD
       {renderedGroups.map((group, index) => (
         <GroupWrapper key={index}>
+=======
+      {renderedGroups.map((group) => (
+        <GroupWrapper>
+>>>>>>> main
           <GroupHeadline>
             {group}
             <Delete onClick={() => deleteGroup(group)}>&times;</Delete>
           </GroupHeadline>
-          {!canDeleteGroup && (
-            <ErrorMessage text="Please add the members below to other groups first!" />
+          {undeletableGroup === group && (
+            <ErrorMessage text="Please add remaining members to other groups first!" />
           )}
           {renderedMembers
             .filter((member) => member.group === group)
@@ -142,16 +146,37 @@ export default function Home({
 }
 
 const FilterDeleteStyled = styled(FilterDeleteIcon)`
-  color: var(--grey);
+  color: #000000;
   transform: scale(0.7);
-
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 25%;
+  right: 3%;
 `;
 
-const FilterSection = styled.section`
+const FilterSection = styled.form`
   position: relative;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: 0.7rem;
+
+  background: #b1bded;
+  border-radius: 5px;
+  margin: 2rem 0;
+  padding: 1rem 1rem 0.6rem 1rem;
+
+  label {
+    font-size: 12px;
+    align-self: center;
+    font-weight: bold;
+  }
+
+  input,
+  select {
+    border: solid 1px var(--grey);
+    border-radius: 5px;
+    height: 1.5rem;
+    width: 80%;
+  }
 `;
 
 const GroupWrapper = styled.div`
