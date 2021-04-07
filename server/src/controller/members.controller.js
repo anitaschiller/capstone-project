@@ -1,6 +1,6 @@
 import Member from '../models/member.model.js';
 
-function getMember(request, response) {
+function getMembers(request, response) {
   Member.find()
     .then((members) => response.json(members))
     .catch((error) => response.json(error.message));
@@ -44,9 +44,9 @@ function updateMember(request, response) {
 function deleteMember(request, response) {
   const idToDelete = request.params.memberId;
 
-  Member.findOneAndDelete({ _id: idToDelete }).catch((error) =>
-    response.json(error.message)
-  );
+  Member.findOneAndDelete({ _id: idToDelete })
+    .then(() => response.json(`Member with id ${idToDelete} deleted`))
+    .catch((error) => response.json(error.message));
 }
 
-export { getMember, postMember, updateMember, deleteMember };
+export { getMembers, postMember, updateMember, deleteMember };

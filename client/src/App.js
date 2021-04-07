@@ -29,9 +29,7 @@ function App() {
       .then((result) => result.json())
       .then((members) => setMembers(members))
       .catch((error) => console.error(error.message));
-  }, []);
 
-  useEffect(() => {
     fetch('http://localhost:4000/groups')
       .then((result) => result.json())
       .then((groups) => setAvailableGroups(groups))
@@ -64,9 +62,9 @@ function App() {
       .catch((error) => console.error(error.message));
   }
 
-  function updateMember(updatedMember) {
+  function updateMember(memberToUpdate) {
     const upToDateMembers = members.filter(
-      (member) => member._id !== updatedMember._id
+      (member) => member._id !== memberToUpdate._id
     );
 
     fetch(`http://localhost:4000/${updatedMember._id}`, {
@@ -167,12 +165,8 @@ function App() {
               onOpenModal={openModal}
               availableGroups={availableGroups}
               deleteGroup={deleteGroup}
-<<<<<<< HEAD
-              canDeleteGroup={canDeleteGroup}
-=======
               undeleteableGroup={undeletableGroup}
               remainingMembers={remainingMembers}
->>>>>>> main
               setShowHomeIcon={setShowHomeIcon}
               undeletableGroup={undeletableGroup}
             />

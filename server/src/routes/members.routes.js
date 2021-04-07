@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-  getMember,
+  getMembers,
   postMember,
   updateMember,
   deleteMember,
@@ -8,9 +8,9 @@ import {
 
 const router = express.Router();
 
-router.get('/members', getMember);
+router.get('/members', getMembers);
 router.post('/members', postMember);
-router.put('/:memberId', updateMember);
-router.delete('/:memberId', deleteMember);
+router.put('/members/:memberId', updateMember);
+router.delete('/members/:memberId', deleteMember);
 
 export default router;
