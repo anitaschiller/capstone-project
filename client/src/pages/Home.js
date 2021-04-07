@@ -13,7 +13,6 @@ export default function Home({
   onOpenModal,
   availableGroups,
   deleteGroup,
-  /* canDeleteGroup, */
   setShowHomeIcon,
   undeletableGroup,
 }) {
@@ -52,7 +51,7 @@ export default function Home({
       setRenderedGroups(availableGroups);
     } else {
       const searchedGroup = availableGroups.filter(
-        (group) => group === event.target.value
+        (group) => group.name === event.target.value
       );
       setRenderedGroups(searchedGroup);
     }
@@ -74,14 +73,19 @@ export default function Home({
           return member;
         }
       });
+      console.log('fittingMembers', fittingMembers);
+
+      const renderedGroupNames = renderedGroups.map((group) => group.name);
+      console.log('renderedGroupNames', renderedGroupNames);
 
       const fittingGroups = fittingMembers
         .map((member) => member.group)
         .filter((group) => {
-          if (renderedGroups.includes(group)) {
+          if (renderedGroupNames.includes(group)) {
             return group;
           }
         });
+      console.log('fittingGroups', fittingGroups);
 
       const uniqueFittingGroups = [...new Set(fittingGroups)];
 

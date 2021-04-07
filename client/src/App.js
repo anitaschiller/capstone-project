@@ -17,7 +17,6 @@ function App() {
   const [availableGroups, setAvailableGroups] = useState(
     loadFromLocal('groups') ?? []
   );
-  /* const [canDeleteGroup, setCanDeleteGroup] = useState(true); */
   const [showHomeIcon, setShowHomeIcon] = useState(true);
   const [undeletableGroup, setUndeletableGroup] = useState('');
 
@@ -67,20 +66,22 @@ function App() {
       (member) => member._id !== memberToUpdate._id
     );
 
-    fetch(`http://localhost:4000/${updatedMember._id}`, {
+    fetch(`http://localhost:4000/members/${memberToUpdate._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        firstName: updatedMember.firstName,
-        lastName: updatedMember.lastName,
-        description: updatedMember.description,
-        group: updatedMember.group,
-        image: updatedMember.image,
-        entries: updatedMember.entries,
+        firstName: memberToUpdate.firstName,
+        lastName: memberToUpdate.lastName,
+        description: memberToUpdate.description,
+        group: memberToUpdate.group,
+        image: memberToUpdate.image,
+        entries: memberToUpdate.entries,
       }),
     })
       .then((result) => result.json())
-      .then((updatedMember) => setMembers([...upToDateMembers, updatedMember]));
+      .then((memberToUpdate) =>
+        setMembers([...upToDateMembers, memberToUpdate])
+      );
   }
 
   function openModal(idToDelete) {
@@ -100,7 +101,7 @@ function App() {
     setMembers(remainingMembers);
     setIsShown(false);
 
-    fetch(`http://localhost:4000/${idToDelete}`, {
+    fetch(`http://localhost:4000/members/${idToDelete}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -166,7 +167,6 @@ function App() {
               availableGroups={availableGroups}
               deleteGroup={deleteGroup}
               undeleteableGroup={undeletableGroup}
-              remainingMembers={remainingMembers}
               setShowHomeIcon={setShowHomeIcon}
               undeletableGroup={undeletableGroup}
             />
