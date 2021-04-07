@@ -116,8 +116,8 @@ export default function Home({
           <FilterDeleteStyled />
         </span>
       </FilterSection>
-      {renderedGroups.map((group) => (
-        <GroupWrapper>
+      {renderedGroups.map((group, index) => (
+        <GroupWrapper key={index}>
           <GroupHeadline>
             {group}
             <Delete onClick={() => deleteGroup(group)}>&times;</Delete>
