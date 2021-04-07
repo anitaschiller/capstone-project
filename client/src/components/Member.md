@@ -1,8 +1,5 @@
-<!-- ```js
-import { useLocation } from 'react-router-dom';
-
-const location = useLocation();
-/* const member = location?.state?.member ?? null; */
+```js
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const member = {
   firstName: 'Max',
@@ -12,7 +9,7 @@ const member = {
   description: 'Geschäftsführer',
   entries: [],
 };
-
-<Member member={member} />;
+<Router>
+  <Member member={member} />
+</Router>;
 ```
- -->
