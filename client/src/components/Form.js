@@ -15,11 +15,14 @@ export default function Form({
   openEditForm,
   setOpenEditForm,
 }) {
+  /* export default function Form({ submitFunction, availableGroups, addGroup }) { */
+  const PLACEHOLDER_URL =
+    'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';
+
   const initialMember = {
     firstName: '',
     lastName: '',
-    image:
-      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+    image: PLACEHOLDER_URL,
     description: '',
     group: '',
   };
@@ -28,9 +31,7 @@ export default function Form({
   const [isError, setIsError] = useState(false);
   const [wasSuccessful, setWasSuccessful] = useState(false);
   const [selectedFileURL, setSelectedFileURL] = useState(
-    currentMember
-      ? currentMember.image
-      : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
+    currentMember ? currentMember.image : PLACEHOLDER_URL
   );
   const [openImageCropper, setOpenImageCropper] = useState(false);
 
@@ -46,9 +47,7 @@ export default function Form({
       const memberWithImage = { ...member, image: selectedFileURL };
       submitFunction(memberWithImage);
       setMember(initialMember);
-      setSelectedFileURL(
-        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
-      );
+      setSelectedFileURL(PLACEHOLDER_URL);
 
       setWasSuccessful(true);
       setIsError(false);
@@ -174,11 +173,9 @@ const FormStyled = styled.form`
   display: grid;
   grid-template-columns: 55% auto;
   grid-gap: 1rem;
-
   label {
     color: var(--grey);
   }
-
   select {
     border: var(--grey) solid 1px;
     border-radius: 5px;
@@ -186,12 +183,10 @@ const FormStyled = styled.form`
     margin: 0.5rem 0;
     width: 88%;
   }
-
   span {
     grid-column: 1 / 3;
     justify-self: center;
   }
-
   textarea {
     border: var(--grey) solid 1px;
     border-radius: 5px;
@@ -214,7 +209,6 @@ const ImagePreview = styled.img`
   justify-self: center;
   grid-column: 2 / 3;
   grid-row: 1 / 3;
-
   border-radius: 50%;
   margin: 0 0 0.5rem 0;
   width: 128px;
