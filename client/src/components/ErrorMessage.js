@@ -1,11 +1,7 @@
 import styled from 'styled-components';
 
 export default function ErrorMessage({ text }) {
-  return (
-    <>
-      <Error>{text}</Error>
-    </>
-  );
+  return <Error>{text}</Error>;
 }
 
 const Error = styled.span`

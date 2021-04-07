@@ -17,8 +17,9 @@ function App() {
   const [availableGroups, setAvailableGroups] = useState(
     loadFromLocal('groups') ?? []
   );
-  const [canDeleteGroup, setCanDeleteGroup] = useState(true);
+  /* const [canDeleteGroup, setCanDeleteGroup] = useState(true); */
   const [showHomeIcon, setShowHomeIcon] = useState(true);
+  const [undeletableGroup, setUndeletableGroup] = useState('');
 
   const location = useLocation();
   const member = location?.state?.member ?? null;
@@ -147,10 +148,10 @@ function App() {
       );
       setAvailableGroups(remainingGroups);
     } else {
-      setCanDeleteGroup(false);
+      setUndeletableGroup(groupToDelete);
 
       setTimeout(function () {
-        setCanDeleteGroup(true);
+        setUndeletableGroup('');
       }, 3000);
     }
   }
@@ -166,8 +167,14 @@ function App() {
               onOpenModal={openModal}
               availableGroups={availableGroups}
               deleteGroup={deleteGroup}
+<<<<<<< HEAD
               canDeleteGroup={canDeleteGroup}
+=======
+              undeleteableGroup={undeletableGroup}
+              remainingMembers={remainingMembers}
+>>>>>>> main
               setShowHomeIcon={setShowHomeIcon}
+              undeletableGroup={undeletableGroup}
             />
           </Route>
           <Route path="/add">
