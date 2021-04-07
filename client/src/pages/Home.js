@@ -13,6 +13,8 @@ export default function Home({
   onOpenModal,
   availableGroups,
   deleteGroup,
+  /* canDeleteGroup, */
+  setShowHomeIcon,
   undeletableGroup,
 }) {
   const orderedMembers = members.slice().sort(compareFirstName);
@@ -108,8 +110,8 @@ export default function Home({
         <label>Filter group:</label>
         <select value={groupValue} onChange={filterGroups}>
           <option>Please select...</option>
-          {availableGroups.map((group) => (
-            <option>{group}</option>
+          {availableGroups.map((group, index) => (
+            <option key={index}>{group}</option>
           ))}
         </select>
         <span onClick={removeFilters}>
@@ -132,6 +134,7 @@ export default function Home({
                 key={member.id}
                 member={member}
                 onOpenModal={() => onOpenModal(member.id)}
+                setShowHomeIcon={setShowHomeIcon}
               />
             ))}
         </GroupWrapper>

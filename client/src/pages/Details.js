@@ -3,14 +3,21 @@ import styled from 'styled-components/macro';
 import { useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
 
+import { EditIcon } from '../icons/EditIcon';
 import EntryCard from '../components/EntryCard';
 import ErrorMessage from '../components/ErrorMessage';
+import Form from '../components/Form';
 import { isValidEntry } from '../lib/validateFunctions';
 import NoteTags from '../components/NoteTags';
 import { StarIconFilled } from '../icons/StarIconFilled';
 import { UnfoldIcon } from '../icons/UnfoldIcon';
 
-export default function Details({ updateMember, member }) {
+export default function Details({
+  availableGroups,
+  updateMember,
+  member,
+  addGroup,
+}) {
   const initialEntry = {
     date: '',
     title: '',
@@ -23,6 +30,7 @@ export default function Details({ updateMember, member }) {
   const [isUnfolded, setIsUnfolded] = useState(false);
   const [tags, setTags] = useState([]);
   const savedNotes = findSavedNotes() ?? [];
+  const [openEditForm, setOpenEditForm] = useState(false);
 
   function findSavedNotes() {
     if (member.entries) {
@@ -107,6 +115,9 @@ export default function Details({ updateMember, member }) {
       <DetailsHeader>
         <DetailsHeadline>
           {member.firstName} {member.lastName}
+          <span onClick={() => setOpenEditForm(!openEditForm)}>
+            <EditIconStyled />
+          </span>
         </DetailsHeadline>
         <DetailsGroup>{member.group}</DetailsGroup>
         <DetailsDescription>{member.description}</DetailsDescription>
@@ -120,8 +131,20 @@ export default function Details({ updateMember, member }) {
         </SavedNoteWrapper>
         <Portrait src={member.image} alt="" />
       </DetailsHeader>
+      {openEditForm && (
+        <EditFormWrapper>
+          <Form
+            availableGroups={availableGroups}
+            currentMember={member}
+            submitFunction={updateMember}
+            openEditForm={openEditForm}
+            setOpenEditForm={setOpenEditForm}
+            addGroup={addGroup}
+          />
+        </EditFormWrapper>
+      )}
 
-      <FormStyled>
+      <EntryFormStyled>
         <h3 onClick={() => setIsUnfolded(!isUnfolded)}>
           New Entry {isUnfolded ? <FoldIconStyled /> : <UnfoldIconStyled />}
         </h3>
@@ -156,7 +179,7 @@ export default function Details({ updateMember, member }) {
             <button onClick={submitHandler}>SAVE</button>
           </>
         )}
-      </FormStyled>
+      </EntryFormStyled>
       <CardContainer>
         {member.entries &&
           member.entries.map((entry) => (
@@ -201,7 +224,24 @@ const DetailsGroup = styled.p`
   margin: 0.4rem 0;
 `;
 
-const FormStyled = styled.form`
+const EditFormWrapper = styled.div`
+  background: var(--lightgrey);
+  position: absolute;
+  top: 90px;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 1rem;
+  z-index: 200;
+`;
+
+const EditIconStyled = styled(EditIcon)`
+  color: var(--secondary);
+  margin: 0 1rem;
+  transform: scale(0.8);
+`;
+
+const EntryFormStyled = styled.form`
   display: flex;
   border-bottom: var(--grey) solid 1px;
   flex-direction: column;
@@ -245,7 +285,7 @@ const Portrait = styled.img`
   border-radius: 50%;
   grid-column: 2 / 3;
   grid-row: 2 / 6;
-  margin-bottom: 0.5rem;
+  margin: 0 1rem 0.5rem 0;
   width: 6rem;
   height: auto;
 `;

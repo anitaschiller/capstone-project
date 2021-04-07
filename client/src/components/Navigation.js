@@ -2,14 +2,25 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 import { AddIcon } from '../icons/AddIcon';
+import { UnfoldIcon } from '../icons/UnfoldIcon';
 import { HomeIcon } from '../icons/HomeIcon';
 
-export default function Navigation({ isStatic }) {
+export default function Navigation({
+  isStatic,
+  showHomeIcon,
+  setShowHomeIcon,
+}) {
   return (
     <footer>
       <Nav isStatic={isStatic}>
         <NavLinkStyled exact to="/">
-          <HomeIconStyled />
+          {showHomeIcon ? (
+            <HomeIconStyled />
+          ) : (
+            <span onClick={() => setShowHomeIcon(true)}>
+              <BackIcon />
+            </span>
+          )}
         </NavLinkStyled>
         <NavLinkStyled to="/add">
           <AddIconStyled />
@@ -18,6 +29,11 @@ export default function Navigation({ isStatic }) {
     </footer>
   );
 }
+
+const BackIcon = styled(UnfoldIcon)`
+  margin: 1.4rem 0;
+  transform: scale(1.5) rotate(90deg);
+`;
 
 const Nav = styled.nav`
   background: var(--secondary);
