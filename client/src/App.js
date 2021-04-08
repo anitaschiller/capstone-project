@@ -24,12 +24,12 @@ function App() {
   const member = location?.state?.member ?? null;
 
   useEffect(() => {
-    fetch('http://localhost:4000/members')
+    fetch('/members')
       .then((result) => result.json())
       .then((members) => setMembers(members))
       .catch((error) => console.error(error.message));
 
-    fetch('http://localhost:4000/groups')
+    fetch('/groups')
       .then((result) => result.json())
       .then((groups) => setAvailableGroups(groups))
       .catch((error) => console.error(error.message));
@@ -44,7 +44,7 @@ function App() {
   }, [availableGroups]);
 
   function addMember(member) {
-    fetch('http://localhost:4000/members', {
+    fetch('/members', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -66,7 +66,7 @@ function App() {
       (member) => member._id !== memberToUpdate._id
     );
 
-    fetch(`http://localhost:4000/members/${memberToUpdate._id}`, {
+    fetch(`/members/${memberToUpdate._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -101,7 +101,7 @@ function App() {
     setMembers(remainingMembers);
     setIsShown(false);
 
-    fetch(`http://localhost:4000/members/${idToDelete}`, {
+    fetch(`/members/${idToDelete}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ function App() {
   }
 
   function addGroup(groupToAdd) {
-    fetch('http://localhost:4000/groups', {
+    fetch('/groups', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -135,7 +135,7 @@ function App() {
       (member) => member.group === groupToDelete.name
     );
     if (groupMembers.length === 0) {
-      fetch(`http://localhost:4000/groups/${groupToDelete._id}`, {
+      fetch(`/groups/${groupToDelete._id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
