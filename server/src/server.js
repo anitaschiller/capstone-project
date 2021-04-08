@@ -14,7 +14,7 @@ const __dirname = dirname(import.meta.url);
 dotenv.config();
 
 const DB_CONNECTION =
-  process.env.DB_CONNECTION; /* || 'mongodb://localhost:27017/remember-app' */
+  process.env.DB_CONNECTION || 'mongodb://localhost:27017/remember-app';
 
 const connectionString = DB_CONNECTION;
 
