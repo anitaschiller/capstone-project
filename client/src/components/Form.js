@@ -15,7 +15,6 @@ export default function Form({
   openEditForm,
   setOpenEditForm,
 }) {
-  /* export default function Form({ submitFunction, availableGroups, addGroup }) { */
   const PLACEHOLDER_URL =
     'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';
 
@@ -28,7 +27,6 @@ export default function Form({
   };
 
   const [member, setMember] = useState(currentMember ?? initialMember);
-  console.log('member', member);
   const [isError, setIsError] = useState(false);
   const [wasSuccessful, setWasSuccessful] = useState(false);
   const [selectedFileURL, setSelectedFileURL] = useState(
@@ -127,7 +125,11 @@ export default function Form({
                 <option key={group._id}>{group.name}</option>
               ))}
             </select>
-            <NewGroup addGroup={addGroup} />
+            <NewGroup
+              addGroup={addGroup}
+              member={member}
+              setMember={setMember}
+            />
           </div>
         </Group>
 

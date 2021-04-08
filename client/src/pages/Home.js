@@ -98,7 +98,7 @@ export default function Home({
       {renderedGroups.map((group, index) => (
         <GroupWrapper key={index}>
           <GroupHeadline>
-            {group.name ?? group}
+            {group}
             <Delete onClick={() => deleteGroup(group)}>&times;</Delete>
           </GroupHeadline>
           {undeletableGroup === group && (
