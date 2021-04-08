@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { useState, useEffect } from 'react';
 
@@ -12,9 +11,9 @@ export default function Searchbar({
   const [groupValue, setGroupValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
 
-  useEffect(() => {
+  /* useEffect(() => {
     findMember(searchValue);
-  }, [searchValue]);
+  }, [searchValue]); */
 
   function changeHandler(event) {
     setSearchValue(event.target.value);
@@ -43,12 +42,12 @@ export default function Searchbar({
   return (
     <FilterWrapper>
       <label htmlFor="searchbar">
-        <span>Search person: </span>
+        <span>Search member: </span>
       </label>
       <input
         type="text"
         id="searchbar"
-        placeholder="Search a name or description"
+        placeholder=" Search for a name or description..."
         name="searchbar"
         onChange={changeHandler}
         value={searchValue}
@@ -68,14 +67,32 @@ export default function Searchbar({
 }
 
 const FilterDeleteStyled = styled(FilterDeleteIcon)`
-  color: var(--grey);
+  color: #000000;
   transform: scale(0.7);
-
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 25%;
+  right: 3%;
 `;
 
 const FilterWrapper = styled.form`
   position: relative;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: 0.7rem;
+  background: #b1bded;
+  border-radius: 5px;
+  margin: 2rem 0;
+  padding: 1rem 1rem 0.6rem 1rem;
+  label {
+    font-size: 12px;
+    align-self: center;
+    font-weight: bold;
+  }
+  input,
+  select {
+    border: solid 1px var(--grey);
+    border-radius: 5px;
+    height: 1.5rem;
+    width: 80%;
+  }
 `;

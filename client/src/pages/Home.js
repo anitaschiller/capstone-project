@@ -11,14 +11,34 @@ export default function Home({
   onOpenModal,
   availableGroups,
   deleteGroup,
-  canDeleteGroup,
   setShowHomeIcon,
+  undeletableGroup,
 }) {
   const orderedMembers = members.slice().sort(compareFirstName);
   const [renderedGroups, setRenderedGroups] = useState(availableGroups ?? []);
+  console.log({ renderedGroups });
   const [renderedMembers, setRenderedMembers] = useState(orderedMembers ?? []);
   const renderedGroupNames = renderedGroups.map((group) => group.name);
-  console.log('renderedGroupNames', renderedGroupNames);
+
+  //const memberGroupNames = orderedMembers.map((member) => {member.group);
+  //console.log('memberGroupNames', memberGroupNames);
+  const groupNames = availableGroups.map((group) => group.name);
+  console.log('groupNames', groupNames);
+  let testArray1 = groupNames.slice();
+  console.log(testArray1);
+
+  const test = testArray1.map((group) => {
+    orderedMembers.filter((member) => member.group === group);
+    /*  .flatMap((member) => member); */
+  });
+  console.log('test', test);
+
+  /* [
+    {
+      _id: 123
+      members: [{ name: ''}]
+    }
+  ] */
 
   useEffect(() => {
     setRenderedMembers(members);
@@ -42,6 +62,9 @@ export default function Home({
     const currentSearchValue = searchValue.toLowerCase();
 
     if (currentSearchValue !== '') {
+      // 1. Schritt -> filteredGroups (alle Gruppen oder eine)
+      // 2. Schritt -> Über alle filteredGroups iterien
+      // 3. Schritt -> Search nach members wenn searchValue !== ''
       const fittingMembers = orderedMembers.filter((member) => {
         const memberFirstName = member.firstName.toLowerCase();
         const memberLastName = member.lastName.toLowerCase();
@@ -56,28 +79,32 @@ export default function Home({
       });
       console.log('fittingMembers', fittingMembers);
 
-      const fittingMembersGroups = fittingMembers.map((member) => member.group);
-      console.log('fittingMembersGroups', fittingMembersGroups);
+      const fittingMemberGroups = fittingMembers.map((member) => member.group);
+      console.log('fittingMemberGroups', fittingMemberGroups);
 
-      /* const renderedGroupNames = renderedGroups.map((group) => group.name);
-      console.log('renderedGroupNames', renderedGroupNames); */
-      const filteredFittingMembersGroups = fittingMembersGroups.filter(
-        (group) => {
-          if (renderedGroupNames.includes(group)) {
+      const fittingGroups = fittingMemberGroups.filter((group) => {
+        if (renderedGroupNames.includes(group)) {
+          return group;
+        }
+      });
+
+      /*  const fittingGroups = fittingMembers
+        .map((member) => member.group)
+        .filter((group) => {
+          if (renderedGroups.includes(group)) {
             return group;
           }
-        }
-      );
-      //console.log('renderedGroups', renderedGroups);
-      console.log('filteredFittingMembersGroups', filteredFittingMembersGroups);
+        }); */
+      console.log('fittingGroups', fittingGroups);
 
-      const uniqueFittingGroups = [...new Set(filteredFittingMembersGroups)];
-
+      const uniqueFittingGroups = [...new Set(fittingGroups)];
+      console.log('uniqueFittingGroups', uniqueFittingGroups);
+      /*     debugger; */
       setRenderedMembers(fittingMembers);
-      setRenderedGroups(uniqueFittingGroups);
+      //setRenderedGroups(uniqueFittingGroups);
     } else {
       setRenderedMembers(orderedMembers);
-      setRenderedGroups(availableGroups);
+      //setRenderedGroups(availableGroups);
     }
   }
 
@@ -92,11 +119,11 @@ export default function Home({
       {renderedGroups.map((group, index) => (
         <GroupWrapper key={index}>
           <GroupHeadline>
-            {group.name}
+            {group.name ?? group}
             <Delete onClick={() => deleteGroup(group)}>&times;</Delete>
           </GroupHeadline>
-          {!canDeleteGroup && (
-            <ErrorMessage text="Please add the members below to other groups first!" />
+          {undeletableGroup === group && (
+            <ErrorMessage text="Please add remaining members to other groups first!" />
           )}
           {renderedMembers
             .filter((member) => member.group === group.name)

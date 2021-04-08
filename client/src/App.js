@@ -17,9 +17,8 @@ function App() {
   const [availableGroups, setAvailableGroups] = useState(
     loadFromLocal('groups') ?? []
   );
-  console.log('availableGroups', availableGroups);
-  const [canDeleteGroup, setCanDeleteGroup] = useState(true);
   const [showHomeIcon, setShowHomeIcon] = useState(true);
+  const [undeletableGroup, setUndeletableGroup] = useState('');
 
   const location = useLocation();
   const member = location?.state?.member ?? null;
@@ -29,9 +28,7 @@ function App() {
       .then((result) => result.json())
       .then((members) => setMembers(members))
       .catch((error) => console.error(error.message));
-  }, []);
 
-  useEffect(() => {
     fetch('http://localhost:4000/groups')
       .then((result) => result.json())
       .then((groups) => setAvailableGroups(groups))
@@ -64,25 +61,27 @@ function App() {
       .catch((error) => console.error(error.message));
   }
 
-  function updateMember(updatedMember) {
+  function updateMember(memberToUpdate) {
     const upToDateMembers = members.filter(
-      (member) => member._id !== updatedMember._id
+      (member) => member._id !== memberToUpdate._id
     );
 
-    fetch(`http://localhost:4000/${updatedMember._id}`, {
+    fetch(`http://localhost:4000/members/${memberToUpdate._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        firstName: updatedMember.firstName,
-        lastName: updatedMember.lastName,
-        description: updatedMember.description,
-        group: updatedMember.group,
-        image: updatedMember.image,
-        entries: updatedMember.entries,
+        firstName: memberToUpdate.firstName,
+        lastName: memberToUpdate.lastName,
+        description: memberToUpdate.description,
+        group: memberToUpdate.group,
+        image: memberToUpdate.image,
+        entries: memberToUpdate.entries,
       }),
     })
       .then((result) => result.json())
-      .then((updatedMember) => setMembers([...upToDateMembers, updatedMember]));
+      .then((memberToUpdate) =>
+        setMembers([...upToDateMembers, memberToUpdate])
+      );
   }
 
   function openModal(idToDelete) {
@@ -102,7 +101,7 @@ function App() {
     setMembers(remainingMembers);
     setIsShown(false);
 
-    fetch(`http://localhost:4000/${idToDelete}`, {
+    fetch(`http://localhost:4000/members/${idToDelete}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -150,10 +149,10 @@ function App() {
       );
       setAvailableGroups(remainingGroups);
     } else {
-      setCanDeleteGroup(false);
+      setUndeletableGroup(groupToDelete);
 
       setTimeout(function () {
-        setCanDeleteGroup(true);
+        setUndeletableGroup('');
       }, 3000);
     }
   }
@@ -169,8 +168,9 @@ function App() {
               onOpenModal={openModal}
               availableGroups={availableGroups}
               deleteGroup={deleteGroup}
-              canDeleteGroup={canDeleteGroup}
+              undeleteableGroup={undeletableGroup}
               setShowHomeIcon={setShowHomeIcon}
+              undeletableGroup={undeletableGroup}
             />
           </Route>
           <Route path="/add">
