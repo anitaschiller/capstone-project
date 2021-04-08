@@ -29,10 +29,6 @@ const server = express();
 server.use(bodyParser.json());
 server.use(cors());
 
-/* server.get('/', (request, response) => {
-  response.json({ status: 'Server is up and running' });
-}); */
-
 server.use(memberRoutes);
 server.use(groupRoutes);
 
