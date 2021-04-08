@@ -133,11 +133,16 @@ function App() {
   }
 
   function deleteGroup(groupToDelete) {
+    const groupObjectToDelete = availableGroups.find(
+      (group) => group.name === groupToDelete
+    );
+    console.log('groupObjectToDelete', groupObjectToDelete);
+
     const groupMembers = members.filter(
-      (member) => member.group === groupToDelete.name
+      (member) => member.group === groupObjectToDelete.name
     );
     if (groupMembers.length === 0) {
-      fetch(`/groups/${groupToDelete._id}`, {
+      fetch(`/groups/${groupObjectToDelete._id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -145,8 +150,9 @@ function App() {
       }).catch((error) => console.error(error.message));
 
       const remainingGroups = availableGroups.filter(
-        (group) => group !== groupToDelete
+        (group) => group.name !== groupToDelete
       );
+      console.log('remainingGroups', remainingGroups);
       setAvailableGroups(remainingGroups);
     } else {
       setUndeletableGroup(groupToDelete);
