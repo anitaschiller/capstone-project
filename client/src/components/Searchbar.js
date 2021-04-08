@@ -5,15 +5,13 @@ import { FilterDeleteIcon } from '../icons/FilterDeleteIcon';
 
 export default function Searchbar({
   findMember,
-  availableGroups,
+  availableGroupNames,
   setRenderedGroups,
+  setRenderedMembers,
+  orderedMembers,
 }) {
   const [groupValue, setGroupValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
-
-  /* useEffect(() => {
-    findMember(searchValue);
-  }, [searchValue]); */
 
   function changeHandler(event) {
     setSearchValue(event.target.value);
@@ -24,10 +22,10 @@ export default function Searchbar({
     setGroupValue(event.target.value);
     event.preventDefault();
     if (event.target.value === 'Please select...') {
-      setRenderedGroups(availableGroups);
+      setRenderedGroups(availableGroupNames);
     } else {
-      const searchedGroup = availableGroups.filter(
-        (group) => group.name === event.target.value
+      const searchedGroup = availableGroupNames.filter(
+        (group) => group === event.target.value
       );
       console.log('searchedGroup', searchedGroup);
       setRenderedGroups(searchedGroup);
@@ -35,8 +33,10 @@ export default function Searchbar({
   }
 
   function removeFilters() {
-    setSearchValue('');
     setGroupValue('');
+    setRenderedGroups(availableGroupNames);
+    setSearchValue('');
+    setRenderedMembers(orderedMembers);
   }
 
   return (
@@ -55,8 +55,8 @@ export default function Searchbar({
       <label>Filter group:</label>
       <select value={groupValue} onChange={filterGroups}>
         <option>Please select...</option>
-        {availableGroups.map((group) => (
-          <option key={group._id}>{group.name}</option>
+        {availableGroupNames.map((group, index) => (
+          <option key={index}>{group}</option>
         ))}
       </select>
       <span onClick={removeFilters}>

@@ -310,7 +310,6 @@ const SavedNoteWrapper = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
   margin: 0.5rem 0 0.5rem 0;
   height: fit-content;
 `;

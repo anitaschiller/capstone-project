@@ -15,23 +15,12 @@ export default function Home({
   undeletableGroup,
 }) {
   const orderedMembers = members.slice().sort(compareFirstName);
-  const [renderedGroups, setRenderedGroups] = useState(availableGroups ?? []);
-  console.log({ renderedGroups });
+  const availableGroupNames = availableGroups.map((group) => group.name);
+  const [renderedGroups, setRenderedGroups] = useState(
+    availableGroupNames ?? []
+  );
+  console.log('renderedGroups', renderedGroups);
   const [renderedMembers, setRenderedMembers] = useState(orderedMembers ?? []);
-  const renderedGroupNames = renderedGroups.map((group) => group.name);
-
-  //const memberGroupNames = orderedMembers.map((member) => {member.group);
-  //console.log('memberGroupNames', memberGroupNames);
-  const groupNames = availableGroups.map((group) => group.name);
-  console.log('groupNames', groupNames);
-  let testArray1 = groupNames.slice();
-  console.log(testArray1);
-
-  const test = testArray1.map((group) => {
-    orderedMembers.filter((member) => member.group === group);
-    /*  .flatMap((member) => member); */
-  });
-  console.log('test', test);
 
   /* [
     {
@@ -45,7 +34,7 @@ export default function Home({
   }, [members]);
 
   useEffect(() => {
-    setRenderedGroups(availableGroups);
+    setRenderedGroups(availableGroupNames);
   }, [availableGroups]);
 
   function compareFirstName(a, b) {
@@ -62,9 +51,6 @@ export default function Home({
     const currentSearchValue = searchValue.toLowerCase();
 
     if (currentSearchValue !== '') {
-      // 1. Schritt -> filteredGroups (alle Gruppen oder eine)
-      // 2. Schritt -> Über alle filteredGroups iterien
-      // 3. Schritt -> Search nach members wenn searchValue !== ''
       const fittingMembers = orderedMembers.filter((member) => {
         const memberFirstName = member.firstName.toLowerCase();
         const memberLastName = member.lastName.toLowerCase();
@@ -77,35 +63,26 @@ export default function Home({
           return member;
         }
       });
-      console.log('fittingMembers', fittingMembers);
 
-      const fittingMemberGroups = fittingMembers.map((member) => member.group);
-      console.log('fittingMemberGroups', fittingMemberGroups);
-
-      const fittingGroups = fittingMemberGroups.filter((group) => {
-        if (renderedGroupNames.includes(group)) {
-          return group;
-        }
-      });
-
-      /*  const fittingGroups = fittingMembers
+      const fittingGroups = fittingMembers
         .map((member) => member.group)
         .filter((group) => {
           if (renderedGroups.includes(group)) {
             return group;
           }
-        }); */
-      console.log('fittingGroups', fittingGroups);
+        });
 
       const uniqueFittingGroups = [...new Set(fittingGroups)];
-      console.log('uniqueFittingGroups', uniqueFittingGroups);
-      /*     debugger; */
+
       setRenderedMembers(fittingMembers);
-      //setRenderedGroups(uniqueFittingGroups);
+      setRenderedGroups(uniqueFittingGroups);
     } else {
       setRenderedMembers(orderedMembers);
-      //setRenderedGroups(availableGroups);
+      setRenderedGroups(availableGroupNames);
     }
+    // 1. Schritt -> filteredGroups (alle Gruppen oder eine)
+    // 2. Schritt -> Über alle filteredGroups iterien
+    // 3. Schritt -> Search nach members wenn searchValue !== ''
   }
 
   return (
@@ -113,8 +90,10 @@ export default function Home({
       <h2>Home</h2>
       <Searchbar
         findMember={findMember}
-        availableGroups={availableGroups}
+        availableGroupNames={availableGroupNames}
         setRenderedGroups={setRenderedGroups}
+        setRenderedMembers={setRenderedMembers}
+        orderedMembers={orderedMembers}
       />
       {renderedGroups.map((group, index) => (
         <GroupWrapper key={index}>
@@ -126,7 +105,7 @@ export default function Home({
             <ErrorMessage text="Please add remaining members to other groups first!" />
           )}
           {renderedMembers
-            .filter((member) => member.group === group.name)
+            .filter((member) => member.group === group)
             .map((member) => (
               <Member
                 key={member._id}
