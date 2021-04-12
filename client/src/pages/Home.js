@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import ErrorMessage from '../components/ErrorMessage';
-import { FilterDeleteIcon } from '../icons/FilterDeleteIcon';
 import Member from '../components/Member';
 import Searchbar from '../components/Searchbar';
-import { useEffect } from 'react';
 
 export default function Home({
   members,
@@ -17,9 +15,10 @@ export default function Home({
   undeletableGroup,
 }) {
   const orderedMembers = members.slice().sort(compareFirstName);
-  const [groupValue, setGroupValue] = useState('');
-  const [searchValue, setSearchValue] = useState('');
-  const [renderedGroups, setRenderedGroups] = useState(availableGroups ?? []);
+  const availableGroupNames = availableGroups.map((group) => group.name);
+  const [renderedGroups, setRenderedGroups] = useState(
+    availableGroupNames ?? []
+  );
   const [renderedMembers, setRenderedMembers] = useState(orderedMembers ?? []);
 
   useEffect(() => {
@@ -27,12 +26,8 @@ export default function Home({
   }, [members]);
 
   useEffect(() => {
-    setRenderedGroups(availableGroups);
+    setRenderedGroups(availableGroupNames);
   }, [availableGroups]);
-
-  useEffect(() => {
-    findMember(searchValue);
-  }, [searchValue]);
 
   function compareFirstName(a, b) {
     if (a.firstName === b.firstName) {
@@ -41,19 +36,6 @@ export default function Home({
       return -1;
     } else {
       return 1;
-    }
-  }
-
-  function filterGroups(event) {
-    setGroupValue(event.target.value);
-    event.preventDefault();
-    if (event.target.value === 'Please select...') {
-      setRenderedGroups(availableGroups);
-    } else {
-      const searchedGroup = availableGroups.filter(
-        (group) => group.name === event.target.value
-      );
-      setRenderedGroups(searchedGroup);
     }
   }
 
@@ -73,19 +55,14 @@ export default function Home({
           return member;
         }
       });
-      console.log('fittingMembers', fittingMembers);
-
-      const renderedGroupNames = renderedGroups.map((group) => group.name);
-      console.log('renderedGroupNames', renderedGroupNames);
 
       const fittingGroups = fittingMembers
         .map((member) => member.group)
         .filter((group) => {
-          if (renderedGroupNames.includes(group)) {
+          if (renderedGroups.includes(group)) {
             return group;
           }
         });
-      console.log('fittingGroups', fittingGroups);
 
       const uniqueFittingGroups = [...new Set(fittingGroups)];
 
@@ -93,46 +70,31 @@ export default function Home({
       setRenderedGroups(uniqueFittingGroups);
     } else {
       setRenderedMembers(orderedMembers);
-      setRenderedGroups(availableGroups);
+      setRenderedGroups(availableGroupNames);
     }
-  }
-
-  function removeFilters() {
-    setSearchValue('');
-    setGroupValue('');
   }
 
   return (
     <>
       <h2>Home</h2>
-      <FilterSection>
-        <Searchbar
-          findMember={findMember}
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-        />
-        <label>Filter group:</label>
-        <select value={groupValue} onChange={filterGroups}>
-          <option>Please select...</option>
-          {availableGroups.map((group) => (
-            <option key={group._id}>{group.name}</option>
-          ))}
-        </select>
-        <span onClick={removeFilters}>
-          <FilterDeleteStyled />
-        </span>
-      </FilterSection>
+      <Searchbar
+        findMember={findMember}
+        availableGroupNames={availableGroupNames}
+        setRenderedGroups={setRenderedGroups}
+        setRenderedMembers={setRenderedMembers}
+        orderedMembers={orderedMembers}
+      />
       {renderedGroups.map((group, index) => (
         <GroupWrapper key={index}>
           <GroupHeadline>
-            {group.name}
+            {group}
             <Delete onClick={() => deleteGroup(group)}>&times;</Delete>
           </GroupHeadline>
           {undeletableGroup === group && (
             <ErrorMessage text="Please add remaining members to other groups first!" />
           )}
           {renderedMembers
-            .filter((member) => member.group === group.name)
+            .filter((member) => member.group === group)
             .map((member) => (
               <Member
                 key={member._id}
@@ -146,40 +108,6 @@ export default function Home({
     </>
   );
 }
-
-const FilterDeleteStyled = styled(FilterDeleteIcon)`
-  color: #000000;
-  transform: scale(0.7);
-  position: absolute;
-  top: 25%;
-  right: 3%;
-`;
-
-const FilterSection = styled.form`
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 5fr;
-  gap: 0.7rem;
-
-  background: #b1bded;
-  border-radius: 5px;
-  margin: 2rem 0;
-  padding: 1rem 1rem 0.6rem 1rem;
-
-  label {
-    font-size: 12px;
-    align-self: center;
-    font-weight: bold;
-  }
-
-  input,
-  select {
-    border: solid 1px var(--grey);
-    border-radius: 5px;
-    height: 1.5rem;
-    width: 80%;
-  }
-`;
 
 const GroupWrapper = styled.div`
   display: flex;
@@ -201,4 +129,8 @@ const Delete = styled.span`
 Home.propTypes = {
   members: PropTypes.array,
   onOpenModal: PropTypes.func,
+  availableGroups: PropTypes.array,
+  deleteGroup: PropTypes.func,
+  setShowHomeIcon: PropTypes.func,
+  undeletableGroup: PropTypes.string,
 };

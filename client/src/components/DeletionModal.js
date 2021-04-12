@@ -48,6 +48,7 @@ const ConfirmButton = styled(DenyButton)`
 `;
 
 DeletionModal.propTypes = {
+  isStatic: PropTypes.bool,
   denyDeletion: PropTypes.func,
   confirmDeletion: PropTypes.func,
 };

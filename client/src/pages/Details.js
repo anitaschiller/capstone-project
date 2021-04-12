@@ -310,7 +310,6 @@ const SavedNoteWrapper = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
   margin: 0.5rem 0 0.5rem 0;
   height: fit-content;
 `;
@@ -326,7 +325,8 @@ const FoldIconStyled = styled(UnfoldIcon)`
 `;
 
 Details.propTypes = {
-  member: PropTypes.object,
+  availableGroups: PropTypes.array,
   updateMember: PropTypes.func,
-  members: PropTypes.array,
+  member: PropTypes.object,
+  addGroup: PropTypes.func,
 };
