@@ -2,7 +2,7 @@ import styled from 'styled-components/macro';
 import { useState } from 'react';
 import { PlusIcon } from '../icons/PlusIcon';
 
-export default function NewGroup({ addGroup, member, setMember }) {
+export default function NewGroup({ addGroup, member, setMember, isStatic }) {
   const [isUnfolded, setIsUnfolded] = useState(false);
   const [groupValue, setGroupValue] = useState('');
 
@@ -16,7 +16,7 @@ export default function NewGroup({ addGroup, member, setMember }) {
   return (
     <Wrapper>
       <span onClick={() => setIsUnfolded(!isUnfolded)}>
-        <PlusIconStyled />
+        <PlusIconStyled isStatic={isStatic} />
       </span>
 
       {isUnfolded && (
@@ -38,7 +38,7 @@ export default function NewGroup({ addGroup, member, setMember }) {
 const PlusIconStyled = styled(PlusIcon)`
   color: var(--primary);
   transform: scale(0.7);
-  position: absolute;
+  position: ${(props) => (props.isStatic ? 'static' : 'absolute')};
   top: -40px;
   right: -5px;
 `;

@@ -136,11 +136,10 @@ function App() {
     const groupObjectToDelete = availableGroups.find(
       (group) => group.name === groupToDelete
     );
-    console.log('groupObjectToDelete', groupObjectToDelete);
-
     const groupMembers = members.filter(
       (member) => member.group === groupObjectToDelete.name
     );
+
     if (groupMembers.length === 0) {
       fetch(`/groups/${groupObjectToDelete._id}`, {
         method: 'DELETE',
@@ -152,7 +151,6 @@ function App() {
       const remainingGroups = availableGroups.filter(
         (group) => group.name !== groupToDelete
       );
-      console.log('remainingGroups', remainingGroups);
       setAvailableGroups(remainingGroups);
     } else {
       setUndeletableGroup(groupToDelete);
