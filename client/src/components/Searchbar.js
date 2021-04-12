@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { FilterDeleteIcon } from '../icons/FilterDeleteIcon';
 
@@ -96,3 +97,11 @@ const FilterWrapper = styled.form`
     width: 80%;
   }
 `;
+
+Searchbar.propTypes = {
+  findMember: PropTypes.func,
+  availableGroupNames: PropTypes.array,
+  setRenderedGroups: PropTypes.func,
+  setRenderedMembers: PropTypes.func,
+  orderedMembers: PropTypes.array,
+};

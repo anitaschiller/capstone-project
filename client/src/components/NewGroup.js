@@ -1,5 +1,7 @@
 import styled from 'styled-components/macro';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
+
 import { PlusIcon } from '../icons/PlusIcon';
 
 export default function NewGroup({ addGroup, member, setMember }) {
@@ -70,3 +72,9 @@ const GroupButton = styled.button`
   width: 25%;
   padding: 0.2rem;
 `;
+
+NewGroup.propTypes = {
+  addGroup: PropTypes.func,
+  member: PropTypes.object,
+  setMember: PropTypes.func,
+};

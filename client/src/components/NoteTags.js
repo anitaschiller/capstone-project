@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { useState } from 'react';
 
-export default function NoteTags({ onCreateTag, tags, setTags, onDeleteTag }) {
+export default function NoteTags({ onCreateTag, tags, onDeleteTag }) {
   const [tagValue, setTagValue] = useState('');
 
   function handleChange(event) {
@@ -67,6 +67,5 @@ const TagInput = styled.input`
 NoteTags.propTypes = {
   onCreateTag: PropTypes.func,
   tags: PropTypes.array,
-  setTags: PropTypes.func,
   onDeleteTag: PropTypes.func,
 };

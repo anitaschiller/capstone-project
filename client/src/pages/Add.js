@@ -16,4 +16,6 @@ export default function Add({ submitFunction, availableGroups, addGroup }) {
 
 Add.propTypes = {
   submitFunction: PropTypes.func,
+  availableGroups: PropTypes.array,
+  addGroup: PropTypes.func,
 };
