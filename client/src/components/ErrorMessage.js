@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 export default function ErrorMessage({ text }) {
@@ -12,3 +13,7 @@ const Error = styled.span`
   padding: 0.5rem;
   text-align: center;
 `;
+
+ErrorMessage.propTypes = {
+  text: PropTypes.string,
+};

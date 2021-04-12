@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 
 import { AddIcon } from '../icons/AddIcon';
@@ -30,6 +31,10 @@ export default function Navigation({
   );
 }
 
+const AddIconStyled = styled(AddIcon)`
+  margin: 0.7rem;
+`;
+
 const BackIcon = styled(UnfoldIcon)`
   margin: 1.4rem 0;
   transform: scale(1.5) rotate(90deg);
@@ -58,6 +63,8 @@ const HomeIconStyled = styled(HomeIcon)`
   margin: 0.7rem;
 `;
 
-const AddIconStyled = styled(AddIcon)`
-  margin: 0.7rem;
-`;
+Navigation.propTypes = {
+  isStatic: PropTypes.bool,
+  showHomeIcon: PropTypes.bool,
+  setShowHomeIcon: PropTypes.func,
+};

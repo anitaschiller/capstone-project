@@ -237,4 +237,9 @@ const TextInput = styled.input`
 
 Form.propTypes = {
   submitFunction: PropTypes.func,
+  availableGroups: PropTypes.array,
+  addGroup: PropTypes.func,
+  currentMember: PropTypes.object,
+  openEditForm: PropTypes.bool,
+  setOpenEditForm: PropTypes.func,
 };

@@ -1,7 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
-import getCroppedImg from '../lib/cropImage';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+import getCroppedImg from '../lib/cropImage';
 
 export default function ImageCropper({
   member,
@@ -73,3 +75,11 @@ const ButtonWrapper = styled.div`
   bottom: 5rem;
   right: 155px;
 `;
+
+ImageCropper.propTypes = {
+  member: PropTypes.object,
+  setMember: PropTypes.func,
+  setOpenImageCropper: PropTypes.func,
+  selectedFileURL: PropTypes.string,
+  setSelectedFileURL: PropTypes.func,
+};

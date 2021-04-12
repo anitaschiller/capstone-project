@@ -79,4 +79,5 @@ const Portrait = styled.img`
 Member.propTypes = {
   member: PropTypes.object,
   onOpenModal: PropTypes.func,
+  setShowHomeIcon: PropTypes.func,
 };

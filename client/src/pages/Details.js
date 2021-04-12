@@ -325,7 +325,8 @@ const FoldIconStyled = styled(UnfoldIcon)`
 `;
 
 Details.propTypes = {
-  member: PropTypes.object,
+  availableGroups: PropTypes.array,
   updateMember: PropTypes.func,
-  members: PropTypes.array,
+  member: PropTypes.object,
+  addGroup: PropTypes.func,
 };

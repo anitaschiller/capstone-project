@@ -19,15 +19,7 @@ export default function Home({
   const [renderedGroups, setRenderedGroups] = useState(
     availableGroupNames ?? []
   );
-  console.log('renderedGroups', renderedGroups);
   const [renderedMembers, setRenderedMembers] = useState(orderedMembers ?? []);
-
-  /* [
-    {
-      _id: 123
-      members: [{ name: ''}]
-    }
-  ] */
 
   useEffect(() => {
     setRenderedMembers(members);
@@ -80,9 +72,6 @@ export default function Home({
       setRenderedMembers(orderedMembers);
       setRenderedGroups(availableGroupNames);
     }
-    // 1. Schritt -> filteredGroups (alle Gruppen oder eine)
-    // 2. Schritt -> Über alle filteredGroups iterien
-    // 3. Schritt -> Search nach members wenn searchValue !== ''
   }
 
   return (
@@ -140,4 +129,8 @@ const Delete = styled.span`
 Home.propTypes = {
   members: PropTypes.array,
   onOpenModal: PropTypes.func,
+  availableGroups: PropTypes.array,
+  deleteGroup: PropTypes.func,
+  setShowHomeIcon: PropTypes.func,
+  undeletableGroup: PropTypes.string,
 };
