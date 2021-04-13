@@ -1,4 +1,4 @@
-# capstone-project/reMEMEMBER app
+# capstone-project/reMEMBER app
 
 This is the repository for my capstone-project at neue fische's Web Development Bootcamp.
 
