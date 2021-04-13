@@ -112,7 +112,7 @@ export default function Details({
 
   return (
     <>
-      <DetailsHeader>
+      <DetailsHeader data-testid="member-details">
         <DetailsHeadline>
           {member.firstName} {member.lastName}
           <span onClick={() => setOpenEditForm(!openEditForm)}>

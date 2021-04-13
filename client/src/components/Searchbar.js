@@ -28,7 +28,6 @@ export default function Searchbar({
       const searchedGroup = availableGroupNames.filter(
         (group) => group === event.target.value
       );
-      console.log('searchedGroup', searchedGroup);
       setRenderedGroups(searchedGroup);
     }
   }
@@ -52,9 +51,14 @@ export default function Searchbar({
         name="searchbar"
         onChange={changeHandler}
         value={searchValue}
+        data-testid="searchbar-input"
       />
       <label>Filter group:</label>
-      <select value={groupValue} onChange={filterGroups}>
+      <select
+        data-testid="groupfilter-select"
+        value={groupValue}
+        onChange={filterGroups}
+      >
         <option>Please select...</option>
         {availableGroupNames.map((group, index) => (
           <option key={index}>{group}</option>

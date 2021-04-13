@@ -21,7 +21,8 @@ export default function Member({ member, onOpenModal, setShowHomeIcon }) {
         <MemberName>
           {member.firstName} {member.lastName}
         </MemberName>
-        <Link
+        <LinkStyled
+          data-testid="details-link"
           to={{
             pathname: url + `${fullName}`,
             state: { member },
@@ -29,8 +30,7 @@ export default function Member({ member, onOpenModal, setShowHomeIcon }) {
           onClick={() => setShowHomeIcon(false)}
         >
           <EditIconStyled />
-        </Link>
-
+        </LinkStyled>
         <span onClick={onOpenModal}>
           <DeleteIconStyled />
         </span>
@@ -38,6 +38,11 @@ export default function Member({ member, onOpenModal, setShowHomeIcon }) {
     </>
   );
 }
+
+const LinkStyled = styled(Link)`
+  width: 5px;
+  height: auto;
+`;
 
 const MemberStyled = styled.div`
   display: flex;

@@ -86,7 +86,7 @@ export default function Home({
       />
       {renderedGroups.map((group, index) => (
         <GroupWrapper key={index}>
-          <GroupHeadline>
+          <GroupHeadline data-testid="group-headline">
             {group}
             <Delete onClick={() => deleteGroup(group)}>&times;</Delete>
           </GroupHeadline>

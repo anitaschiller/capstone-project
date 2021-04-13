@@ -77,6 +77,7 @@ export default function Form({
             id="first-name"
             value={member.firstName}
             onChange={handleChange}
+            data-testid="first-name-input"
           />
         </Name>
         <Name>
@@ -87,6 +88,7 @@ export default function Form({
             id="last-name"
             value={member.lastName}
             onChange={handleChange}
+            data-testid="last-name-input"
           />
         </Name>
         <ImagePreview src={selectedFileURL} alt="" />
@@ -100,6 +102,7 @@ export default function Form({
               setSelectedFileURL(URL.createObjectURL(event.target.files[0]));
               setOpenImageCropper(true);
             }}
+            data-testid="image-input"
           />
         </Image>
         <Description>
@@ -109,6 +112,7 @@ export default function Form({
             id="description"
             value={member.description}
             onChange={handleChange}
+            data-testid="description-input"
           />
         </Description>
         <Group>
@@ -119,6 +123,7 @@ export default function Form({
               id="group"
               value={member.group}
               onChange={handleChange}
+              data-testid="group-selection"
             >
               <option>Please select...</option>
               {availableGroups.map((group) => (
@@ -136,7 +141,9 @@ export default function Form({
         {wasSuccessful && <Success>Member successfully added!</Success>}
         {isError && <ErrorMessage text="Please fill in all required fields!" />}
 
-        <Button onClick={submitHandler}>SAVE</Button>
+        <Button onClick={submitHandler} data-testid="form-submit-button">
+          SAVE
+        </Button>
       </FormStyled>
       {openImageCropper && (
         <ImageCropper
