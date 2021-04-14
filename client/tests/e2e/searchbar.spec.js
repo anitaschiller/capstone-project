@@ -21,19 +21,25 @@ describe('<Searchbar/> component', () => {
   it('renders all members that contain the search query value', () => {
     cy.get(SEARCHBAR_INPUT).type('Käp');
     cy.get('[data-testid="details-link"]').click();
-    cy.get('[data-testid="member-details"]').contains('Käp');
+    cy.get('[data-testid="member-details"]').should('contain', 'Käp');
   });
 
   it('only renders members that are part of the selected group', () => {
     cy.get(GROUPFILTER_SELECT).select('Reederei Blaubär');
-    cy.get('[data-testid="group-headline"]').contains('Reederei Blaubär');
+    cy.get('[data-testid="group-headline"]').should(
+      'contain',
+      'Reederei Blaubär'
+    );
   });
 
   it('only renders members that contain search query AND are part of the selected group', () => {
     cy.get(GROUPFILTER_SELECT).select('Reederei Blaubär');
     cy.get(SEARCHBAR_INPUT).type('Käp');
     cy.get('[data-testid="details-link"]').click();
-    cy.get('[data-testid="member-details"]').contains('Käp');
-    cy.get('[data-testid="member-details"]').contains('Reederei Blaubär');
+    cy.get('[data-testid="member-details"]').should('contain', 'Käp');
+    cy.get('[data-testid="member-details"]').should(
+      'contain',
+      'Reederei Blaubär'
+    );
   });
 });

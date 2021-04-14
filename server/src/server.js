@@ -8,13 +8,20 @@ import { dirname } from './lib/pathHelpers.js';
 
 import memberRoutes from './routes/members.routes.js';
 import groupRoutes from './routes/groups.routes.js';
+import maintenanceRoutes from './routes/maintenance.routes.js';
 
 const __dirname = dirname(import.meta.url);
 
 dotenv.config();
 
+const DB_NAME = process.env.DB_NAME || 'remember-app';
+
 const DB_CONNECTION =
-  process.env.DB_CONNECTION || 'mongodb://localhost:27017/remember-app';
+  process.env.DB_CONNECTION + `${DB_NAME}?retryWrites=true&w=majority` ||
+  `mongodb://localhost:27017/${DB_NAME}`;
+
+/* const DB_CONNECTION =
+  process.env.DB_CONNECTION || 'mongodb://localhost:27017/remember-app'; */
 
 const connectionString = DB_CONNECTION;
 
@@ -31,6 +38,7 @@ server.use(cors());
 
 server.use(memberRoutes);
 server.use(groupRoutes);
+server.use(maintenanceRoutes);
 
 server.use(express.static(path.join(__dirname, '../../client/build')));
 

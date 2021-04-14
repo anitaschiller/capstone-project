@@ -102,7 +102,6 @@ export default function Form({
               setSelectedFileURL(URL.createObjectURL(event.target.files[0]));
               setOpenImageCropper(true);
             }}
-            data-testid="image-input"
           />
         </Image>
         <Description>

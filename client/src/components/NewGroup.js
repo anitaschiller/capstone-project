@@ -17,7 +17,7 @@ export default function NewGroup({ addGroup, member, setMember, isStatic }) {
 
   return (
     <Wrapper>
-      <span onClick={() => setIsUnfolded(!isUnfolded)}>
+      <span data-testid="add-group" onClick={() => setIsUnfolded(!isUnfolded)}>
         <PlusIconStyled isStatic={isStatic} />
       </span>
 
@@ -29,8 +29,11 @@ export default function NewGroup({ addGroup, member, setMember, isStatic }) {
             placeholder=" New Group"
             value={groupValue}
             onChange={(event) => setGroupValue(event.target.value)}
+            data-testid="input-new-group"
           />
-          <GroupButton onClick={submitHandler}>ADD</GroupButton>
+          <GroupButton data-testid="button-new-group" onClick={submitHandler}>
+            ADD
+          </GroupButton>
         </InputWrapper>
       )}
     </Wrapper>
