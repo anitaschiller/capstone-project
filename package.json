@@ -16,7 +16,7 @@
   "devDependencies": {},
   "scripts": {
     "postinstall": "cd ./client && npm install && cd ../server && npm install",
-    "build": "cd ./client && npm run build",
+    "build": "cd ./client && npm run build && npm run styleguide:build",
     "test:watch": "cd ./client && npm run test:watch",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client": "cd ./client && npm start",

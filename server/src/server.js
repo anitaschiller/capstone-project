@@ -32,6 +32,11 @@ server.use(cors());
 server.use(memberRoutes);
 server.use(groupRoutes);
 
+server.use(
+  '/styleguide',
+  express.static(path.join(__dirname, '../../client/styleguide'))
+);
+
 server.use(express.static(path.join(__dirname, '../../client/build')));
 
 server.get('/*', function (req, res) {
